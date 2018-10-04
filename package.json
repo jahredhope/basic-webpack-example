@@ -4,8 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "node build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Jahred Hope <jahredhope@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "eslint": "^5.6.1",
+    "nodemon": "^1.18.4",
+    "rimraf": "^2.6.2",
+    "serve": "^10.0.2",
+    "webpack": "^4.20.2",
+    "webpack-merge": "^4.1.4"
+  }
 }
