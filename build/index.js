@@ -1,58 +1,72 @@
-console.log("build", "start");
+console.log("build", "start")
 
-const useMemoryFs = false;
+const WebpackDevServer = require("webpack-dev-server")
+const useMemoryFs = false
+const chalk = require("chalk")
+const MemoryFS = require("memory-fs")
+const webpack = require("webpack")
+const path = require("path")
+const rimraf = require("rimraf")
+const mkdirP = require("mkdirP")
 
-const MemoryFS = require("memory-fs");
-const webpack = require("webpack");
-const path = require("path");
-const rimraf = require("rimraf");
+const getConfig = require("./webpack.config")
+const printWebpackStats = require("./printWebpackStats")
+const RenderStaticPlugin = require("./RenderStaticPlugin")
 
-const config = require("./webpack.config");
-const printWebpackStats = require("./printWebpackStats");
-const renderHtml = require("./renderHtml");
-
-const compiler = webpack(config);
-
-const fs = useMemoryFs ? new MemoryFS() : require("fs");
+const fs = useMemoryFs ? new MemoryFS() : require("fs")
+const compiler = webpack(getConfig({ productionise: true, fs }))
 if (useMemoryFs) {
-  compiler.outputFileSystem = fs;
+  console.log("using custom fs")
+  compiler.outputFileSystem = fs
 }
 
-const cwd = process.cwd();
-const distDirectory = path.join(cwd, "dist");
-console.log("Rendering", distDirectory);
-let clientStats = null;
-let renderStats = null;
+const cwd = process.cwd()
+const distDirectory = path.join(cwd, "dist")
+
 if (!useMemoryFs) {
-  rimraf.sync(`${distDirectory}/*.js`);
+  rimraf.sync(`${distDirectory}/*.js`)
+}
+mkdirP.sync(path.join(cwd, distDirectory), { fs })
+
+// compiler.apply(
+//   new webpack.ProgressPlugin({
+//     profile: false,
+//   })
+// )
+
+compiler.apply(
+  new RenderStaticPlugin({
+    assetsDirectory: distDirectory,
+    renderDirectory: distDirectory,
+    fs,
+  })
+)
+
+async function onDone(stats) {
+  // console.log({ fsdata: fs.data })
+  // printWebpackStats(stats)
 }
 
-async function onBuild(err, stats) {
-  const statsLength = stats.stats.length;
-  if (statsLength !== 2) {
-    console.error(`Watch failed to send all stats. Only sent ${statsLength}`);
+async function onBuild(err) {
+  if (err) {
+    console.error(chalk.red("Error during build:"), err)
+    return
   }
-  printWebpackStats(stats);
-  clientStats =
-    stats.stats.find(stat => stat.compilation.name === "client") || clientStats;
-  renderStats =
-    stats.stats.find(stat => stat.compilation.name === "render") || renderStats;
-  const assetsDirectory = distDirectory;
-  const renderDirectory = distDirectory;
-  await renderHtml({
-    clientStats,
-    renderStats,
-    assetsDirectory,
-    renderDirectory,
-    fs
-  });
 }
 
-const watch = true;
-if (watch) {
-  compiler.watch({}, onBuild);
-} else {
-  compiler.run(onBuild);
-}
+const hookOptions = { name: "base" }
 
-console.log("build", "end");
+compiler.hooks.done.tap(hookOptions, onDone)
+
+const runType = "run"
+if (runType === "watch") {
+  compiler.watch({}, onBuild)
+} else if (runType === "run") {
+  compiler.run(onBuild)
+} else if (runType === "server") {
+  const server = new WebpackDevServer(compiler, {})
+
+  server.listen(8080, "127.0.0.1", () => {
+    console.log("Starting server on http://localhost:8080")
+  })
+}

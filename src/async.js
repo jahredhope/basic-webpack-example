@@ -1,1 +1,1 @@
-console.log("async start");
+console.log("async start")
