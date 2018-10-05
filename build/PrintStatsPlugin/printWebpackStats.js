@@ -3,7 +3,13 @@ module.exports = function printStats(stats) {
   console.log(
     stats.toString({
       assets: true,
-      chunks: true,
+      chunks: false,
+      errors: true,
+      errorDetails: true,
+      hash: false,
+      performance: false,
+      reasons: false,
+      version: false,
       children: true,
       colors: true,
     })

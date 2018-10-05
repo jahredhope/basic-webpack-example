@@ -1,6 +1,8 @@
-const { ReactLoadablePlugin } = require("./react-loadable-plugin")
+const webpack = require("webpack")
 const merge = require("webpack-merge")
 const path = require("path")
+const { ReactLoadablePlugin } = require("./react-loadable-plugin")
+
 const cwd = process.cwd()
 const srcPath = path.resolve(cwd, "./src")
 const paths = {
@@ -26,7 +28,7 @@ const common = {
   },
 }
 
-module.exports = ({ productionise, fs }) => [
+module.exports = ({ productionise }) => [
   merge(common, {
     mode: productionise ? "production" : "development",
     output: {
@@ -51,9 +53,9 @@ module.exports = ({ productionise, fs }) => [
     entry: { client: paths.clientEntry },
     plugins: [
       new ReactLoadablePlugin({
-        fs,
-        filename: path.resolve(cwd, "dist/react-loadable.json"),
+        filename: "react-loadable-manifest.json",
       }),
+      new webpack.HashedModuleIdsPlugin(),
     ],
   }),
   merge(common, {

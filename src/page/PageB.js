@@ -16,7 +16,7 @@ export default class PageB extends Component {
     return (
       <div>
         <h3 onClick={this.handleShowMore}>Page B</h3>
-        <Text>Things</Text>
+        <Text>Things and stuff</Text>
         {this.state.showMore && <Text>More</Text>}
       </div>
     )

@@ -1,7 +1,6 @@
 "use strict"
-const fs = require("fs")
-const path = require("path")
 const url = require("url")
+var RawSource = require("webpack-sources/lib/RawSource")
 
 function buildManifest(compiler, compilation) {
   let context = compiler.options.context
@@ -39,23 +38,13 @@ function buildManifest(compiler, compilation) {
 class ReactLoadablePlugin {
   constructor(opts = {}) {
     this.filename = opts.filename
-    this.fs = opts.fs || fs
   }
 
   apply(compiler) {
     compiler.plugin("emit", (compilation, callback) => {
       const manifest = buildManifest(compiler, compilation)
       var json = JSON.stringify(manifest, null, 2)
-      const outputDirectory = path.dirname(this.filename)
-      try {
-        this.fs.mkdirSync(outputDirectory)
-      } catch (err) {
-        if (err.code !== "EEXIST") {
-          throw err
-        }
-      }
-      console.log("Writing file", this.filename)
-      this.fs.writeFileSync(this.filename, json)
+      compilation.assets[this.filename] = new RawSource(json)
       callback()
     })
   }
