@@ -14,6 +14,15 @@ const PageB = Loadable({
   loading: Loader,
 })
 
+import { injectGlobal } from "emotion"
+
+injectGlobal`
+  body {
+    padding: 0;
+    margin: 0;
+  }
+`
+
 export default class App extends Component {
   state = {
     count: 0,

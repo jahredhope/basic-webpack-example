@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-const values = "abcdefghijklmnopqrstuvwxyz"
+let values = "abcdefghijklmnopqrstuvwxyz"
 
 export default class PageA extends Component {
   componentDidMount() {

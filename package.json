@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node --inspect build",
+    "server": "node --inspect build/server.js",
+    "build": "node --inspect-brk build",
     "serve": "serve dist/ -p 5000",
     "lint.eslint": "eslint .",
     "lint.prettier": "prettier --list-different **/*.{mjs,js}",
@@ -26,6 +27,7 @@
     "babel-loader": "^8.0.4",
     "babel-plugin-emotion": "^9.2.11",
     "chalk": "^2.4.1",
+    "color-convert": "^1.9.3",
     "emotion": "^9.2.12",
     "emotion-server": "^9.2.12",
     "eslint": "^5.6.1",
@@ -34,6 +36,7 @@
     "express": "^4.16.3",
     "fs-extra": "^7.0.0",
     "http-serve": "^1.0.1",
+    "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
     "nodemon": "^1.18.4",
     "prettier": "^1.14.3",
@@ -46,7 +49,8 @@
     "send": "^0.16.2",
     "serve": "^10.0.2",
     "webpack": "^4.20.2",
-    "webpack-dev-server": "^3.1.9",
+    "webpack-dev-middleware": "git+ssh://git@github.com/jahredhope/webpack-dev-middleware.git#file-system",
+    "webpack-dev-server": "git+ssh://git@github.com:jahredhope/webpack-dev-server.git",
     "webpack-merge": "^4.1.4",
     "ws": "^6.0.0"
   }

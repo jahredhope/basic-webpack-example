@@ -1,7 +1,7 @@
 const webpack = require("webpack")
 const path = require("path")
 const rimraf = require("rimraf")
-const mkdirP = require("mkdirP")
+const mkdirp = require("mkdirp")
 
 const getConfig = require("./webpack.config")
 const RenderStaticPlugin = require("./RenderStaticPlugin")
@@ -15,7 +15,7 @@ module.exports = function getCompiler({ fs }) {
   const distDirectory = path.join(cwd, "dist")
 
   rimraf.sync(`${distDirectory}/**/*`, fs)
-  mkdirP.sync(path.join(cwd, distDirectory), { fs })
+  mkdirp.sync(path.join(cwd, distDirectory), { fs })
 
   compiler.apply(
     new webpack.ProgressPlugin({
