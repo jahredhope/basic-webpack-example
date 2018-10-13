@@ -1,11 +1,11 @@
-const webpack = require("webpack")
+const fs = require("fs")
 const path = require("path")
-
+const webpack = require("webpack")
 const getConfig = require("./webpack.config")
 const RenderStaticPlugin = require("./RenderStaticPlugin")
 
-module.exports = function getCompiler({ fs, liveReload }) {
-  const compiler = webpack(getConfig({ productionise: false, liveReload }))
+module.exports = function getCompiler({ liveReload, mode }) {
+  const compiler = webpack(getConfig({ liveReload, mode }))
 
   const cwd = process.cwd()
   const distDirectory = path.join(cwd, "dist")
@@ -14,15 +14,20 @@ module.exports = function getCompiler({ fs, liveReload }) {
   compiler.apply(
     new RenderStaticPlugin({
       paths,
-      mapStatsToParams: ({ clientStats }) => ({
-        clientStats,
-        reactLoadableManifest: JSON.parse(
-          compiler.compilers[0].outputFileSystem.readFileSync(
-            path.join(clientStats.outputPath, "react-loadable-manifest.json"),
-            "utf8"
-          )
-        ),
-      }),
+      mapStatsToParams: ({ clientStats }) => {
+        const fileSystem = compiler.compilers[0].outputFileSystem.readFileSync
+          ? compiler.compilers[0].outputFileSystem
+          : fs
+        return {
+          clientStats,
+          reactLoadableManifest: JSON.parse(
+            fileSystem.readFileSync(
+              path.join(clientStats.outputPath, "react-loadable-manifest.json"),
+              "utf8"
+            )
+          ),
+        }
+      },
       renderDirectory: distDirectory,
       fs,
       verbose: true,

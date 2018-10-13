@@ -1,11 +1,18 @@
+const fs = require("fs")
 const path = require("path")
 const evaluate = require("eval")
 
 module.exports = function createRenderer({ fileName, outputFileSystem }) {
+  if (!outputFileSystem.readFileSync) {
+    console.warn(
+      "outputFileSystem missing readFileSync. Falling back to Node fs"
+    )
+  }
+  let fileSystem = outputFileSystem.readFileSync ? outputFileSystem : fs
   function evalutateFromSource(specifier) {
     let source
     try {
-      source = outputFileSystem.readFileSync(specifier, "utf8")
+      source = fileSystem.readFileSync(specifier, "utf8")
     } catch (error) {
       throw new Error(`Error reading ${specifier}. Error: ${error}`)
     }
@@ -19,7 +26,7 @@ module.exports = function createRenderer({ fileName, outputFileSystem }) {
 
   function existsSync(path) {
     try {
-      outputFileSystem.readFileSync(path)
+      fileSystem.readFileSync(path)
     } catch (error) {
       return false
     }

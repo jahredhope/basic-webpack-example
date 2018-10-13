@@ -1,6 +1,6 @@
 const DevServer = require("webpack-dev-server")
 const getCompiler = require("./getCompiler")
-const compiler = getCompiler({ liveReload: true })
+const compiler = getCompiler({ liveReload: true, mode: "development" })
 
 const server = new DevServer(compiler, {
   compress: true,

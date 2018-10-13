@@ -2,7 +2,7 @@ import Loadable from "react-loadable"
 import React from "react"
 import { ServerLocation } from "@reach/router"
 import { renderToString } from "react-dom/server"
-import { getBundles } from "../build/react-loadable-plugin"
+import { getBundles } from "@jahredhope/react-loadable-webpack-plugin"
 import { renderStylesToString } from "emotion-server"
 require("regenerator-runtime/runtime")
 

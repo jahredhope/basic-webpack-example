@@ -1,7 +1,9 @@
 const webpack = require("webpack")
 const merge = require("webpack-merge")
 const path = require("path")
-const { ReactLoadablePlugin } = require("./react-loadable-plugin")
+const {
+  ReactLoadablePlugin,
+} = require("@jahredhope/react-loadable-webpack-plugin")
 
 const cwd = process.cwd()
 const srcPath = path.resolve(cwd, "./src")
@@ -10,14 +12,14 @@ const paths = {
   clientEntry: path.resolve(srcPath, "client.js"),
 }
 
-module.exports = ({ productionise, liveReload }) => {
+module.exports = ({ liveReload, mode }) => {
   const domain = "http://localhost:8080"
   const liveReloadEntry = `${require.resolve(
     "webpack-dev-server/client/"
   )}?${domain}`
 
   const common = {
-    mode: productionise ? "production" : "development",
+    mode,
     output: {
       publicPath: "/",
     },

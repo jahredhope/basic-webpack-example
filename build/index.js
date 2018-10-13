@@ -11,7 +11,7 @@ async function onBuild(err) {
   }
 }
 
-const compiler = getCompiler({ liveReload: false })
+const compiler = getCompiler({ liveReload: false, mode: "production" })
 
 compiler.apply(
   new webpack.ProgressPlugin({
