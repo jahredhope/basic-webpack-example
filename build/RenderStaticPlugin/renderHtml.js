@@ -1,14 +1,16 @@
 const path = require("path")
 const chalk = require("chalk")
-const mkdirP = require("mkdirP")
 const createRenderer = require("./createRenderer")
 
 module.exports = async function renderHtml({
+  paths,
+  compiler,
+  clientCompiler,
+  renderCompiler,
   renderStats,
   clientStats,
   renderDirectory,
   mapStatsToParams,
-  fs,
   verbose,
   log,
 }) {
@@ -18,7 +20,9 @@ module.exports = async function renderHtml({
   }
 
   const renderFunc = createRenderer({
-    fs,
+    compiler,
+    outputFileSystem: renderCompiler.outputFileSystem,
+    inputFileSystem: renderCompiler.inputFileSystem,
     fileName: path.join(renderStats.outputPath, renderFile),
   })
   if (typeof renderFunc !== "function") {
@@ -30,10 +34,26 @@ module.exports = async function renderHtml({
     log(`Renderer craeted`)
   }
 
+  function ensureDirectory(dir) {
+    return new Promise(resolve =>
+      clientCompiler.outputFileSystem.mkdirp(dir, () => {
+        resolve()
+      })
+    )
+  }
+  function writeFile(dir, content) {
+    return new Promise(resolve =>
+      clientCompiler.outputFileSystem.writeFile(dir, content, () => {
+        resolve()
+      })
+    )
+  }
   async function render(url) {
     if (verbose) {
       log(`Starting render`, { url })
     }
+    const newFilePath = path.join(renderDirectory, url, "index.html")
+    const newFileDir = path.dirname(newFilePath)
     let renderResult
     try {
       renderResult = await renderFunc({
@@ -50,10 +70,8 @@ module.exports = async function renderHtml({
         )}. See below error.`
       )
       console.error(error)
-      fs.writeFileSync(
-        path.join(renderDirectory, "index.html"),
-        error.toString()
-      )
+      ensureDirectory(newFileDir)
+      writeFile(newFilePath, error.toString())
       return
     }
 
@@ -62,14 +80,9 @@ module.exports = async function renderHtml({
         `Render must return a string. Recieved ${typeof renderResult}.`
       )
     }
-    const newFilePath = path.join(renderDirectory, url, "index.html")
-    const newFileDir = path.dirname(newFilePath)
 
-    if (!fs.existsSync(newFileDir)) {
-      mkdirP.sync(newFileDir, { fs })
-    }
-    fs.writeFileSync(newFilePath, renderResult)
+    ensureDirectory(newFileDir)
+    writeFile(newFilePath, renderResult)
   }
-  const paths = ["", "b", "a", "about", "home", "contact/us"]
   paths.forEach(render)
 }

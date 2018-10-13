@@ -2,7 +2,7 @@ import Loadable from "react-loadable"
 import React from "react"
 import { ServerLocation } from "@reach/router"
 import { renderToString } from "react-dom/server"
-import { getBundles } from "react-loadable/webpack"
+import { getBundles } from "../build/react-loadable-plugin"
 import { renderStylesToString } from "emotion-server"
 require("regenerator-runtime/runtime")
 
@@ -35,6 +35,9 @@ export default async function render({
   clientStats,
   reactLoadableManifest,
 }) {
+  if (!reactLoadableManifest) {
+    throw new Error(`Missing reactLoadableManifest during render`)
+  }
   await Loadable.preloadAll()
   const modules = []
   const appHtml = renderStylesToString(
@@ -47,12 +50,13 @@ export default async function render({
     )
   )
   const bundles = getBundles(reactLoadableManifest, modules)
+  const publicPath = clientStats.publicPath
 
   const scripts = []
-  scripts.push(clientStats.assetsByChunkName.manifest)
+  scripts.push(publicPath + clientStats.assetsByChunkName.manifest)
   scripts.push(...bundles.map(bundle => bundle.publicPath))
-  scripts.push(clientStats.assetsByChunkName.client)
-  scripts.push(clientStats.assetsByChunkName.vendor)
+  scripts.push(publicPath + clientStats.assetsByChunkName.client)
+  scripts.push(publicPath + clientStats.assetsByChunkName.vendor)
   return renderShell({
     head: `
     ${scripts.map(renderScriptPreloadTag).join("\n")}

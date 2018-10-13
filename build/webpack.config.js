@@ -10,65 +10,73 @@ const paths = {
   clientEntry: path.resolve(srcPath, "client.js"),
 }
 
-const common = {
-  mode: "development",
-  output: {
-    publicPath: "/",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
-    ],
-  },
-}
+module.exports = ({ productionise, liveReload }) => {
+  const domain = "http://localhost:8080"
+  const liveReloadEntry = `${require.resolve(
+    "webpack-dev-server/client/"
+  )}?${domain}`
 
-module.exports = ({ productionise }) => [
-  merge(common, {
+  const common = {
     mode: productionise ? "production" : "development",
     output: {
-      filename: "client-[name]-[contenthash].js",
+      publicPath: "/",
     },
-    optimization: {
-      runtimeChunk: {
-        name: "manifest",
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          exclude: /(node_modules)/,
+          use: {
+            loader: "babel-loader",
+          },
+        },
+      ],
+    },
+  }
+  const clientEntry = liveReload
+    ? [liveReloadEntry, paths.clientEntry]
+    : paths.clientEntry
+  return [
+    merge(common, {
+      output: {
+        filename: "client-[name]-[contenthash].js",
       },
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: "vendor",
-            chunks: "all",
+      optimization: {
+        runtimeChunk: {
+          name: "manifest",
+        },
+        splitChunks: {
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: "vendor",
+              chunks: "all",
+            },
           },
         },
       },
-    },
-    name: "client",
-    target: "web",
-    entry: { client: paths.clientEntry },
-    plugins: [
-      new ReactLoadablePlugin({
-        filename: "react-loadable-manifest.json",
-      }),
-      new webpack.HashedModuleIdsPlugin(),
-    ],
-  }),
-  merge(common, {
-    output: {
-      libraryExport: "default",
-      library: "static",
-      // libraryTarget: "umd2",
-      // libraryTarget: "commonjs2",
-      libraryTarget: "umd2",
-      filename: "render-[name]-[contenthash].js",
-    },
-    name: "render",
-    target: "node",
-    entry: { render: paths.renderEntry },
-  }),
-]
+      name: "client",
+      target: "web",
+      entry: { client: clientEntry },
+      plugins: [
+        new ReactLoadablePlugin({
+          filename: "react-loadable-manifest.json",
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+      ],
+    }),
+    merge(common, {
+      output: {
+        libraryExport: "default",
+        library: "static",
+        // libraryTarget: "umd2",
+        // libraryTarget: "commonjs2",
+        libraryTarget: "umd2",
+        filename: "render-[name]-[contenthash].js",
+      },
+      name: "render",
+      target: "node",
+      entry: { render: paths.renderEntry },
+    }),
+  ]
+}

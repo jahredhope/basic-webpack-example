@@ -1,20 +1,21 @@
-"use strict"
+const fs = require("fs")
+const path = require("path")
 const url = require("url")
-var RawSource = require("webpack-sources/lib/RawSource")
+const RawSource = require("webpack-sources/lib/RawSource")
 
 function buildManifest(compiler, compilation) {
-  let context = compiler.options.context
-  let manifest = {}
+  const context = compiler.options.context
+  const manifest = {}
 
   compilation.chunks.forEach(chunk => {
     chunk.files.forEach(file => {
       chunk.forEachModule(module => {
-        let id = module.id
-        let name =
+        const id = module.id
+        const name =
           typeof module.libIdent === "function"
             ? module.libIdent({ context })
             : null
-        let publicPath = url.resolve(
+        const publicPath = url.resolve(
           compilation.outputOptions.publicPath || "",
           file
         )
@@ -23,6 +24,7 @@ function buildManifest(compiler, compilation) {
         if (module.constructor.name === "ConcatenatedModule") {
           currentModule = module.rootModule
         }
+        console.log("buildManifest", { a: { b: { currentModule } } })
         if (!manifest[currentModule.rawRequest]) {
           manifest[currentModule.rawRequest] = []
         }
@@ -37,23 +39,43 @@ function buildManifest(compiler, compilation) {
 
 class ReactLoadablePlugin {
   constructor(opts = {}) {
+    this.writeToDisk = opts.writeToDisk === true
+    this.emitAssets = opts.emitAssets !== false
     this.filename = opts.filename
   }
 
   apply(compiler) {
     compiler.plugin("emit", (compilation, callback) => {
       const manifest = buildManifest(compiler, compilation)
-      var json = JSON.stringify(manifest, null, 2)
-      compilation.assets[this.filename] = new RawSource(json)
+      const json = JSON.stringify(manifest, null, 2)
+
+      if (this.writeToDisk) {
+        const outputDirectory = path.dirname(this.filename)
+        try {
+          fs.mkdirSync(outputDirectory)
+        } catch (err) {
+          if (err.code !== "EEXIST") {
+            throw err
+          }
+        }
+        fs.writeFileSync(this.filename, json)
+      }
+
+      if (this.emitAssets) {
+        compilation.assets[this.filename] = new RawSource(json)
+      }
+
       callback()
     })
   }
 }
 
 function getBundles(manifest, moduleIds) {
-  return moduleIds.reduce((bundles, moduleId) => {
-    return bundles.concat(manifest[moduleId])
-  }, [])
+  console.log("getBundles", { moduleIds })
+  return moduleIds.reduce(
+    (bundles, moduleId) => bundles.concat(manifest[moduleId]),
+    []
+  )
 }
 
 exports.ReactLoadablePlugin = ReactLoadablePlugin

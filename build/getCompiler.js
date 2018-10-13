@@ -1,34 +1,23 @@
 const webpack = require("webpack")
 const path = require("path")
-const rimraf = require("rimraf")
-const mkdirp = require("mkdirp")
 
 const getConfig = require("./webpack.config")
 const RenderStaticPlugin = require("./RenderStaticPlugin")
-const PrintStatsPlugin = require("./PrintStatsPlugin")
 
-module.exports = function getCompiler({ fs }) {
-  const compiler = webpack(getConfig({ productionise: true }))
-  // compiler.outputFileSystem = fs
+module.exports = function getCompiler({ fs, liveReload }) {
+  const compiler = webpack(getConfig({ productionise: false, liveReload }))
 
   const cwd = process.cwd()
   const distDirectory = path.join(cwd, "dist")
 
-  rimraf.sync(`${distDirectory}/**/*`, fs)
-  mkdirp.sync(path.join(cwd, distDirectory), { fs })
-
-  compiler.apply(
-    new webpack.ProgressPlugin({
-      profile: false,
-    })
-  )
-
+  const paths = ["", "b", "a", "about", "home", "contact/us"]
   compiler.apply(
     new RenderStaticPlugin({
+      paths,
       mapStatsToParams: ({ clientStats }) => ({
         clientStats,
         reactLoadableManifest: JSON.parse(
-          fs.readFileSync(
+          compiler.compilers[0].outputFileSystem.readFileSync(
             path.join(clientStats.outputPath, "react-loadable-manifest.json"),
             "utf8"
           )
@@ -40,6 +29,5 @@ module.exports = function getCompiler({ fs }) {
     })
   )
 
-  compiler.apply(new PrintStatsPlugin())
   return compiler
 }

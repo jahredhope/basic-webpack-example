@@ -6,6 +6,7 @@ module.exports = class RenderStaticPlugin {
   constructor(opts) {
     this.log = (...args) =>
       (opts.log || console.log)(chalk.blue("RenderStaticPlugin"), ...args)
+    this.paths = opts.paths
     this.verbose = opts.verbose || false
     this.mapStatsToFilesToRead = opts.files || returnEmptyObject
     this.mapStatsToParams = opts.mapStatsToParams || returnEmptyObject
@@ -14,7 +15,6 @@ module.exports = class RenderStaticPlugin {
     this.onDone = this.onDone.bind(this)
   }
   async onDone(stats) {
-    console.log({ stats: stats.toJson().children[0] })
     if (this.verbose) {
       this.log(`Recieved stats`)
     }
@@ -34,10 +34,14 @@ module.exports = class RenderStaticPlugin {
     }
     try {
       await renderHtml({
+        paths: this.paths,
+        clientCompiler: this.clientCompiler,
+        renderCompiler: this.renderCompiler,
         clientStats: clientStats.toJson(),
         renderStats: renderStats.toJson(),
         renderDirectory: this.renderDirectory,
         fs: this.fs,
+        getCompiler: this.getCompiler,
         mapStatsToParams: this.mapStatsToParams,
         verbose: this.verbose,
         log: this.log,
@@ -48,6 +52,18 @@ module.exports = class RenderStaticPlugin {
     }
   }
   apply(compiler) {
+    this.clientCompiler = compiler.compilers.find(
+      childCompiler => childCompiler.name === "client"
+    )
+    if (!this.clientCompiler) {
+      throw new Error(`Unable to find compilation with client`)
+    }
+    this.renderCompiler = compiler.compilers.find(
+      childCompiler => childCompiler.name === "render"
+    )
+    if (!this.renderCompiler) {
+      throw new Error(`Unable to find compilation with render`)
+    }
     const hookOptions = { name: "RenderStaticPlugin" }
 
     compiler.hooks.done.tap(hookOptions, this.onDone)

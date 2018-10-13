@@ -37,6 +37,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <Text>Has been edited: 1</Text>
         <Text>App content: {this.state.count}</Text>
         <Link to="/">Page A</Link> <Link to="/b">Page B</Link>
         <Router>

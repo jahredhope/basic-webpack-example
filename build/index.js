@@ -1,8 +1,7 @@
-const MemoryFS = require("memory-fs")
-const useMemoryFs = false
+const webpack = require("webpack")
 
-const fs = useMemoryFs ? new MemoryFS() : require("fs")
 const chalk = require("chalk")
+const PrintStatsPlugin = require("./PrintStatsPlugin")
 const getCompiler = require("./getCompiler")
 
 async function onBuild(err) {
@@ -12,7 +11,14 @@ async function onBuild(err) {
   }
 }
 
-const compiler = getCompiler({ fs })
+const compiler = getCompiler({ liveReload: false })
+
+compiler.apply(
+  new webpack.ProgressPlugin({
+    profile: false,
+  })
+)
+compiler.apply(new PrintStatsPlugin())
 const runType = "run"
 if (runType === "watch") {
   compiler.watch({}, onBuild)

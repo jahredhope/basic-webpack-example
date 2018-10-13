@@ -39,12 +39,12 @@ export default class PageB extends Component {
   render() {
     const pixels = []
     for (let i = 0; i < 200; i++) {
-      pixels.push(<Pixel color={i * this.state.indexStart}> </Pixel>)
+      pixels.push(<Pixel key={i} color={i * this.state.indexStart}> </Pixel>)
     }
     return (
       <div>
-        <h3 onClick={this.handleShowMore}>Page B</h3>
-        <Text>Things and stuff</Text>
+        <h3 onClick={this.handleShowMore}>Page B & more 1</h3>
+        <Text>Things and stuffs</Text>
         {this.state.showMore && <Text>More</Text>}
         <PixelContainer>{pixels}</PixelContainer>
       </div>
