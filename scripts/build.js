@@ -1,6 +1,7 @@
 const webpack = require("webpack")
 
 const chalk = require("chalk")
+const rimraf = require("rimraf")
 const PrintStatsPlugin = require("./PrintStatsPlugin")
 const getCompiler = require("./getCompiler")
 
@@ -19,9 +20,6 @@ compiler.apply(
   })
 )
 compiler.apply(new PrintStatsPlugin())
-const runType = "run"
-if (runType === "watch") {
-  compiler.watch({}, onBuild)
-} else if (runType === "run") {
+rimraf("dist/*", () => {
   compiler.run(onBuild)
-}
+})

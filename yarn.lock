@@ -3414,6 +3414,13 @@ ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
 
+"multi-static-render-webpack-plugin@https://github.com/jahredhope/multi-static-render-webpack-plugin.git":
+  version "0.0.0-development"
+  resolved "https://github.com/jahredhope/multi-static-render-webpack-plugin.git#2d2bfbaecc48128511ae18a741383188090eb275"
+  dependencies:
+    chalk "^2.4.1"
+    eval "^0.1.2"
+
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"

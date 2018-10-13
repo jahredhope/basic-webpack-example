@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node --inspect build/server.js",
-    "build": "node --inspect build",
+    "server": "node scripts/server.js",
+    "build": "node scripts/build.js",
     "serve": "serve dist/ -p 5000",
     "lint.eslint": "eslint .",
     "lint.prettier": "prettier --list-different **/*.{mjs,js}",
@@ -39,6 +39,7 @@
     "http-serve": "^1.0.1",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
+    "multi-static-render-webpack-plugin": "https://github.com/jahredhope/multi-static-render-webpack-plugin.git",
     "nodemon": "^1.18.4",
     "prettier": "^1.14.3",
     "react": "^16.5.2",
