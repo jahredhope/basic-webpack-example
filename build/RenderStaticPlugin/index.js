@@ -5,7 +5,9 @@ const returnEmptyObject = () => ({})
 module.exports = class RenderStaticPlugin {
   constructor(opts) {
     this.log = (...args) =>
-      (opts.log || console.log)(chalk.blue("RenderStaticPlugin"), ...args)
+      (opts.log || console.log)(chalk.blue("RenderStaticPlugin:"), ...args)
+    this.logError = (...args) =>
+      (opts.log || console.log)(chalk.red("🚨 RenderStaticPlugin:"), ...args)
     this.paths = opts.paths
     this.verbose = opts.verbose || false
     this.mapStatsToFilesToRead = opts.files || returnEmptyObject
@@ -14,23 +16,25 @@ module.exports = class RenderStaticPlugin {
     this.fs = opts.fs || require("fs")
     this.onDone = this.onDone.bind(this)
   }
-  async onDone(stats) {
+  async onDone(multiStats) {
     if (this.verbose) {
       this.log(`Recieved stats`)
     }
-    const clientStats = stats.stats.find(
+    const clientStats = multiStats.stats.find(
       stat => stat.compilation.name === "client"
     )
     if (!clientStats) {
-      this.log(`Unable to find compilation with client`)
-      throw new Error(`Unable to find compilation with client`)
+      throw new Error(
+        `Unable to find client compilation. Ensure a config exists with name 'client'.`
+      )
     }
-    const renderStats = stats.stats.find(
+    const renderStats = multiStats.stats.find(
       stat => stat.compilation.name === "render"
     )
     if (!renderStats) {
-      this.log(`Unable to find compilation with render`)
-      throw new Error(`Unable to find compilation with render`)
+      throw new Error(
+        `Unable to find render compilation. Ensure a config exists with name 'render'.`
+      )
     }
     try {
       await renderHtml({
@@ -47,8 +51,7 @@ module.exports = class RenderStaticPlugin {
         log: this.log,
       })
     } catch (error) {
-      console.error("An error occured rendering HTML")
-      console.error(error)
+      this.logError("An error occured rendering HTML", error)
     }
   }
   apply(compiler) {
@@ -56,13 +59,17 @@ module.exports = class RenderStaticPlugin {
       childCompiler => childCompiler.name === "client"
     )
     if (!this.clientCompiler) {
-      throw new Error(`Unable to find compilation with client`)
+      const errorMessage = `Unable to find client compiler. Ensure a config exists with name 'client'.`
+      this.logError(errorMessage)
+      throw new Error(errorMessage)
     }
     this.renderCompiler = compiler.compilers.find(
       childCompiler => childCompiler.name === "render"
     )
     if (!this.renderCompiler) {
-      throw new Error(`Unable to find compilation with render`)
+      const errorMessage = `Unable to find render compiler. Ensure a config exists with name 'render'.`
+      this.logError(errorMessage)
+      throw new Error(errorMessage)
     }
     const hookOptions = { name: "RenderStaticPlugin" }
 
