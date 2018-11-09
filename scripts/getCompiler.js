@@ -7,13 +7,21 @@ const RenderStaticPlugin = require("multi-static-render-webpack-plugin")
 module.exports = function getCompiler({ liveReload, mode }) {
   const compiler = webpack(getConfig({ liveReload, mode }))
 
-  const cwd = process.cwd()
-  const distDirectory = path.join(cwd, "dist")
+  // const cwd = process.cwd()
+  const distDirectory = ""
 
-  const paths = ["", "b", "a", "about", "home", "contact/us"]
+  const routes = [
+    "",
+    { route: "b", val: "more" },
+    "a",
+    "c",
+    "about",
+    "home",
+    "contact/us",
+  ]
   compiler.apply(
     new RenderStaticPlugin({
-      paths,
+      routes,
       mapStatsToParams: ({ clientStats }) => {
         const fileSystem = compiler.compilers[0].outputFileSystem.readFileSync
           ? compiler.compilers[0].outputFileSystem
@@ -29,7 +37,7 @@ module.exports = function getCompiler({ liveReload, mode }) {
         }
       },
       renderDirectory: distDirectory,
-      fs,
+      // fs,
       verbose: true,
     })
   )

@@ -1,5 +1,5 @@
 {
-  "name": "basic-webpack",
+  "name": "basic-webpack-example",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -39,7 +39,7 @@
     "http-serve": "^1.0.1",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
-    "multi-static-render-webpack-plugin": "https://github.com/jahredhope/multi-static-render-webpack-plugin.git",
+    "multi-static-render-webpack-plugin": "https://github.com/jahredhope/multi-static-render-webpack-plugin.git#8d734cf7f91f85a82b39e80973ca730ff945f06f",
     "nodemon": "^1.18.4",
     "prettier": "^1.14.3",
     "react": "^16.5.2",

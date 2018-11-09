@@ -13,6 +13,10 @@ const PageB = Loadable({
   loader: () => import("./page/PageB"),
   loading: Loader,
 })
+const PageC = Loadable({
+  loader: () => import("./page/PageC"),
+  loading: Loader,
+})
 
 import { injectGlobal } from "emotion"
 
@@ -39,10 +43,13 @@ export default class App extends Component {
       <div>
         <Text>Has been edited: 1</Text>
         <Text>App content: {this.state.count}</Text>
-        <Link to="/">Page A</Link> <Link to="/b">Page B</Link>
+        <Link to="/">Page A</Link>
+        <Link to="/b">Page B</Link>
+        <Link to="/c">Page C</Link>
         <Router>
           <PageA path="/" />
           <PageB path="/b" />
+          <PageC path="/c" />
         </Router>
       </div>
     )

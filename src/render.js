@@ -30,11 +30,12 @@ function renderScriptPreloadTag(src) {
   return `<link rel="preload" href=${src} as="script" />`
 }
 
-export default async function render({
-  url,
-  clientStats,
-  reactLoadableManifest,
-}) {
+export default async function render(params) {
+  const { route, clientStats, reactLoadableManifest } = params
+  console.log("Rendering ", route)
+  if (typeof route !== "string") {
+    throw new Error(`Missing route during render`)
+  }
   if (!reactLoadableManifest) {
     throw new Error(`Missing reactLoadableManifest during render`)
   }
@@ -43,7 +44,7 @@ export default async function render({
   const appHtml = renderStylesToString(
     renderToString(
       <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-        <ServerLocation url={url}>
+        <ServerLocation url={route}>
           <App />
         </ServerLocation>
       </Loadable.Capture>
@@ -57,6 +58,11 @@ export default async function render({
   scripts.push(...bundles.map(bundle => bundle.publicPath))
   scripts.push(publicPath + clientStats.assetsByChunkName.client)
   scripts.push(publicPath + clientStats.assetsByChunkName.vendor)
+
+  // console.log("Waiting for", route)
+  // await new Promise(resolve => setTimeout(resolve, 10000))
+  // console.log("Okay continuing", route)
+
   return renderShell({
     head: `
     ${scripts.map(renderScriptPreloadTag).join("\n")}

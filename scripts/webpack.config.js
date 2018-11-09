@@ -68,6 +68,7 @@ module.exports = ({ liveReload, mode }) => {
       ],
     }),
     merge(common, {
+      dependencies: ["client"],
       output: {
         libraryExport: "default",
         library: "static",
