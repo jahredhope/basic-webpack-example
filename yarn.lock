@@ -3021,6 +3021,13 @@ html-entities@^1.2.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
   integrity sha1-DfKTUfByEWNRXfueVUPl9u7VFi8=
 
+"html-render-webpack-plugin@https://github.com/jahredhope/html-render-webpack-plugin.git#8ad08ee9e628f306b9fa7eaa459815d0b89e25f1":
+  version "0.0.0-development"
+  resolved "https://github.com/jahredhope/html-render-webpack-plugin.git#8ad08ee9e628f306b9fa7eaa459815d0b89e25f1"
+  dependencies:
+    chalk "^2.4.1"
+    eval "^0.1.2"
+
 html-tokenize@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/html-tokenize/-/html-tokenize-2.0.0.tgz#8b3a9a5deb475cae6a6f9671600d2c20ab298251"
@@ -3941,13 +3948,6 @@ ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
-
-"multi-static-render-webpack-plugin@https://github.com/jahredhope/multi-static-render-webpack-plugin.git#8d734cf7f91f85a82b39e80973ca730ff945f06f":
-  version "0.0.0-development"
-  resolved "https://github.com/jahredhope/multi-static-render-webpack-plugin.git#8d734cf7f91f85a82b39e80973ca730ff945f06f"
-  dependencies:
-    chalk "^2.4.1"
-    eval "^0.1.2"
 
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"

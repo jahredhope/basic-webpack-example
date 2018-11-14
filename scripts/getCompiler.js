@@ -2,13 +2,13 @@ const fs = require("fs")
 const path = require("path")
 const webpack = require("webpack")
 const getConfig = require("./webpack.config")
-const RenderStaticPlugin = require("multi-static-render-webpack-plugin")
+const RenderStaticPlugin = require("html-render-webpack-plugin")
 
 module.exports = function getCompiler({ liveReload, mode }) {
   const compiler = webpack(getConfig({ liveReload, mode }))
 
-  // const cwd = process.cwd()
-  const distDirectory = ""
+  const cwd = process.cwd()
+  const distDirectory = path.join(cwd, "dist")
 
   const routes = [
     "",
