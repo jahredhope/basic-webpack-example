@@ -3021,9 +3021,10 @@ html-entities@^1.2.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
   integrity sha1-DfKTUfByEWNRXfueVUPl9u7VFi8=
 
-"html-render-webpack-plugin@https://github.com/jahredhope/html-render-webpack-plugin.git#8ad08ee9e628f306b9fa7eaa459815d0b89e25f1":
-  version "0.0.0-development"
-  resolved "https://github.com/jahredhope/html-render-webpack-plugin.git#8ad08ee9e628f306b9fa7eaa459815d0b89e25f1"
+html-render-webpack-plugin@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/html-render-webpack-plugin/-/html-render-webpack-plugin-0.0.1.tgz#2502b0f062c97d1b454e35b6034f8ba12a761cbe"
+  integrity sha512-d7U9UHyPaotcsAGy9xCF50Flaj0pEJMzFSwlFYxdht607xGOxJrKEyoBodMvUbHwAA0HhBOwI7FCBEIF0lXkjQ==
   dependencies:
     chalk "^2.4.1"
     eval "^0.1.2"
