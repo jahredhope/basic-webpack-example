@@ -22,7 +22,10 @@ module.exports = function getCompiler({ liveReload, mode }) {
   compiler.apply(
     new RenderStaticPlugin({
       routes,
-      mapStatsToParams: ({ clientStats }) => {
+      mapStatsToParams: ({ webpackStats }) => {
+        const clientStats = webpackStats
+          .toJson()
+          .children.find(({ name }) => name === "client")
         const fileSystem = compiler.compilers[0].outputFileSystem.readFileSync
           ? compiler.compilers[0].outputFileSystem
           : fs
