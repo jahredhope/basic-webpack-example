@@ -2,8 +2,7 @@
 const merge = require("webpack-merge")
 const path = require("path")
 const LoadablePlugin = require("@loadable/webpack-plugin")
-
-const getRenderPlugin = require("./scripts/getRenderPlugin")
+const HtmlRenderPlugin = require("html-render-webpack-plugin")
 
 const cwd = process.cwd()
 const srcPath = path.resolve(cwd, "src")
@@ -12,7 +11,32 @@ const paths = {
   clientEntry: path.resolve(srcPath, "client.js"),
 }
 
-const renderPlugin = getRenderPlugin()
+const distDirectory = path.join(cwd, "dist")
+
+const routes = [
+  "/",
+  { route: "/b", val: "more" },
+  "/a",
+  "/c",
+  "/about",
+  "/home",
+  "/contact/us",
+]
+
+const renderPlugin = new HtmlRenderPlugin({
+  routes,
+  renderEntry: "main",
+  mapStatsToParams: ({ webpackStats }) => {
+    const clientStats = webpackStats
+      .toJson({})
+      .children.find(({ name }) => name === "client")
+    return {
+      clientStats,
+    }
+  },
+  renderDirectory: distDirectory,
+  verbose: true,
+})
 
 const liveReload = process.env.NODE_ENV === "development"
 const mode =

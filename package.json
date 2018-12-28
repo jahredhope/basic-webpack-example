@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node scripts/server.js",
-    "build": "NODE_ENV=production node scripts/build.js",
+    "start": "NODE_ENV=development webpack-dev-server --no-inline",
+    "build": "NODE_ENV=production webpack",
     "serve": "serve dist/ -p 5000",
     "lint.eslint": "eslint .",
     "lint.prettier": "prettier --list-different **/*.{mjs,js}",
     "lint": "npm run lint.eslint && npm run lint.prettier",
     "format": "prettier --write **/*.{mjs,js}",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint"
   },
   "author": "Jahred Hope <jahredhope@gmail.com>",
   "license": "ISC",
