@@ -1,9 +1,9 @@
-const webpack = require("webpack")
+// const webpack = require("webpack")
 const merge = require("webpack-merge")
 const path = require("path")
-const {
-  ReactLoadablePlugin,
-} = require("@jahredhope/react-loadable-webpack-plugin")
+const LoadablePlugin = require("@loadable/webpack-plugin")
+
+const getRenderPlugin = require("./getRenderPlugin")
 
 const cwd = process.cwd()
 const srcPath = path.resolve(cwd, "./src")
@@ -11,6 +11,8 @@ const paths = {
   renderEntry: path.resolve(srcPath, "render.js"),
   clientEntry: path.resolve(srcPath, "client.js"),
 }
+
+const renderPlugin = getRenderPlugin()
 
 module.exports = ({ liveReload, mode }) => {
   const domain = "http://localhost:8080"
@@ -23,6 +25,12 @@ module.exports = ({ liveReload, mode }) => {
     output: {
       publicPath: "/",
     },
+    resolve: { alias: { path: "path-browserify" } },
+
+    // optimization: {
+    //   chunkIds: "deterministic",
+    //   moduleIds: "deterministic",
+    // },
     module: {
       rules: [
         {
@@ -45,7 +53,7 @@ module.exports = ({ liveReload, mode }) => {
       },
       optimization: {
         runtimeChunk: {
-          name: "manifest",
+          name: "runtime",
         },
         splitChunks: {
           cacheGroups: {
@@ -59,13 +67,8 @@ module.exports = ({ liveReload, mode }) => {
       },
       name: "client",
       target: "web",
-      entry: { client: clientEntry },
-      plugins: [
-        new ReactLoadablePlugin({
-          filename: "react-loadable-manifest.json",
-        }),
-        new webpack.HashedModuleIdsPlugin(),
-      ],
+      entry: clientEntry,
+      plugins: [new LoadablePlugin(), renderPlugin],
     }),
     merge(common, {
       dependencies: ["client"],
@@ -79,7 +82,8 @@ module.exports = ({ liveReload, mode }) => {
       },
       name: "render",
       target: "node",
-      entry: { render: paths.renderEntry },
+      entry: paths.renderEntry,
+      plugins: [renderPlugin.render()],
     }),
   ]
 }

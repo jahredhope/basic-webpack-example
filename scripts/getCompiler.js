@@ -1,49 +1,10 @@
-const fs = require("fs")
-const path = require("path")
 const webpack = require("webpack")
 const getConfig = require("./webpack.config")
-const RenderStaticPlugin = require("html-render-webpack-plugin")
 
-module.exports = function getCompiler({ liveReload, mode }) {
-  const compiler = webpack(getConfig({ liveReload, mode }))
+module.exports = function getCompiler(options) {
+  const compiler = webpack(getConfig(options))
 
-  const cwd = process.cwd()
-  const distDirectory = path.join(cwd, "dist")
-
-  const routes = [
-    "",
-    { route: "b", val: "more" },
-    "a",
-    "c",
-    "about",
-    "home",
-    "contact/us",
-  ]
-  compiler.apply(
-    new RenderStaticPlugin({
-      routes,
-      mapStatsToParams: ({ webpackStats }) => {
-        const clientStats = webpackStats
-          .toJson()
-          .children.find(({ name }) => name === "client")
-        const fileSystem = compiler.compilers[0].outputFileSystem.readFileSync
-          ? compiler.compilers[0].outputFileSystem
-          : fs
-        return {
-          clientStats,
-          reactLoadableManifest: JSON.parse(
-            fileSystem.readFileSync(
-              path.join(clientStats.outputPath, "react-loadable-manifest.json"),
-              "utf8"
-            )
-          ),
-        }
-      },
-      renderDirectory: distDirectory,
-      // fs,
-      verbose: true,
-    })
-  )
+  // rendererPlugin.apply(compiler)
 
   return compiler
 }

@@ -1,5 +1,4 @@
 module.exports = function printStats(stats) {
-  const buildName = "asd"
   console.log(
     stats.toString({
       assets: true,
@@ -16,10 +15,14 @@ module.exports = function printStats(stats) {
   )
 
   if (stats.hasWarnings()) {
-    console.warn(`Above warning(s) occurred during build: ${buildName}`)
+    console.warn(`Above warning(s) occurred during build`)
+  } else {
+    console.log("No Warnings")
   }
 
   if (stats.hasErrors()) {
-    console.error(`Above error(s) occurred during build: ${buildName}`)
+    console.error(`Above error(s) occurred during build`)
+  } else {
+    console.log("No Errors")
   }
 }

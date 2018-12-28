@@ -1,21 +1,18 @@
 import React, { Component } from "react"
-import Loadable from "react-loadable"
+import loadable from "@loadable/component"
 import Loader from "./Loader"
 import { Router, Link } from "@reach/router"
 
 import Text from "./Text"
 
-const PageA = Loadable({
-  loader: () => import("./page/PageA"),
-  loading: Loader,
+const PageA = loadable(() => import("./page/PageA"), {
+  fallback: Loader,
 })
-const PageB = Loadable({
-  loader: () => import("./page/PageB"),
-  loading: Loader,
+const PageB = loadable(() => import("./page/PageB"), {
+  fallback: Loader,
 })
-const PageC = Loadable({
-  loader: () => import("./page/PageC"),
-  loading: Loader,
+const PageC = loadable(() => import("./page/PageC"), {
+  fallback: Loader,
 })
 
 import { injectGlobal } from "emotion"
@@ -48,6 +45,7 @@ export default class App extends Component {
         <Link to="/c">Page C</Link>
         <Router>
           <PageA path="/" />
+          <PageA path="/a" />
           <PageB path="/b" />
           <PageC path="/c" />
         </Router>

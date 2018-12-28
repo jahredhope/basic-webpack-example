@@ -1,13 +1,10 @@
 import React from "react"
 import { hydrate } from "react-dom"
-import Loadable from "react-loadable"
+import { loadableReady } from "@loadable/component"
 import "regenerator-runtime/runtime"
 
 import App from "./App"
 
-async function clientRender() {
-  await Loadable.preloadReady()
+loadableReady(() => {
   hydrate(<App />, document.getElementById("root"))
-}
-
-clientRender()
+})

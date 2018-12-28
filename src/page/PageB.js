@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled from "react-emotion"
+import styled from "@emotion/styled"
 import md5 from "md5"
 
 import Text from "../Text"
@@ -39,7 +39,11 @@ export default class PageB extends Component {
   render() {
     const pixels = []
     for (let i = 0; i < 200; i++) {
-      pixels.push(<Pixel key={i} color={i * this.state.indexStart}> </Pixel>)
+      pixels.push(
+        <Pixel key={i} color={i * this.state.indexStart}>
+          {" "}
+        </Pixel>
+      )
     }
     return (
       <div>
