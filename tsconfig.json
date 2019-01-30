@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "isJsx": true,
     "lib": ["es2015", "dom"],
     "jsx": "react",
     "module": "commonjs",
@@ -8,6 +7,12 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*"]
+    }
   }
 }

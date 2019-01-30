@@ -9,7 +9,3 @@ import App from "./App";
 loadableReady(() => {
   ReactDOM.hydrate(<App />, document.getElementById("root"));
 });
-
-import s from "./example";
-
-console.log({ s });

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
 import loadable from "@loadable/component";
+import { Link, Router } from "@reach/router";
+import React from "react";
 import Loader from "./Loader";
-import { Router, Link } from "@reach/router";
 
 import Text from "./Text";
 
@@ -15,46 +15,34 @@ const PageC: any = loadable(() => import("./page/PageC"), {
   fallback: <Loader />,
 });
 
-import { injectGlobal } from "emotion";
+import { css, Global } from "@emotion/core";
 
-injectGlobal`
-  body {
-    padding: 0;
-    margin: 0;
-  }
-`;
+import { useIncrementalTimer, useIncrementer } from "src/common-hooks";
 
-interface Props {}
-interface State {
-  count: number;
-}
-
-export default class App extends Component<Props, State> {
-  state = {
-    count: 0,
-  };
-  componentDidMount() {
-    this.incremement();
-    setInterval(this.incremement, 3000);
-  }
-  incremement = () => {
-    this.setState(state => ({ count: state.count + 1 }));
-  };
-  render() {
-    return (
-      <div>
-        <Text>Has been edited: 1</Text>
-        <Text>App content: {this.state.count}</Text>
-        <Link to="/">Page A</Link>
-        <Link to="/b">Page B</Link>
-        <Link to="/c">Page C</Link>
-        <Router>
-          <PageA path="/" />
-          <PageA path="/a" />
-          <PageB path="/b" />
-          <PageC path="/c" />
-        </Router>
-      </div>
-    );
-  }
+export default function App() {
+  const [count, incrementCount] = useIncrementer(1);
+  useIncrementalTimer(incrementCount, 3000);
+  return (
+    <div>
+      <Global
+        styles={css`
+          body {
+            padding: 0;
+            margin: 0;
+          }
+        `}
+      />
+      <Text>Has been edited: 1</Text>
+      <Text>App content: {count}</Text>
+      <Link to="/">Page A</Link>
+      <Link to="/b">Page B</Link>
+      <Link to="/c">Page C</Link>
+      <Router>
+        <PageA path="/" />
+        <PageA path="/a" />
+        <PageB path="/b" />
+        <PageC path="/c" />
+      </Router>
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
 import styled from "@emotion/styled";
+import React from "react";
 
 const Section = styled("div")`
   padding: 12px 3vw;
@@ -30,45 +30,21 @@ const Grid = styled("div")`
     grid-template-columns: 1fr 1fr 1fr;
   }
 `;
-interface Props {}
-interface State {
-  showMore: boolean;
-  indexStart: number;
-}
 
-export default class PageB extends Component<Props, State> {
-  state = {
-    showMore: false,
-    indexStart: 1,
-  };
-  unsubscribe: NodeJS.Timeout = null;
-  componentDidMount() {
-    console.log("MOUNT", "PageB");
-    this.unsubscribe = setTimeout(this.increment, 10000);
-  }
-  componentWillUnmount() {
-    clearTimeout(this.unsubscribe);
-  }
-  increment = () => {
-    this.setState(state => ({ indexStart: state.indexStart + 1 }));
-    clearTimeout(this.unsubscribe);
-    this.unsubscribe = setTimeout(this.increment, 10000);
-  };
-  handleShowMore = () => {
-    this.setState({ showMore: true });
-  };
-  render() {
-    return (
-      <Grid>
-        <PrimarySection>1</PrimarySection>
-        <PrimarySectionGreen>2</PrimarySectionGreen>
-        <SecondarySectionGreen>3</SecondarySectionGreen>
-        <SecondarySection>4</SecondarySection>
-        <PrimarySection>5</PrimarySection>
-        <SecondarySection>6</SecondarySection>
-        <PrimarySection>7</PrimarySection>
-        <SecondarySection>8</SecondarySection>
-      </Grid>
-    );
-  }
+import { useLogMount } from "src/common-hooks";
+
+export default function PageC() {
+  useLogMount("Page C");
+  return (
+    <Grid>
+      <PrimarySection>1</PrimarySection>
+      <PrimarySectionGreen>2</PrimarySectionGreen>
+      <SecondarySectionGreen>3</SecondarySectionGreen>
+      <SecondarySection>4</SecondarySection>
+      <PrimarySection>5</PrimarySection>
+      <SecondarySection>6</SecondarySection>
+      <PrimarySection>7</PrimarySection>
+      <SecondarySection>8</SecondarySection>
+    </Grid>
+  );
 }

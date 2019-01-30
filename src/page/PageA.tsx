@@ -1,23 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
 
-let values = "abcdefghijklmnopqrstuvwxyz";
+const values = "abcdefghijklmnopqrstuvwxyz";
 
-export default class PageA extends Component {
-  componentDidMount() {
-    console.log("MOUNT", "PageA");
-  }
-  render() {
-    return (
-      <div>
-        <h3>Page A</h3>
-        <ul>
-          {values.split("").map((val, index) => (
-            <li key={index}>
-              {index} - {val}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+import { useLogMount } from "src/common-hooks";
+export default function PageA() {
+  useLogMount("Page A");
+  return (
+    <div>
+      <h3>Page A</h3>
+      <ul>
+        {values.split("").map((val, index) => (
+          <li key={index}>
+            {index} - {val}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

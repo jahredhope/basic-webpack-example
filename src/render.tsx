@@ -1,9 +1,9 @@
-import React from "react";
-import { ServerLocation } from "@reach/router";
-import { renderToString } from "react-dom/server";
-import { renderStylesToString } from "emotion-server";
-import { ChunkExtractor } from "@loadable/server";
 import "@babel/polyfill";
+import { ChunkExtractor } from "@loadable/server";
+import { ServerLocation } from "@reach/router";
+import { renderStylesToString } from "emotion-server";
+import React from "react";
+import { renderToString } from "react-dom/server";
 
 import App from "./App";
 
@@ -31,8 +31,8 @@ export default async function render(params: any) {
     throw new Error(`Missing clientStats during render`);
   }
   const extractor = new ChunkExtractor({
-    stats: clientStats,
     entrypoints: ["main"],
+    stats: clientStats,
   });
   console.log({ route });
   const appHtml = renderStylesToString(
@@ -46,13 +46,13 @@ export default async function render(params: any) {
   );
 
   return renderShell({
+    body: `
+    <h1>External</h1>
+    <div id="root">${appHtml}</div>
+    ${extractor.getScriptTags()}
+    `,
     head: `
       ${extractor.getLinkTags()}
           `,
-    body: `
-  <h1>External</h1>
-  <div id="root">${appHtml}</div>
-  ${extractor.getScriptTags()}
-  `,
   });
 }
