@@ -1,10 +1,10 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
 
-let values = "abcdefghijklmnopqrstuvwxyz"
+let values = "abcdefghijklmnopqrstuvwxyz";
 
 export default class PageA extends Component {
   componentDidMount() {
-    console.log("MOUNT", "PageA")
+    console.log("MOUNT", "PageA");
   }
   render() {
     return (
@@ -18,6 +18,6 @@ export default class PageA extends Component {
           ))}
         </ul>
       </div>
-    )
+    );
   }
 }

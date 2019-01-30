@@ -1,11 +1,11 @@
-import React from "react"
-import { ServerLocation } from "@reach/router"
-import { renderToString } from "react-dom/server"
-import { renderStylesToString } from "emotion-server"
-import { ChunkExtractor } from "@loadable/server"
-import "@babel/polyfill"
+import React from "react";
+import { ServerLocation } from "@reach/router";
+import { renderToString } from "react-dom/server";
+import { renderStylesToString } from "emotion-server";
+import { ChunkExtractor } from "@loadable/server";
+import "@babel/polyfill";
 
-import App from "./App"
+import App from "./App";
 
 function renderShell({ head = "", body = "" }) {
   return `<!DOCTYPE html>
@@ -18,23 +18,23 @@ function renderShell({ head = "", body = "" }) {
     <body>
       ${body}
     </body>
-  </html>`
+  </html>`;
 }
 
-export default async function render(params) {
-  const { route, clientStats } = params
-  console.log("Rendering ", route)
+export default async function render(params: any) {
+  const { route, clientStats } = params;
+  console.log("Rendering ", route);
   if (typeof route !== "string") {
-    throw new Error(`Missing route during render`)
+    throw new Error(`Missing route during render`);
   }
   if (!clientStats) {
-    throw new Error(`Missing clientStats during render`)
+    throw new Error(`Missing clientStats during render`);
   }
   const extractor = new ChunkExtractor({
     stats: clientStats,
     entrypoints: ["main"],
-  })
-  console.log({ route })
+  });
+  console.log({ route });
   const appHtml = renderStylesToString(
     renderToString(
       extractor.collectChunks(
@@ -43,13 +43,7 @@ export default async function render(params) {
         </ServerLocation>
       )
     )
-  )
-  // return renderShell({
-  //   body: `
-  // <h1>External</h1>
-  // <div id="root">${appHtml}</div>
-  // `,
-  // })
+  );
 
   return renderShell({
     head: `
@@ -60,5 +54,5 @@ export default async function render(params) {
   <div id="root">${appHtml}</div>
   ${extractor.getScriptTags()}
   `,
-  })
+  });
 }

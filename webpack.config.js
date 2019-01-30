@@ -1,17 +1,17 @@
 // const webpack = require("webpack")
-const merge = require("webpack-merge")
-const path = require("path")
-const LoadablePlugin = require("@loadable/webpack-plugin")
-const HtmlRenderPlugin = require("html-render-webpack-plugin")
+const merge = require("webpack-merge");
+const path = require("path");
+const LoadablePlugin = require("@loadable/webpack-plugin");
+const HtmlRenderPlugin = require("html-render-webpack-plugin");
 
-const cwd = process.cwd()
-const srcPath = path.resolve(cwd, "src")
+const cwd = process.cwd();
+const srcPath = path.resolve(cwd, "src");
 const paths = {
-  renderEntry: path.resolve(srcPath, "render.js"),
-  clientEntry: path.resolve(srcPath, "client.js"),
-}
+  renderEntry: path.resolve(srcPath, "render.tsx"),
+  clientEntry: path.resolve(srcPath, "client.tsx"),
+};
 
-const distDirectory = path.join(cwd, "dist")
+const distDirectory = path.join(cwd, "dist");
 
 const routes = [
   "/",
@@ -21,7 +21,7 @@ const routes = [
   "/about",
   "/home",
   "/contact/us",
-]
+];
 
 const renderPlugin = new HtmlRenderPlugin({
   routes,
@@ -29,31 +29,33 @@ const renderPlugin = new HtmlRenderPlugin({
   mapStatsToParams: ({ webpackStats }) => {
     const clientStats = webpackStats
       .toJson({})
-      .children.find(({ name }) => name === "client")
+      .children.find(({ name }) => name === "client");
     return {
       clientStats,
-    }
+    };
   },
   renderDirectory: distDirectory,
   verbose: true,
-})
+});
 
-const liveReload = process.env.NODE_ENV === "development"
+const liveReload = process.env.NODE_ENV === "development";
 const mode =
-  process.env.NODE_ENV === "development" ? "development" : "production"
+  process.env.NODE_ENV === "development" ? "development" : "production";
 
-const domain = "http://localhost:8080"
+const domain = "http://localhost:8080";
 const liveReloadEntry = `${require.resolve(
   "webpack-dev-server/client/"
-)}?${domain}`
+)}?${domain}`;
 
 const common = {
   mode,
   output: {
     publicPath: "/",
   },
-  resolve: { alias: { path: "path-browserify" } },
-
+  resolve: {
+    alias: { path: "path-browserify" },
+    extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
+  },
   // Webpack 5 Optimization
   // optimization: {
   //   chunkIds: "deterministic",
@@ -62,7 +64,7 @@ const common = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.m?(j|t)sx?$/,
         exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
@@ -70,16 +72,17 @@ const common = {
       },
     ],
   },
-}
+};
 // Apply Live Reload only to the client entry
 const clientEntry = liveReload
   ? [liveReloadEntry, paths.clientEntry]
-  : paths.clientEntry
+  : paths.clientEntry;
 module.exports = [
   merge(common, {
     output: {
       filename: "client-[name]-[contenthash].js",
     },
+    devtool: mode === "production" ? "source-map" : "inline-source-map",
     optimization: {
       runtimeChunk: {
         name: "runtime",
@@ -114,4 +117,4 @@ module.exports = [
     entry: paths.renderEntry,
     plugins: [renderPlugin.render()],
   }),
-]
+];

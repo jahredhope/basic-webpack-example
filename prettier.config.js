@@ -1,4 +1,3 @@
 module.exports = {
-  semi: false,
-  trailingComma: "es5"
-};
+  trailingComma: "es5",
+}

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "isJsx": true,
+    "lib": ["es2015", "dom"],
+    "jsx": "react",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  }
+}

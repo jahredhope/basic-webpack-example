@@ -5,6 +5,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
+  settings: {
+    react: { version: "detect" },
+  },
   env: {
     es6: true,
     browser: true,
@@ -14,4 +17,4 @@ module.exports = {
     "no-console": "off",
     "no-inner-declarations": "off",
   },
-}
+};
