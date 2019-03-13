@@ -70,6 +70,15 @@ const common = {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(jpg|png)?$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            outputPath: "static",
+          },
+        },
+      },
     ],
   },
 };
@@ -80,7 +89,7 @@ const clientEntry = liveReload
 module.exports = [
   merge(common, {
     output: {
-      filename: "client-[name]-[contenthash].js",
+      filename: "static/client-[name]-[contenthash].js",
     },
     devtool: mode === "production" ? "source-map" : "inline-source-map",
     optimization: {

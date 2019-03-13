@@ -8,7 +8,8 @@ import {
   useLogMount,
   useToggler,
 } from "src/common-hooks";
-import Text from "src/Text";
+import Card from "src/components/Card";
+import Text from "src/components/Text";
 
 const PixelContainer = styled("div")`
   display: flex;
@@ -30,7 +31,7 @@ export default function PageB() {
   useIncrementalTimer(incrementIndex, 5000);
 
   const pixels = [];
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 20; i++) {
     pixels.push(
       <Pixel key={i} color={`${i * indexStart}`}>
         {" "}
@@ -39,10 +40,24 @@ export default function PageB() {
   }
   return (
     <div>
-      <h3 onClick={toggleShowMore}>Page B & more 1</h3>
-      <Text>Things and stuffs</Text>
-      {showMore && <Text>More</Text>}
-      <PixelContainer>{pixels}</PixelContainer>
+      <Card>
+        <Text heading>Page B</Text>
+      </Card>
+      <Card>
+        <a
+          href="#"
+          onClick={event => {
+            event.preventDefault();
+            toggleShowMore();
+          }}
+        >
+          <Text link>Show more</Text>
+        </a>
+        {showMore && <Text secondary>More</Text>}
+      </Card>
+      <Card>
+        <PixelContainer>{pixels}</PixelContainer>
+      </Card>
     </div>
   );
 }

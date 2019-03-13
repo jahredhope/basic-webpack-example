@@ -1,20 +1,26 @@
 import React from "react";
+import Card from "src/components/Card";
+import Text from "src/components/Text";
 
-const values = "abcdefghijklmnopqrstuvwxyz";
+const values = "abcdefg";
 
 import { useLogMount } from "src/common-hooks";
 export default function PageA() {
   useLogMount("Page A");
   return (
-    <div>
-      <h3>Page A</h3>
+    <Card>
+      <Text heading as={"h3"}>
+        Page A
+      </Text>
       <ul>
         {values.split("").map((val, index) => (
           <li key={index}>
-            {index} - {val}
+            <Text secondary>
+              {index} - {val}
+            </Text>
           </li>
         ))}
       </ul>
-    </div>
+    </Card>
   );
 }

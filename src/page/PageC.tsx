@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
+import Text from "src/components/Text";
 
 const Section = styled("div")`
   padding: 12px 3vw;
@@ -7,6 +8,7 @@ const Section = styled("div")`
 const PrimarySection = styled(Section)`
   background-color: hsl(280, 15%, 80%);
   color: hsl(280, 98%, 24%);
+  grid-column-end: span 2;
 `;
 const SecondarySection = styled(Section)`
   background-color: hsl(280, 98%, 24%);
@@ -31,13 +33,20 @@ const Grid = styled("div")`
   }
 `;
 
+const Header = styled(PrimarySection)`
+  grid-column-start: 1;
+  grid-column-end: -1;
+`;
+
 import { useLogMount } from "src/common-hooks";
 
 export default function PageC() {
   useLogMount("Page C");
   return (
     <Grid>
-      <PrimarySection>1</PrimarySection>
+      <Header>
+        <Text heading>Page C</Text>
+      </Header>
       <PrimarySectionGreen>2</PrimarySectionGreen>
       <SecondarySectionGreen>3</SecondarySectionGreen>
       <SecondarySection>4</SecondarySection>

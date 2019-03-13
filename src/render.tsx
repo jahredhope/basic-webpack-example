@@ -47,8 +47,8 @@ export default async function render(params: any) {
 
   return renderShell({
     body: `
-    <h1>External</h1>
     <div id="root">${appHtml}</div>
+    <script>window.initialRoute = "${route}";</script>
     ${extractor.getScriptTags()}
     `,
     head: `
