@@ -3428,8 +3428,10 @@ html-entities@^1.2.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
   integrity sha1-DfKTUfByEWNRXfueVUPl9u7VFi8=
 
-html-render-webpack-plugin@../multi-static-render-webpack-plugin/:
-  version "0.0.0-development"
+html-render-webpack-plugin@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/html-render-webpack-plugin/-/html-render-webpack-plugin-1.1.1.tgz#9982fe8e495bf22e56452eed41726915c8b21d81"
+  integrity sha512-LolCHpVK9F5WJZ41231cHO8cHajboTakh+Ys8O7vS7waY0bjxtkwvUDA7phF0NJkmXRW9VAgkBWmVWnWA1Mluw==
   dependencies:
     chalk "^2.4.1"
     eval "^0.1.2"
