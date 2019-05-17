@@ -10,7 +10,7 @@ export default function PageA() {
   return (
     <Card>
       <Text heading as={"h3"}>
-        Page A
+        Page A (eyeyyyyy)
       </Text>
       <ul>
         {values.split("").map((val, index) => (

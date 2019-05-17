@@ -1,5 +1,5 @@
 import loadable from "@loadable/component";
-import { Link, Router } from "@reach/router";
+import { Router } from "@reach/router";
 import React from "react";
 import Loader from "./Loader";
 

@@ -10,3 +10,4 @@ Currently includes:
 - Dynamic code loading with [loadable-components](https://github.com/smooth-code/loadable-components)
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html) with [React](https://reactjs.org/)
 - CSS in JS with [Emotion JS](https://github.com/emotion-js/emotion)
+- Portable bundles with [FAB spec](https://github.com/fab-spec/fab)
