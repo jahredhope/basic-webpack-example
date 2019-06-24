@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { memo } from "react";
 import Text from "src/components/Text";
+import { State } from "src/store";
+import { Item, useSelectItems } from "src/store/items";
+
+import { useAction } from "react-unistore";
 
 const Section = styled("div")`
   padding: 12px 3vw;
@@ -39,14 +43,33 @@ const Header = styled(PrimarySection)`
 `;
 
 import { useLogMount } from "src/common-hooks";
+import Button from "src/components/Button";
 
-export default function PageC() {
+export default memo(function PageC() {
   useLogMount("Page C");
+  const items = useSelectItems();
+  const addItem = useAction((state: State, item: Item) => ({
+    items: {
+      ...state.items,
+      [item.id]: item,
+    },
+  }));
+
   return (
     <Grid>
       <Header>
         <Text heading>Page C</Text>
       </Header>
+      <Button onClick={() => addItem({ id: "3", name: "hi there" })}>
+        Add
+      </Button>
+      {items.map(item => {
+        return (
+          <SecondarySectionGreen key={item.name}>
+            {item.name}
+          </SecondarySectionGreen>
+        );
+      })}
       <PrimarySectionGreen>2</PrimarySectionGreen>
       <SecondarySectionGreen>3</SecondarySectionGreen>
       <SecondarySection>4</SecondarySection>
@@ -56,4 +79,4 @@ export default function PageC() {
       <SecondarySection>8</SecondarySection>
     </Grid>
   );
-}
+});

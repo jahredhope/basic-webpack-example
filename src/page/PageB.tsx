@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import md5 from "md5";
-import React from "react";
-
+import React, { memo } from "react";
 import {
   useIncrementalTimer,
   useIncrementer,
@@ -10,6 +9,7 @@ import {
 } from "src/common-hooks";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
+import { useDisplayName } from "src/store/user";
 
 const PixelContainer = styled("div")`
   display: flex;
@@ -23,7 +23,8 @@ const Pixel = styled("div")`
   background-color: #${({ color }) => md5(color).substr(0, 6)};
 `;
 
-export default function PageB() {
+export default memo(function PageB() {
+  const displayName = useDisplayName();
   const [indexStart, incrementIndex] = useIncrementer(1);
   const [showMore, toggleShowMore] = useToggler(false);
 
@@ -41,7 +42,7 @@ export default function PageB() {
   return (
     <div>
       <Card>
-        <Text heading>Page B</Text>
+        <Text heading>Page B - {displayName}</Text>
       </Card>
       <Card>
         <a
@@ -60,4 +61,4 @@ export default function PageB() {
       </Card>
     </div>
   );
-}
+});

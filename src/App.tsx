@@ -1,6 +1,6 @@
 import loadable from "@loadable/component";
 import { Router } from "@reach/router";
-import React from "react";
+import React, { Fragment } from "react";
 import Loader from "./Loader";
 
 import Text from "./components/Text";
@@ -8,13 +8,13 @@ import TextLink from "./components/TextLink";
 
 import theme from "./theme";
 
-const PageA: any = loadable(() => import("./page/PageA"), {
+const PageA = loadable(() => import("./page/PageA"), {
   fallback: <Loader />,
 });
-const PageB: any = loadable(() => import("./page/PageB"), {
+const PageB = loadable(() => import("./page/PageB"), {
   fallback: <Loader />,
 });
-const PageC: any = loadable(() => import("./page/PageC"), {
+const PageC = loadable(() => import("./page/PageC"), {
   fallback: <Loader />,
 });
 
@@ -56,6 +56,22 @@ const Logo = styled("img")`
 `;
 import { useIncrementalTimer, useIncrementer } from "src/common-hooks";
 
+const RoutePageA = (_: any) => (
+  <Fragment>
+    <PageA />
+  </Fragment>
+);
+const RoutePageB = (_: any) => (
+  <Fragment>
+    <PageB />
+  </Fragment>
+);
+const RoutePageC = (_: any) => (
+  <Fragment>
+    <PageC />
+  </Fragment>
+);
+
 export default function App() {
   const [count, incrementCount] = useIncrementer(1);
   useIncrementalTimer(incrementCount, 3000);
@@ -64,6 +80,9 @@ export default function App() {
       <Global
         styles={css`
           body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+              Helvetica, Arial, sans-serif, "Apple Color Emoji",
+              "Segoe UI Emoji", "Segoe UI Symbol";
             padding: 0;
             margin: 0;
             background-color: ${theme.colors.fill.standard};
@@ -86,15 +105,36 @@ export default function App() {
         </BannerHeading>
       </Banner>
       <Tabs>
-        <TabItem href="/">Page A</TabItem>
-        <TabItem href="/b">Page B</TabItem>
-        <TabItem href="/c">Page C</TabItem>
+        <TabItem
+          href="/"
+          onMouseOver={() => {
+            PageA.preload();
+          }}
+        >
+          Page A
+        </TabItem>
+        <TabItem
+          href="/b"
+          onMouseOver={() => {
+            PageB.preload();
+          }}
+        >
+          Page B
+        </TabItem>
+        <TabItem
+          href="/c"
+          onMouseOver={() => {
+            PageC.preload();
+          }}
+        >
+          Page C
+        </TabItem>
       </Tabs>
       <Router>
-        <PageA path="/" />
-        <PageA path="/a" />
-        <PageB path="/b" />
-        <PageC path="/c" />
+        <RoutePageA path="/" />
+        <RoutePageA path="/a" />
+        <RoutePageB path="/b" />
+        <RoutePageC path="/c" />
       </Router>
     </div>
   );

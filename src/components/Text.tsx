@@ -18,26 +18,26 @@ interface IProps {
 const fontSize = ({ heading, hero }: IProps) => {
   if (hero) {
     return css`
-      font-size: 20px;
+      font-size: ${theme.type.size.hero};
     `;
   }
   if (heading) {
     return css`
-      font-size: 16px;
+      font-size: ${theme.type.size.heading};
     `;
   }
   return css`
-    font-size: 16px;
+    font-size: ${theme.type.size.body};
   `;
 };
 const fontWeight = ({ heading }: IProps) => {
   if (heading) {
     return css`
-      font-weight: 600;
+      font-weight: ${theme.type.weight.heavy};
     `;
   }
   return css`
-    font-weight: 400;
+    font-weight: ${theme.type.weight.light};
   `;
 };
 
@@ -69,7 +69,6 @@ const color = ({ primary, secondary, link }: IProps) => {
 export default styled("span")`
   margin: 0 0 ${({ heading, hero }) => (heading || hero ? "6px" : "0")};
   display: block;
-  font-family: Verdana;
   text-decoration: none;
   ${color}
   ${fontSize}
