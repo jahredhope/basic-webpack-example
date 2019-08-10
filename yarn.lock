@@ -890,10 +890,10 @@
     typescript "^3.3.1"
     webpack "^4.29.0"
 
-"@fab/serve@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@fab/serve/-/serve-0.1.4.tgz#a4abf7ec29eea3ae07d66df02db3ffbf4082075f"
-  integrity sha512-2FZVez7N4r06MdJAnoCckqF81rStiQPuLqkCTHaptuW15ZEO+7A/2vvzEJgdvevfpvQwAmVWuYuBp2nfW+OGrg==
+"@fab/serve@^0.2.0":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@fab/serve/-/serve-0.2.2.tgz#eb44386a2fa19249dd66b3e263315b98ff59410a"
+  integrity sha512-0nv1MU5QoZVLvsZMQH5VYV9VpaVzQ/O9IS9UBWnkuiJlPEkjBgqpCSt78h+CnNX5HC55CR9CuW7WlzO2cremIg==
   dependencies:
     "@oclif/command" "^1"
     "@oclif/config" "^1"
@@ -901,6 +901,7 @@
     "@types/express" "^4.16.0"
     "@types/get-stream" "^3.0.1"
     "@types/mime-types" "^2.1.0"
+    "@types/node" "^12.0.4"
     "@types/node-fetch" "^2.1.4"
     "@types/yauzl" "^2.9.0"
     async-file "^2.0.2"
@@ -1172,6 +1173,11 @@
   version "10.12.19"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.19.tgz#ca1018c26be01f07e66ac7fefbeb6407e4490c61"
   integrity sha512-2NVovndCjJQj6fUUn9jCgpP4WSqr+u1SoUZMZyJkhGeBFsm6dE46l31S7lPUYt9uQ28XI+ibrJA1f5XyH5HNtA==
+
+"@types/node@^12.0.4":
+  version "12.7.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.1.tgz#3b5c3a26393c19b400844ac422bd0f631a94d69d"
+  integrity sha512-aK9jxMypeSrhiYofWWBf/T7O+KwaiAHzM4sveCdWPn71lzUSMimRnKzhXDKfKwV1kWoBo2P1aGgaIYGLf9/ljw==
 
 "@types/prop-types@*":
   version "15.5.8"
