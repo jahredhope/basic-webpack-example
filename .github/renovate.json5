@@ -28,7 +28,7 @@
     },
     {
       groupName: "webpack",
-      packagePatterns: ["webpack"],
+      packagePatterns: ["webpack", "-loader"],
     },
     {
       groupName: "node",
