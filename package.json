@@ -30,7 +30,7 @@
     "@babel/preset-typescript": "^7.1.0",
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
-    "@fab/serve": "^0.1.4",
+    "@fab/serve": "^0.2.2",
     "@fab/static": "^0.1.4",
     "@jahredhope/react-loadable-webpack-plugin": "^1.0.1",
     "@loadable/babel-plugin": "^5.2.2",
