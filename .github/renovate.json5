@@ -1,0 +1,38 @@
+{
+  extends: ["config:base"],
+  timezone: "Australia/Melbourne",
+  packageRules: [
+    {
+      groupName: "react",
+      packagePatterns: ["^react", "^@types/react"],
+    },
+    {
+      groupName: "emotion",
+      packagePatterns: ["@emotion/"],
+    },
+    {
+      groupName: "lint",
+      extends: ["packages:linters"],
+    },
+    {
+      groupName: "fab",
+      packagePatterns: ["@fab/"],
+    },
+    {
+      groupName: "loadable",
+      packagePatterns: ["@loadable/"],
+    },
+    {
+      groupName: "babel",
+      packagePatterns: ["@babel/"],
+    },
+    {
+      groupName: "webpack",
+      packagePatterns: ["webpack"],
+    },
+    {
+      groupName: "node",
+      packageNames: ["node"],
+    },
+  ],
+}
