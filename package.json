@@ -79,7 +79,7 @@
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.2.4",
-    "webpack": "^4.28.2",
+    "webpack": "^4.39.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.14",
