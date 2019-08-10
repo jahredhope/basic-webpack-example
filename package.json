@@ -62,7 +62,7 @@
     "http-serve": "^1.0.1",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
-    "nodemon": "^1.18.9",
+    "nodemon": "^1.19.1",
     "path-browserify": "^1.0.0",
     "prettier": "^1.15.3",
     "react": "^16.8.0-alpha.1",
