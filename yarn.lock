@@ -3449,9 +3449,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.191:
-  version "1.3.222"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.222.tgz#2a0e38903b2254d798dd8837507b5bc42c7e3934"
-  integrity sha512-Kv3rvtJELafNfgVBVNaDIdV0aWV7O1RlYqqAhg+s+OwpiXFYPsIvONYgAopmR/gpyxSYbHi0EKJmPOvaL7UzMg==
+  version "1.3.223"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.223.tgz#3472d5260096cfc9be8b7350252a4c577f68f80a"
+  integrity sha512-xXFNJ+akZMtRZQYBLlGoc11lDfwj6FdWHwle/0U3vWtVaWh/MBbU25vtRCBB4lpHLmQ8Y9a6Tsb+0UONFbNXmQ==
 
 elliptic@^6.0.0:
   version "6.5.0"
@@ -3740,7 +3740,7 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-eval@^0.1.2, eval@^0.1.4:
+eval@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/eval/-/eval-0.1.4.tgz#e05dbe0dab4b9330215cbb7bf4886eb24bd58700"
   integrity sha512-npGsebJejyjMRnLdFu+T/97dnigqIU0Ov3IGrZ8ygd1v7RL1vGkEKtvyWZobqUH1AQgKlg0Yqqe2BtMA9/QZLw==
@@ -4722,13 +4722,13 @@ html-minifier@^3.1.0:
     relateurl "0.2.x"
     uglify-js "3.4.x"
 
-html-render-webpack-plugin@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/html-render-webpack-plugin/-/html-render-webpack-plugin-1.1.1.tgz#9982fe8e495bf22e56452eed41726915c8b21d81"
-  integrity sha512-LolCHpVK9F5WJZ41231cHO8cHajboTakh+Ys8O7vS7waY0bjxtkwvUDA7phF0NJkmXRW9VAgkBWmVWnWA1Mluw==
+html-render-webpack-plugin@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/html-render-webpack-plugin/-/html-render-webpack-plugin-1.2.0.tgz#79fde5d36bc6727e7299ff7dcbe1da76f9e39430"
+  integrity sha512-CzEI2ZxxdatoSl/ue4nhG0lcOaEE5Q7xxo7JVNliRUycyNn8TbU8DCGdKLGCGWmTmFOj92pqlMuxTHSVQf6SRA==
   dependencies:
-    chalk "^2.4.1"
-    eval "^0.1.2"
+    chalk "^2.4.2"
+    eval "^0.1.4"
 
 html-tokenize@^2.0.0:
   version "2.0.0"
@@ -6577,9 +6577,9 @@ node-pre-gyp@^0.12.0:
     tar "^4"
 
 node-releases@^1.1.25:
-  version "1.1.26"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.26.tgz#f30563edc5c7dc20cf524cc8652ffa7be0762937"
-  integrity sha512-fZPsuhhUHMTlfkhDLGtfY80DSJTjOcx+qD1j5pqPkuhUHVS7xHZIg9EE4DHK8O3f0zTxXHX5VIkDG8pu98/wfQ==
+  version "1.1.27"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.27.tgz#b19ec8add2afe9a826a99dceccc516104c1edaf4"
+  integrity sha512-9iXUqHKSGo6ph/tdXVbHFbhRVQln4ZDTIBJCzsa90HimnBYc5jw8RWYt4wBYFHehGyC3koIz5O4mb2fHrbPOuA==
   dependencies:
     semver "^5.3.0"
 

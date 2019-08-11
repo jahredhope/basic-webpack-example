@@ -24,6 +24,9 @@ const routes = [
 ];
 
 const renderPlugin = new HtmlRenderPlugin({
+  extraGlobals: {
+    Buffer: require("buffer").Buffer,
+  },
   routes,
   renderEntry: "main",
   mapStatsToParams: ({ webpackStats }) => {
