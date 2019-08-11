@@ -50,6 +50,7 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "chalk": "^2.4.2",
     "color-convert": "^2.0.0",
+    "core-js": "^3.2.0",
     "emotion": "^10.0.14",
     "emotion-server": "^10.0.14",
     "eslint": "^6.0.0",
@@ -85,5 +86,12 @@
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.1",
     "ws": "^7.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.17",
+    "@types/puppeteer": "^1.19.0",
+    "jest": "^24.8.0",
+    "jest-puppeteer": "^4.3.0",
+    "puppeteer": "^1.19.0"
   }
 }
