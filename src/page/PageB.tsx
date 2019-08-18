@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
 import md5 from "md5";
 import React from "react";
+
+import * as styles from "./Pixel.treat";
 
 import {
   useIncrementalTimer,
@@ -10,18 +11,6 @@ import {
 } from "src/common-hooks";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
-
-const PixelContainer = styled("div")`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`;
-
-const Pixel = styled("div")`
-  height: 100px;
-  width: 100px;
-  background-color: #${({ color }) => md5(color).substr(0, 6)};
-`;
 
 export default function PageB() {
   const [indexStart, incrementIndex] = useIncrementer(1);
@@ -33,9 +22,13 @@ export default function PageB() {
   const pixels = [];
   for (let i = 0; i < 20; i++) {
     pixels.push(
-      <Pixel key={i} color={`${i * indexStart}`}>
+      <div
+        className={styles.pixel}
+        key={i}
+        style={{ backgroundColor: `#${md5(`${i * indexStart}`).substr(0, 6)}` }}
+      >
         {" "}
-      </Pixel>
+      </div>
     );
   }
   return (
@@ -56,7 +49,7 @@ export default function PageB() {
         {showMore && <Text secondary>More</Text>}
       </Card>
       <Card>
-        <PixelContainer>{pixels}</PixelContainer>
+        <div className={styles.pixelContainer}>{pixels}</div>
       </Card>
     </div>
   );

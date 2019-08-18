@@ -3,6 +3,10 @@ const merge = require("webpack-merge");
 const path = require("path");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const HtmlRenderPlugin = require("html-render-webpack-plugin");
+const TreatPlugin = require("treat/webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 const cwd = process.cwd();
 const srcPath = path.resolve(cwd, "src");
@@ -10,6 +14,8 @@ const paths = {
   renderEntry: path.resolve(srcPath, "render.tsx"),
   clientEntry: path.resolve(srcPath, "client.tsx"),
 };
+
+const reportBundlePath = path.resolve(__dirname, "report", "bundle.html");
 
 const distDirectory = path.join(cwd, "dist");
 
@@ -112,7 +118,19 @@ module.exports = [
     name: "client",
     target: "web",
     entry: clientEntry,
-    plugins: [new LoadablePlugin(), renderPlugin],
+    plugins: [
+      new LoadablePlugin(),
+      new TreatPlugin({
+        outputLoaders: [MiniCssExtractPlugin.loader],
+      }),
+      new MiniCssExtractPlugin(),
+      renderPlugin,
+      new BundleAnalyzerPlugin({
+        analyzerMode: "static",
+        openAnalyzer: false,
+        reportFilename: reportBundlePath,
+      }),
+    ],
   }),
   merge(common, {
     dependencies: ["client"],
@@ -127,6 +145,12 @@ module.exports = [
     name: "render",
     target: "node",
     entry: paths.renderEntry,
-    plugins: [renderPlugin.render()],
+    plugins: [
+      new TreatPlugin({
+        outputCSS: false,
+      }),
+      new MiniCssExtractPlugin(),
+      renderPlugin.render(),
+    ],
   }),
 ];

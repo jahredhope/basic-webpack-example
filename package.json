@@ -89,10 +89,16 @@
     "ws": "^7.1.1"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/jest": "^24.0.17",
     "@types/puppeteer": "^1.19.0",
+    "classnames": "^2.2.6",
     "jest": "^24.8.0",
     "jest-puppeteer": "^4.3.0",
-    "puppeteer": "^1.19.0"
+    "mini-css-extract-plugin": "^0.8.0",
+    "puppeteer": "^1.19.0",
+    "react-treat": "^1.0.3",
+    "treat": "^1.0.3",
+    "webpack-bundle-analyzer": "^3.4.1"
   }
 }

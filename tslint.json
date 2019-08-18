@@ -4,6 +4,7 @@
   "jsRules": {},
   "rules": {
     "no-console": false,
+    "interface-name": false,
     "jsx-no-lambda": false,
     "jsx-boolean-value": false
   },

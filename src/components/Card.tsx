@@ -1,34 +1,12 @@
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
+import classNames from "classnames";
 import React from "react";
+import { background, card } from "./Card.treat";
 
-import theme from "src/theme";
-
-interface IProps {
+interface Props {
   children?: React.ReactNode;
-  primary?: boolean;
-  secondary?: boolean;
+  tone?: "primary" | "secondary" | "standard";
 }
 
-const background = ({ primary, secondary }: IProps) => {
-  if (primary) {
-    return css`
-      background-color: ${theme.colors.fill.primary};
-    `;
-  }
-  if (secondary) {
-    return css`
-      background-color: ${theme.colors.fill.secondary};
-    `;
-  }
-  return css`
-    background-color: ${theme.colors.fill.standard};
-  `;
-};
-export default styled("span")`
-  display: block;
-  padding: 12px 18px 0px;
-  margin-bottom: 6px;
-  font-family: Verdana;
-  ${background}
-`;
+export default function Card({ tone = "standard", children }: Props) {
+  return <div className={classNames(card, background[tone])}>{children}</div>;
+}

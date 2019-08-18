@@ -54,7 +54,7 @@ export default async function render(params: any) {
     ${extractor.getScriptTags()}
     `,
     head: `
-      ${extractor.getLinkTags()}
+      ${extractor.getStyleTags()}
           `,
   });
 }
