@@ -11,3 +11,4 @@ Currently includes:
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html) with [React](https://reactjs.org/)
 - CSS in JS with [Emotion JS](https://github.com/emotion-js/emotion)
 - Portable bundles with [FAB spec](https://github.com/fab-spec/fab)
+- Sharing state with [Unistore](https://github.com/developit/unistore) state management with [React Hooks API](https://github.com/jahredhope/react-unistore)

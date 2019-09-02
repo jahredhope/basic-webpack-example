@@ -9,6 +9,7 @@ const calypso = "#21728c";
 const deepBlue = "#0D3696";
 
 export const line = {
+  light: white,
   link: deepBlue,
   primary: calypso,
   secondary: minimumGrey,
@@ -20,4 +21,8 @@ export const fill = {
   primary: midGrey,
   secondary: offWhite,
   standard: white,
+};
+
+export const button = {
+  standard: calypso,
 };

@@ -29,6 +29,5 @@ export default styled("span")`
   display: block;
   padding: 12px 18px 0px;
   margin-bottom: 6px;
-  font-family: Verdana;
   ${background}
 `;

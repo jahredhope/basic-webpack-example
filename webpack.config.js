@@ -1,5 +1,6 @@
 // const webpack = require("webpack")
 const merge = require("webpack-merge");
+const { Buffer } = require("buffer");
 const path = require("path");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const HtmlRenderPlugin = require("html-render-webpack-plugin");
@@ -26,6 +27,7 @@ const routes = [
 const renderPlugin = new HtmlRenderPlugin({
   routes,
   renderEntry: "main",
+  extraGlobals: { Buffer },
   mapStatsToParams: ({ webpackStats }) => {
     const clientStats = webpackStats
       .toJson({})

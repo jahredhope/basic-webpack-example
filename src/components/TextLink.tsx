@@ -5,6 +5,7 @@ import Text from "./Text";
 interface IProps {
   href: string;
   className?: string;
+  [propName: string]: any;
 }
 
 export default function TextLink({ href, className, ...rest }: IProps) {
