@@ -16,7 +16,7 @@
     "lint": "npm run lint.eslint && npm run lint.prettier && npm run lint.type && npm run lint.tslint",
     "format": "prettier --write **/*.{mjs,js,ts,tsx}",
     "test": "npm run lint && npm run test.unit",
-    "test.unit": "jest"
+    "test.unit": "npm run start & wait-on http://localhost:8080/ && jest"
   },
   "author": "Jahred Hope <jahredhope@gmail.com>",
   "license": "ISC",
