@@ -13,3 +13,5 @@ Currently includes:
 - Portable bundles with [FAB spec](https://github.com/fab-spec/fab)
 - Sharing state with [Unistore](https://github.com/developit/unistore) state management with [React Hooks API](https://github.com/jahredhope/react-unistore)
 - Testing in the browser with [Puppeteer](https://github.com/GoogleChrome/puppeteer) and [Jest](https://jestjs.io/)
+- Server and Static rendering with production-like dev environments
+- Same-domain enabled development

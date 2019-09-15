@@ -1,62 +1,26 @@
-import React, { ChangeEvent, memo, useState } from "react";
-import Button from "src/components/Button";
+import React, { memo } from "react";
+import { Helmet } from "react-helmet";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
+import UpdateNameForm from "src/components/UpdateNameForm";
 
-import styled from "@emotion/styled";
 import { useLogMount } from "src/common-hooks";
-import { State, useSelector } from "src/store";
-import { useDisplayName, useSetFirstName } from "src/store/user";
-import theme from "../theme";
-
-const selectUser = (state: State) => state.user;
-
-const useFormField = (
-  initialState: string
-): [string, (event: ChangeEvent) => void] => {
-  const [value, setter] = useState(initialState);
-  return [
-    value,
-    (event: ChangeEvent<HTMLInputElement>) => setter(event.target.value),
-  ];
-};
-
-const TextField = styled("input")`
-  font-size: ${theme.type.size.body};
-  line-height: 1.1em;
-  padding: ${theme.grid.height.medium} ${theme.grid.width.small};
-`;
+import { useDisplayName } from "src/store/user";
 
 export default memo(function PageA() {
-  useLogMount("Page A");
-  const setFirstName = useSetFirstName();
-
-  const user = useSelector(selectUser);
+  useLogMount("PageA");
   const displayName = useDisplayName();
-
-  const [formFirstName, onChangeFirstName] = useFormField(user.firstName);
-  const onSubmit = () => setFirstName(formFirstName);
 
   return (
     <Card>
+      <Helmet>
+        <title>Page A</title>
+      </Helmet>
       <Text heading as={"h3"}>
         Page A
       </Text>
       <Text>Update your name</Text>
-      <form
-        onSubmit={event => {
-          event.preventDefault();
-          onSubmit();
-          return false;
-        }}
-      >
-        <TextField
-          type="text"
-          onChange={onChangeFirstName}
-          value={formFirstName}
-        />
-        <Button onClick={onSubmit}>Update First Name</Button>
-      </form>
+      <UpdateNameForm />
       <Text heading>{displayName}</Text>
     </Card>
   );

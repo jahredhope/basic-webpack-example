@@ -1,10 +1,15 @@
 import loadable from "@loadable/component";
 import { Router } from "@reach/router";
-import React, { Fragment } from "react";
-import Loader from "./Loader";
+import React, {
+  Fragment,
+  // useEffect,
+  // useState,
+} from "react";
+import Loader from "./components/Loader";
 
 import Text from "./components/Text";
 import TextLink from "./components/TextLink";
+import { useSelector } from "./store/index";
 
 import theme from "./theme";
 
@@ -50,12 +55,21 @@ const Tabs = styled("div")`
 
 import logoSrc from "./soccer.png";
 
+if (!logoSrc) {
+  throw new Error(`"Missing logoSrc", ${logoSrc}`);
+}
+
 const Logo = styled("img")`
   margin: 0 18px 0 0;
   height: 60px;
+  width: 60px;
 `;
-import { useIncrementalTimer, useIncrementer } from "src/common-hooks";
-
+import {
+  useIncrementalTimer,
+  useIncrementer,
+  useLogMount,
+} from "src/common-hooks";
+import Card from "./components/Card";
 const RoutePageA = (_: any) => (
   <Fragment>
     <PageA />
@@ -72,9 +86,36 @@ const RoutePageC = (_: any) => (
   </Fragment>
 );
 
+const ServerRenderedStatus = () => {
+  const requestId = useSelector(state => state.requestId);
+  const requestCounter = useSelector(state => state.requestCounter);
+
+  if (!requestId && !requestCounter) {
+    return null;
+  }
+  return (
+    <Card>
+      <Text>
+        This page was server rendered (ID: {requestId}, Count: {requestCounter})
+      </Text>
+    </Card>
+  );
+};
+
 export default function App() {
+  if (!logoSrc) {
+    throw new Error(`"Missing logoSrc", ${logoSrc}`);
+  }
   const [count, incrementCount] = useIncrementer(1);
   useIncrementalTimer(incrementCount, 3000);
+  useLogMount("App");
+
+  const die = false;
+
+  if (die) {
+    console.log("Forcing an error");
+    throw new Error("Force an error to occur");
+  }
   return (
     <div>
       <Global
@@ -97,7 +138,7 @@ export default function App() {
             color: inherit;
           }
         `}
-      />
+      />{" "}
       <Banner>
         <Logo src={logoSrc} />
         <BannerHeading heading primary>
@@ -136,6 +177,7 @@ export default function App() {
         <RoutePageB path="/b" />
         <RoutePageC path="/c" />
       </Router>
+      <ServerRenderedStatus />
     </div>
   );
 }

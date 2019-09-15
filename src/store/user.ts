@@ -8,7 +8,8 @@ export interface User {
 }
 
 export interface UserState {
-  user: User;
+  username: string;
+  user: User | null;
 }
 
 export const useSetFirstName = () =>

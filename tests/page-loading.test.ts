@@ -14,9 +14,9 @@ describe("Page Load", () => {
   }, timeout);
 
   describe.each([
-    ["Page A", pageA, "/a"],
-    ["Page B", pageB, "/b"],
-    ["Page C", pageC, "/c"],
+    ["Page A", pageA, "/a/"],
+    ["Page B", pageB, "/b/"],
+    ["Page C", pageC, "/c/"],
   ])(
     "Page: %s",
     (

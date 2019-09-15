@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import debug from "debug";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export const useIncrementer = (
   initialState: number = 0
@@ -14,12 +15,22 @@ export const useToggler = (
 };
 
 export const useLogMount = (pageName: string) => {
+  const log = debug(`app:react:${pageName}`);
+  log("RENDER");
   useEffect(() => {
-    console.log("MOUNT:", pageName);
+    log("MOUNT");
     return () => {
-      console.log("UNMOUNT:", pageName);
+      log("UNMOUNT");
     };
   }, []);
+};
+
+export const useHasMounted = () => {
+  const [hasMounted, setHasMounted] = useState(false);
+  if (typeof window !== "undefined") {
+    useLayoutEffect(() => setHasMounted(true), []);
+  }
+  return hasMounted;
 };
 
 type Callback = () => void;

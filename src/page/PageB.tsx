@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import md5 from "md5";
 import React, { memo } from "react";
+import { Helmet } from "react-helmet";
 import {
   useIncrementalTimer,
   useIncrementer,
@@ -8,6 +9,7 @@ import {
   useToggler,
 } from "src/common-hooks";
 import Card from "src/components/Card";
+import RedditPosts from "src/components/RedditPosts";
 import Text from "src/components/Text";
 import { useDisplayName } from "src/store/user";
 
@@ -28,7 +30,7 @@ export default memo(function PageB() {
   const [indexStart, incrementIndex] = useIncrementer(1);
   const [showMore, toggleShowMore] = useToggler(false);
 
-  useLogMount("Page B");
+  useLogMount("PageB");
   useIncrementalTimer(incrementIndex, 5000);
 
   const pixels = [];
@@ -41,6 +43,9 @@ export default memo(function PageB() {
   }
   return (
     <div>
+      <Helmet>
+        <title>Page B</title>
+      </Helmet>
       <Card>
         <Text heading>Page B - {displayName}</Text>
       </Card>
@@ -59,6 +64,7 @@ export default memo(function PageB() {
       <Card>
         <PixelContainer>{pixels}</PixelContainer>
       </Card>
+      <RedditPosts />
     </div>
   );
 });
