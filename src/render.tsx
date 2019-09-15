@@ -1,4 +1,6 @@
-import "@babel/polyfill";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import { ChunkExtractor } from "@loadable/server";
 import { ServerLocation } from "@reach/router";
 import { renderStylesToString } from "emotion-server";
