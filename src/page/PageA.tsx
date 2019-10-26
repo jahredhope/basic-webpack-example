@@ -1,10 +1,10 @@
 import React, { memo } from "react";
 import { Helmet } from "react-helmet";
+
+import { useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
 import UpdateNameForm from "src/components/UpdateNameForm";
-
-import { useLogMount } from "src/common-hooks";
 import { useDisplayName } from "src/store/user";
 
 export default memo(function PageA() {

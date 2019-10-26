@@ -7,6 +7,8 @@ const pathToRegexp = require("path-to-regexp");
 const cluster = require("cluster");
 const debug = require("debug");
 const exceptionFormatter = require("exception-formatter");
+const bodyParser = require("body-parser");
+const querystring = require("querystring");
 
 const createRenderer = require("./createRenderer");
 const [browserConfig, nodeConfig] = require("./webpack.config");
@@ -20,16 +22,19 @@ const {
 const router = express.Router();
 const workers = [];
 
-setInterval(() => {
-  debug("app:worker:status")(
-    workers.length,
-    workers.map(worker => ({
-      id: worker.id,
-      con: worker.isConnected(),
-      dead: worker.isDead(),
-    }))
-  );
-}, 5000);
+const trackWorkerStatus = false;
+if (trackWorkerStatus) {
+  setInterval(() => {
+    debug("app:worker:status")(
+      workers.length,
+      workers.map(worker => ({
+        id: worker.id,
+        con: worker.isConnected(),
+        dead: worker.isDead(),
+      }))
+    );
+  }, 5000);
+}
 
 const browserCompiler = webpack(browserConfig);
 const nodeCompiler = webpack(nodeConfig);
@@ -42,7 +47,6 @@ const done = error => {
 };
 
 let latestClientStats;
-
 let staticRenderer;
 
 let currentWorker;
@@ -92,18 +96,21 @@ async function createWorker(params) {
   const worker = cluster.fork();
 
   worker.on("message", function(msg) {
-    if (msg && msg.status === "finished") {
+    if (msg.error) {
       workerError = msg.error;
-      debug("app:start:master")("Error from worker", msg.error);
+      debug("app:start:master")("Error from worker:", msg.error);
+    } else if (msg && msg.status === "finished") {
+      debug("app:start:master")("Worker finished");
+    } else {
+      debug("app:start:master")("Message from worker", msg);
     }
-    debug("app:start:master")("Message from worker", msg);
   });
 
   worker.on("exit", (code, signal) => {
     renderServerReady = false;
     currentWorker = null;
     if (code) {
-      console.error("Worker exited with", { code, signal });
+      console.error("Worker exited with:", { code, signal });
       workerErrored = true;
       // throw new Error(`Worker exited with code "${code}".`);
     }
@@ -224,6 +231,12 @@ serverRoutes.forEach(route => {
 //
 // TODO: Move this
 router.use("/api/reddit/", proxy("https://api.reddit.com/"));
+router.use("/api/countries/", proxy("https://countries.trevorblades.com/"));
+router.use("/events/", bodyParser.text());
+router.post("/events/", (req, res) => {
+  console.log("/events/", { ...querystring.parse(req.body) });
+  res.sendStatus(204);
+});
 //
 
 router.get("*", async (req, res, next) => {

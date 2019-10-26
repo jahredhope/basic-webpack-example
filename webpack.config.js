@@ -93,9 +93,22 @@ module.exports = [
       },
       splitChunks: {
         cacheGroups: {
-          vendor: {
+          react: {
+            priority: 2,
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: "vendor",
+            name: "react",
+            chunks: "all",
+          },
+          apollo: {
+            priority: 2,
+            test: /[\\/]node_modules[\\/](apollo.+|@apollo\/.+|graphql\/.+)[\\/]/,
+            name: "apollo",
+            chunks: "all",
+          },
+          modules: {
+            priority: 1,
+            test: /[\\/]node_modules[\\/]/,
+            name: "modules",
             chunks: "all",
           },
         },

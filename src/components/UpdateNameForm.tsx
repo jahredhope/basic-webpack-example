@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "src/components/Button";
 import { State, useSelector } from "src/store";
 import { useSetFirstName } from "src/store/user";
-import theme from "../theme";
+import theme from "src/theme";
 
 const selectUser = (state: State) => state.user;
 

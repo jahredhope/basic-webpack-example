@@ -2,6 +2,8 @@ import "core-js/stable";
 import "isomorphic-fetch";
 import "regenerator-runtime/runtime";
 
+import { ApolloProvider } from "@apollo/react-hooks";
+import { getDataFromTree } from "@apollo/react-ssr";
 import { ChunkExtractor } from "@loadable/server";
 import { ServerLocation } from "@reach/router";
 import debug from "debug";
@@ -9,7 +11,10 @@ import { renderStylesToString } from "emotion-server";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
+
 import { createStore, Provider } from "src/store";
+
+import createGraphQlClient from "./createGraphQlClient";
 
 import App from "./App";
 
@@ -37,10 +42,12 @@ function renderShell({ head = "", body = "" }) {
   </html>`;
 }
 
+const client = createGraphQlClient();
+
 export default async function render(params: any) {
   const { route, clientStats, clientStatsFile, state } = params;
   if (state) {
-    log("Rendering with state:", state);
+    log("Rendering with state");
   } else {
     log("Rendering with no state");
   }
@@ -74,16 +81,20 @@ export default async function render(params: any) {
   };
   const store = createStore(initialState);
   log({ route });
+
+  const WrappedApp = (
+    <ApolloProvider client={client}>
+      <Provider value={store}>
+        <ServerLocation url={route}>
+          <App />
+        </ServerLocation>
+      </Provider>
+    </ApolloProvider>
+  );
+
+  await getDataFromTree(WrappedApp);
   const appHtml = renderStylesToString(
-    renderToString(
-      extractor.collectChunks(
-        <Provider value={store}>
-          <ServerLocation url={route}>
-            <App />
-          </ServerLocation>
-        </Provider>
-      )
-    )
+    renderToString(extractor.collectChunks(WrappedApp))
   );
   const helmet = Helmet.renderStatic();
 
@@ -93,6 +104,9 @@ export default async function render(params: any) {
     <script>window.initialRoute = "${route}";</script>
     <script>window.initialState = ${JSON.stringify(initialState)};</script>
     ${extractor.getScriptTags()}
+    <script>
+      window.__APOLLO_STATE__ = ${JSON.stringify(client.extract())}
+    </script>
     `,
     head: `
       ${helmet.title.toString()}

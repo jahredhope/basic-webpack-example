@@ -1,12 +1,13 @@
+import { ApolloProvider } from "@apollo/react-hooks";
+import { loadableReady } from "@loadable/component";
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore, Provider, State } from "src/store";
+import "regenerator-runtime/runtime";
 import devtools from "unistore/devtools";
 
-import { loadableReady } from "@loadable/component";
-import "regenerator-runtime/runtime";
-
+import { createStore, Provider, State } from "src/store";
 import App from "./App";
+import createGraphQlClient from "./createGraphQlClient";
 
 const initialState = (window as any).initialState as State;
 if (!initialState) {
@@ -24,11 +25,14 @@ const store =
 //   console.log("State Update to", store.getState().val);
 // }, 250);
 
+const client = createGraphQlClient();
 loadableReady(() => {
   ReactDOM.hydrate(
-    <Provider value={store}>
-      <App />
-    </Provider>,
+    <ApolloProvider client={client}>
+      <Provider value={store}>
+        <App />
+      </Provider>
+    </ApolloProvider>,
     document.getElementById("root")
   );
 });

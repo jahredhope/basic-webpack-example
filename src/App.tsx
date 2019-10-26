@@ -1,10 +1,6 @@
 import loadable from "@loadable/component";
 import { Router } from "@reach/router";
-import React, {
-  Fragment,
-  // useEffect,
-  // useState,
-} from "react";
+import React, { Fragment } from "react";
 import Loader from "./components/Loader";
 
 import Text from "./components/Text";
@@ -148,6 +144,7 @@ export default function App() {
       <Tabs>
         <TabItem
           href="/"
+          name="header-page-a"
           onMouseOver={() => {
             PageA.preload();
           }}
@@ -156,6 +153,7 @@ export default function App() {
         </TabItem>
         <TabItem
           href="/b"
+          name="header-page-b"
           onMouseOver={() => {
             PageB.preload();
           }}
@@ -164,6 +162,7 @@ export default function App() {
         </TabItem>
         <TabItem
           href="/c"
+          name="header-page-c"
           onMouseOver={() => {
             PageC.preload();
           }}

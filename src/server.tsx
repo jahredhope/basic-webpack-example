@@ -1,16 +1,14 @@
 import cookieParser from "cookie-parser";
-import express from "express";
-import uuidv4 from "uuid/v4";
-import render from "./render";
-
 import createDebug from "debug";
+import exceptionFormatter from "exception-formatter";
+import express from "express";
 import expressPino from "express-pino-logger";
 import pathToRegexp from "path-to-regexp";
 import pino from "pino";
+import uuidv4 from "uuid/v4";
 
-import { loadPosts, setSubredditPosts } from "./store/posts";
-
-import exceptionFormatter from "exception-formatter";
+import { onServerRender } from "src/page/PageB";
+import render from "./render";
 import { State } from "./store";
 
 const debug = createDebug("app:server");
@@ -55,10 +53,8 @@ app.get("*", async (req, res) => {
     user: null,
     username: req.cookies.username,
   };
-  const preloadRedditPosts = Boolean(pageBRegex.exec(req.url));
-  if (preloadRedditPosts) {
-    const posts = await loadPosts("reactjs");
-    state = { ...state, ...setSubredditPosts(state, "reactjs", posts) };
+  if (pageBRegex.exec(req.url)) {
+    state = await onServerRender(state);
   }
   try {
     res.send(

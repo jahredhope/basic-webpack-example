@@ -1,5 +1,5 @@
-import { Link } from "@reach/router";
 import React from "react";
+import Link from "./Link";
 import Text from "./Text";
 
 interface IProps {
@@ -8,9 +8,9 @@ interface IProps {
   [propName: string]: any;
 }
 
-export default function TextLink({ href, className, ...rest }: IProps) {
+export default function TextLink({ href, name, className, ...rest }: IProps) {
   return (
-    <Link to={href} className={className}>
+    <Link href={href} className={className} name={name}>
       <Text link {...rest} />
     </Link>
   );

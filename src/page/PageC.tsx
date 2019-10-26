@@ -1,14 +1,6 @@
 import styled from "@emotion/styled";
 import React, { Fragment, memo } from "react";
 import { Helmet } from "react-helmet";
-import { useAction } from "react-unistore";
-import { State } from "src/store";
-
-import { useHasMounted, useLogMount } from "src/common-hooks";
-import Button from "src/components/Button";
-import Text from "src/components/Text";
-import { Item, useSelectItems } from "src/store/items";
-
 import {
   useBattery,
   useGeolocation,
@@ -20,52 +12,18 @@ import {
   useWindowScroll,
   useWindowSize,
 } from "react-use";
+import { useHasMounted, useLogMount } from "src/common-hooks";
+import Card from "src/components/Card";
+import Text from "src/components/Text";
 
 const Section = styled("div")`
-  padding: 12px 3vw;
-`;
-const PrimarySection = styled(Section)`
   background-color: hsl(280, 15%, 80%);
   color: hsl(280, 98%, 24%);
-  grid-column-end: span 2;
-`;
-// const SecondarySection = styled(Section)`
-//   background-color: hsl(280, 98%, 24%);
-//   color: hsl(280, 15%, 80%);
-// `;
-// const PrimarySectionGreen = styled(Section)`
-//   background-color: hsl(192, 5%, 85%);
-//   color: hsl(192, 98%, 20%);
-// `;
-const SecondarySectionGreen = styled(Section)`
-  background-color: hsl(192, 98%, 20%);
-  color: hsl(192, 5%, 85%);
-`;
-
-const Grid = styled("div")`
-  display: grid;
-  width: 100vw;
-  max-width: 100vw;
-  grid-template-columns: 1fr 1fr;
-  @media screen and (min-width: 700px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-`;
-
-const Header = styled(PrimarySection)`
-  grid-column-start: 1;
-  grid-column-end: -1;
+  padding: 12px 3vw;
 `;
 
 export default memo(function PageC() {
   useLogMount("PageC");
-  const items = useSelectItems();
-  const addItem = useAction((state: State, item: Item) => ({
-    items: {
-      ...state.items,
-      [item.id]: item,
-    },
-  }));
 
   const hasMounted = useHasMounted();
 
@@ -80,59 +38,49 @@ export default memo(function PageC() {
   const windowSize = useWindowSize();
 
   return (
-    <Grid>
+    <Fragment>
       <Helmet>
         <title>Page C</title>
       </Helmet>
-      <Header>
+      <Card>
         <Text heading>Currently on Page C</Text>
-      </Header>
-      <Button onClick={() => addItem({ id: "3", name: "hi there" })}>
-        Add
-      </Button>
-      {items.map(item => {
-        return (
-          <SecondarySectionGreen key={item.name}>
-            {item.name}
-          </SecondarySectionGreen>
-        );
-      })}
+      </Card>
       {hasMounted ? (
         <Fragment>
-          <PrimarySection>
+          <Section>
             {battery.level
               ? `Battery: ${battery.level * 100}%${
                   battery.charging ? " Charging" : ""
                 }`
               : "\u00a0"}
-          </PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>
             {geolocation.latitude
               ? `Geolocation: ${geolocation.longitude.toFixed(
                   6
                 )} ${geolocation.latitude.toFixed(6)}`
               : "\u00a0"}
-          </PrimarySection>
-          <PrimarySection>Idle: {JSON.stringify(idle)}</PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>Idle: {JSON.stringify(idle)}</Section>
+          <Section>
             {location.href ? `Location: ${location.href}` : "\u00a0"}
-          </PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>
             {network.effectiveType
               ? `Network: ${network.online ? "Online" : "Offline"} (Latency ${
                   network.rtt
                 }ms)`
               : "\u00a0"}
-          </PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>
             Window scroll {windowScroll.x} x {windowScroll.y}
-          </PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>
             {windowSize.height > 10 && windowSize.height < 100000
               ? `Window Size ${windowSize.height} x ${windowSize.width}`
               : "\u00a0"}
-          </PrimarySection>
-          <PrimarySection>
+          </Section>
+          <Section>
             {orientation.type
               ? `Orientation: ${
                   orientation.type.match(/landscape/i)
@@ -140,11 +88,11 @@ export default memo(function PageC() {
                     : "Portrait"
                 }`
               : "\u00a0"}
-          </PrimarySection>
+          </Section>
         </Fragment>
       ) : (
-        <div>loading...</div>
+        <Text>loading...</Text>
       )}
-    </Grid>
+    </Fragment>
   );
 });

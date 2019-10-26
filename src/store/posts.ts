@@ -46,8 +46,11 @@ const selectPosts = createSelector(
 
 export const useSelectPosts = () => useSelector(selectPosts);
 
-export const loadPosts = (subreddit: string) => {
-  console.log("loadPosts");
+const postsCache: Record<string, Promise<Post[]>> = {};
+export const loadPosts = (subreddit: string): Promise<Post[]> => {
+  if (postsCache[subreddit]) {
+    return postsCache[subreddit];
+  }
   const controller = new AbortController();
   const signal = controller.signal;
   const host = typeof window === "undefined" ? "http://localhost:8080" : "";
@@ -66,6 +69,7 @@ export const loadPosts = (subreddit: string) => {
       }))
     )
     .catch((err: DOMException | Error) => {
+      delete postsCache.subreddit;
       if (err.name !== "AbortError") {
         console.error("An error occured fetching posts", err);
       }
@@ -73,5 +77,6 @@ export const loadPosts = (subreddit: string) => {
   promise.cancel = () => {
     controller.abort();
   };
+  postsCache[subreddit] = promise;
   return promise;
 };
