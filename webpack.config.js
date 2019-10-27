@@ -8,42 +8,17 @@ const { promisify } = require("util");
 const mkdirp = promisify(require("mkdirp"));
 
 const { paths } = require("./config");
-// const routes = [
-//   "/",
-//   { route: "/b", val: "more" },
-//   "/a",
-//   "/c",
-//   "/about",
-//   "/home",
-//   "/contact/us",
-// ];
 
-// const renderPlugin = new HtmlRenderPlugin({
-//   routes,
-//   renderEntry: "main",
-//   extraGlobals: { Buffer },
-//   mapStatsToParams: ({ webpackStats }) => {
-//     const clientStats = webpackStats
-//       .toJson({})
-//       .children.find(({ name }) => name === "client");
-//     return {
-//       clientStats,
-//     };
-//   },
-//   renderDirectory: distDirectory,
-//   verbose: true,
-// });
-
-// const liveReload = process.env.NODE_ENV === "development";
+const liveReload = process.env.NODE_ENV === "development";
 const mode =
   process.env.NODE_ENV === "development" ? "development" : "production";
 
 const usingFileSystem = mode === "production";
 
-// const domain = "http://localhost:8080";
-// const liveReloadEntry = `${require.resolve(
-//   "webpack-dev-server/client/"
-// )}?${domain}`;
+const domain = "http://localhost:8080";
+const liveReloadEntry = `${require.resolve(
+  "webpack-dev-server/client/"
+)}?${domain}`;
 
 if (usingFileSystem) {
   mkdirp(path.dirname(paths.clientStatsLocation));
@@ -116,7 +91,10 @@ module.exports = [
     },
     name: "client",
     target: "web",
-    entry: { main: paths.clientEntry },
+    entry: {
+      main: paths.clientEntry,
+      ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
+    },
     plugins: [
       new LoadablePlugin({
         writeToDisk: usingFileSystem
@@ -131,21 +109,6 @@ module.exports = [
       }),
     ],
   }),
-  // merge(common, {
-  //   dependencies: ["client"],
-  //   output: {
-  //     libraryExport: "default",
-  //     library: "static",
-  //     // libraryTarget: "umd2",
-  //     // libraryTarget: "commonjs2",
-  //     libraryTarget: "umd2",
-  //     filename: "render-[name]-[contenthash].js",
-  //   },
-  //   name: "render",
-  //   target: "node",
-  //   entry: paths.renderEntry,
-  //   plugins: [renderPlugin.render()],
-  // }),
   merge(common, {
     dependencies: ["client"],
     output: {
@@ -160,10 +123,5 @@ module.exports = [
     name: "server",
     target: "node",
     entry: { server: paths.serverEntry, render: paths.renderEntry },
-    // plugins: [
-    //   new StartServerPlugin({
-    //     name: "server.js",
-    //   }),
-    // ],
   }),
 ];

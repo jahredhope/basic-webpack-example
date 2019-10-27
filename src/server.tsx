@@ -68,7 +68,11 @@ app.get("*", async (req, res) => {
       })
     );
   } catch (err) {
-    res.status(500).send(exceptionFormatter(err || {}, { format: "html" }));
+    res
+      .status(500)
+      .send(
+        exceptionFormatter(err || {}, { format: "html", inlineStyle: true })
+      );
   }
 });
 

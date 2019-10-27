@@ -81,6 +81,13 @@ const RoutePageC = (_: any) => (
     <PageC />
   </Fragment>
 );
+const RouteNotFound = (_: any) => (
+  <Fragment>
+    <Card>
+      <Text>Page not found</Text>
+    </Card>
+  </Fragment>
+);
 
 const ServerRenderedStatus = () => {
   const requestId = useSelector(state => state.requestId);
@@ -98,7 +105,21 @@ const ServerRenderedStatus = () => {
   );
 };
 
-export default function App() {
+const addErrorBoundary = (Child: any) =>
+  class ErrorCatcher extends React.Component<any, any> {
+    public static getDerivedStateFromError(error: any) {
+      return { error };
+    }
+    constructor(props: any) {
+      super(props);
+      this.state = { error: null };
+    }
+    public render() {
+      return <Child {...this.props} error={this.state.error} />;
+    }
+  };
+
+function App({ error }: any) {
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
@@ -106,12 +127,6 @@ export default function App() {
   useIncrementalTimer(incrementCount, 3000);
   useLogMount("App");
 
-  const die = false;
-
-  if (die) {
-    console.log("Forcing an error");
-    throw new Error("Force an error to occur");
-  }
   return (
     <div>
       <Global
@@ -144,6 +159,7 @@ export default function App() {
       <Tabs>
         <TabItem
           href="/"
+          data-analytics="header-page-a"
           name="header-page-a"
           onMouseOver={() => {
             PageA.preload();
@@ -152,7 +168,8 @@ export default function App() {
           Page A
         </TabItem>
         <TabItem
-          href="/b"
+          href="/b/"
+          data-analytics="header-page-b"
           name="header-page-b"
           onMouseOver={() => {
             PageB.preload();
@@ -161,7 +178,8 @@ export default function App() {
           Page B
         </TabItem>
         <TabItem
-          href="/c"
+          href="/c/"
+          data-analytics="header-page-c"
           name="header-page-c"
           onMouseOver={() => {
             PageC.preload();
@@ -170,13 +188,21 @@ export default function App() {
           Page C
         </TabItem>
       </Tabs>
-      <Router>
-        <RoutePageA path="/" />
-        <RoutePageA path="/a" />
-        <RoutePageB path="/b" />
-        <RoutePageC path="/c" />
-      </Router>
+      {error ? (
+        <Card>
+          <Text>Unable to render. {error.toString()}</Text>
+        </Card>
+      ) : (
+        <Router>
+          <RoutePageA path="/" />
+          <RoutePageA path="/a" />
+          <RoutePageB path="/b" />
+          <RoutePageC path="/c" />
+          <RouteNotFound default />
+        </Router>
+      )}
       <ServerRenderedStatus />
     </div>
   );
 }
+export default addErrorBoundary(App);

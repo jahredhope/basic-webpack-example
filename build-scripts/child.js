@@ -76,10 +76,11 @@ process.on("message", function({ entry, sourceModules }) {
   if (error) {
     process.send({
       status: "finished with error",
-      errorObj: error,
-      errorString: error && error.message,
-      errorStringified: error && JSON.stringify(error),
-      error: exceptionFormatter(error || {}, { format: "html" }),
+      error: exceptionFormatter(error || {}, {
+        format: "html",
+        inlineStyle: true,
+        basepath: "webpack://static/./",
+      }),
     }); // Send the finished message to the parent process
     throw error;
   } else {

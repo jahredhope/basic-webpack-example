@@ -42,3 +42,23 @@ describe("Page Load", () => {
     }
   );
 });
+
+describe("Links", () => {
+  it("should be able to navigate to each page", async () => {
+    let page: Page;
+    page = await (global as any).__BROWSER__.newPage();
+    await page.goto(pageA);
+
+    await page.click('[data-analytics="header-page-b"]');
+    let text = await page.evaluate(() => document.body.textContent);
+    expect(text).toContain("Page B");
+
+    await page.click('[data-analytics="header-page-c"]');
+    text = await page.evaluate(() => document.body.textContent);
+    expect(text).toContain("Page C");
+
+    await page.click('[data-analytics="header-page-a"]');
+    text = await page.evaluate(() => document.body.textContent);
+    expect(text).toContain("Page A");
+  });
+});

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=*,-babel*,-express* NODE_ENV=development node ./start.js",
+    "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development node ./start.js",
     "build:fab": "npm run build",
     "build": "DEBUG=*,-babel*,-express* NODE_ENV=production node ./build.js",
     "serve": "npm run serve:renderer & npm run serve:static",

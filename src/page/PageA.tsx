@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { Helmet } from "react-helmet";
 
+import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
@@ -9,6 +10,7 @@ import { useDisplayName } from "src/store/user";
 
 export default memo(function PageA() {
   useLogMount("PageA");
+  useTrackPageView("PageA");
   const displayName = useDisplayName();
 
   return (

@@ -1,5 +1,6 @@
 import { Link as RouterLink } from "@reach/router";
 import React, { MouseEvent } from "react";
+import { sendLinkEvent } from "src/analytics";
 
 interface IProps {
   href: string;
@@ -16,12 +17,7 @@ export default function Link({
   ...rest
 }: IProps) {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    const params = new URLSearchParams();
-    params.set("type", "link");
-    params.set("href", href);
-    params.set("name", name || href);
-    params.set("currentHref", window.document.location.href);
-    navigator.sendBeacon("/events/", params.toString());
+    sendLinkEvent({ href, name });
     if (onClick) {
       onClick(event);
     }

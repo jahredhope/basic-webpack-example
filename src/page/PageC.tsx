@@ -12,6 +12,7 @@ import {
   useWindowScroll,
   useWindowSize,
 } from "react-use";
+import { useTrackPageView } from "src/analytics";
 import { useHasMounted, useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
 import Text from "src/components/Text";
@@ -24,6 +25,7 @@ const Section = styled("div")`
 
 export default memo(function PageC() {
   useLogMount("PageC");
+  useTrackPageView("PageC");
 
   const hasMounted = useHasMounted();
 
