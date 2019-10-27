@@ -23,105 +23,110 @@ const liveReloadEntry = `${require.resolve(
 if (usingFileSystem) {
   mkdirp(path.dirname(paths.clientStatsLocation));
 }
-const common = {
-  mode,
-  output: {
-    publicPath: "/static/",
-  },
-  resolve: {
-    alias: { path: "path-browserify" },
-    extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
-  },
-  // Webpack 5 Optimization
-  // optimization: {
-  //   chunkIds: "deterministic",
-  //   moduleIds: "deterministic",
-  // },
-  module: {
-    rules: [
-      {
-        test: /\.m?(j|t)sx?$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: "babel-loader",
+
+module.exports = function getConfig({ nodePlugin, clientPlugin }) {
+  const common = {
+    mode,
+    output: {
+      publicPath: "/static/",
+    },
+    resolve: {
+      alias: { path: "path-browserify" },
+      extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
+    },
+    // Webpack 5 Optimization
+    // optimization: {
+    //   chunkIds: "deterministic",
+    //   moduleIds: "deterministic",
+    // },
+    module: {
+      rules: [
+        {
+          test: /\.m?(j|t)sx?$/,
+          exclude: /(node_modules)/,
+          use: {
+            loader: "babel-loader",
+          },
+        },
+        {
+          test: /\.(jpg|png|ico)?$/,
+          use: {
+            loader: "file-loader",
+          },
+        },
+      ],
+    },
+  };
+  return [
+    merge(common, {
+      output: {
+        path: paths.browserOutput,
+        filename: "[name]-[contenthash].js",
+      },
+      devtool: mode === "production" ? "source-map" : "inline-source-map",
+      optimization: {
+        runtimeChunk: {
+          name: "runtime",
+        },
+        splitChunks: {
+          cacheGroups: {
+            react: {
+              priority: 2,
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: "react",
+              chunks: "all",
+            },
+            apollo: {
+              priority: 2,
+              test: /[\\/]node_modules[\\/](apollo.+|@apollo\/.+|graphql\/.+)[\\/]/,
+              name: "apollo",
+              chunks: "all",
+            },
+            modules: {
+              priority: 1,
+              test: /[\\/]node_modules[\\/]/,
+              name: "modules",
+              chunks: "all",
+            },
+          },
         },
       },
-      {
-        test: /\.(jpg|png|ico)?$/,
-        use: {
-          loader: "file-loader",
-        },
+      name: "client",
+      target: "web",
+      entry: {
+        main: paths.clientEntry,
+        ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
       },
-    ],
-  },
+      plugins: [
+        clientPlugin,
+        new LoadablePlugin({
+          writeToDisk: usingFileSystem
+            ? { filename: path.dirname(paths.clientStatsLocation) }
+            : false,
+          filename: path.basename(paths.clientStatsLocation),
+        }),
+        new BundleAnalyzerPlugin({
+          analyzerMode: "static",
+          reportFilename: paths.reportLocation,
+          openAnalyzer: false,
+        }),
+      ],
+    }),
+    merge(common, {
+      dependencies: ["client"],
+      output: {
+        path: paths.nodeOutput,
+        libraryExport: "default",
+        library: "static",
+        // libraryTarget: "umd2",
+        // libraryTarget: "commonjs2",
+        libraryTarget: "umd2",
+        filename: "[name].js",
+      },
+      name: "server",
+      target: "node",
+      entry: { server: paths.serverEntry, render: paths.renderEntry },
+      plugins: [nodePlugin],
+    }),
+  ];
 };
-module.exports = [
-  merge(common, {
-    output: {
-      path: paths.browserOutput,
-      filename: "[name]-[contenthash].js",
-    },
-    devtool: mode === "production" ? "source-map" : "inline-source-map",
-    optimization: {
-      runtimeChunk: {
-        name: "runtime",
-      },
-      splitChunks: {
-        cacheGroups: {
-          react: {
-            priority: 2,
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: "react",
-            chunks: "all",
-          },
-          apollo: {
-            priority: 2,
-            test: /[\\/]node_modules[\\/](apollo.+|@apollo\/.+|graphql\/.+)[\\/]/,
-            name: "apollo",
-            chunks: "all",
-          },
-          modules: {
-            priority: 1,
-            test: /[\\/]node_modules[\\/]/,
-            name: "modules",
-            chunks: "all",
-          },
-        },
-      },
-    },
-    name: "client",
-    target: "web",
-    entry: {
-      main: paths.clientEntry,
-      ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
-    },
-    plugins: [
-      new LoadablePlugin({
-        writeToDisk: usingFileSystem
-          ? { filename: path.dirname(paths.clientStatsLocation) }
-          : false,
-        filename: path.basename(paths.clientStatsLocation),
-      }),
-      new BundleAnalyzerPlugin({
-        analyzerMode: "static",
-        reportFilename: paths.reportLocation,
-        openAnalyzer: false,
-      }),
-    ],
-  }),
-  merge(common, {
-    dependencies: ["client"],
-    output: {
-      path: paths.nodeOutput,
-      libraryExport: "default",
-      library: "static",
-      // libraryTarget: "umd2",
-      // libraryTarget: "commonjs2",
-      libraryTarget: "umd2",
-      filename: "[name].js",
-    },
-    name: "server",
-    target: "node",
-    entry: { server: paths.serverEntry, render: paths.renderEntry },
-  }),
-];

@@ -15,6 +15,7 @@ import {
 import { useTrackPageView } from "src/analytics";
 import { useHasMounted, useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
+import Loader from "src/components/Loader";
 import Text from "src/components/Text";
 
 const Section = styled("div")`
@@ -93,7 +94,7 @@ export default memo(function PageC() {
           </Section>
         </Fragment>
       ) : (
-        <Text>loading...</Text>
+        <Loader />
       )}
     </Fragment>
   );

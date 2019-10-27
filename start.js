@@ -1,20 +1,22 @@
+const webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
 const debug = require("debug");
+const createPlugin = require("./StaticAndServerRendererPlugin/StaticAndServerRendererPlugin");
 const proxy = require("express-http-proxy");
 const bodyParser = require("body-parser");
 const querystring = require("querystring");
-const configs = require("./webpack.config");
+const getConfig = require("./webpack.config");
 const {
   staticRoutes,
   serverRoutes,
   rendererUrl,
   rendererHealthcheck,
 } = require("./config");
-const startDevServer = require("./build-scripts/start");
 
 const staticRegex = /^\/static/i;
 const apiRegex = /^\/api/i;
 
-const onStartup = app => {
+const afterWebpackDevServer = app => {
   app.use("/api/reddit/", proxy("https://api.reddit.com/"));
   app.use("/api/countries/", proxy("https://countries.trevorblades.com/"));
   app.use("/events/", bodyParser.text());
@@ -39,12 +41,30 @@ const onStartup = app => {
   });
 };
 
-startDevServer({
-  routeNotFound: "/error/404",
-  onStartup,
-  staticRoutes,
-  serverRoutes,
+const { clientPlugin, nodePlugin, devServerRouter } = createPlugin({
+  useDevServer: true,
+  healthCheckEndpoint: rendererHealthcheck,
   rendererUrl,
-  rendererHealthcheck,
-  configs,
+  serverRoutes,
+  staticRoutes,
+});
+const compiler = webpack(getConfig({ clientPlugin, nodePlugin }));
+
+const webpackDevServer = new WebpackDevServer(compiler, {
+  publicPath: "/static/",
+  serveIndex: false,
+  disableHostCheck: true,
+  after: afterWebpackDevServer,
+});
+
+webpackDevServer.use(devServerRouter);
+
+webpackDevServer.app.disable("x-powered-by");
+
+webpackDevServer.listen(8080, error => {
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+  debug("app:start")("Done");
 });

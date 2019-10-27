@@ -1,13 +1,20 @@
-const path = require("path");
-const configs = require("./webpack.config");
-const { staticRoutes, paths } = require("./config");
-
-const build = require("./build-scripts/build");
-
-build({
+const webpack = require("webpack");
+const createPlugin = require("./StaticAndServerRendererPlugin/StaticAndServerRendererPlugin");
+const getConfig = require("./webpack.config");
+const {
   staticRoutes,
-  rendererLocation: require(path.join(paths.nodeOutput, "render")),
-  clientStatsLocation: paths.clientStatsLocation,
-  htmlOutputDir: paths.htmlOutput,
-  configs,
+  serverRoutes,
+  rendererUrl,
+  rendererHealthcheck,
+} = require("./config");
+
+const { clientPlugin, nodePlugin } = createPlugin({
+  runDevServer: false,
+  healthCheckEndpoint: rendererHealthcheck,
+  rendererUrl,
+  serverRoutes,
+  staticRoutes,
 });
+const compiler = webpack(getConfig({ clientPlugin, nodePlugin }));
+
+compiler.run();
