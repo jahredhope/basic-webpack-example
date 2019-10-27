@@ -28,11 +28,10 @@ module.exports = ({
   let nodeBuildReady = false;
   let serverRendererReady = false;
   let serverRendererError = null;
-  // let browserCompilation = null;
+  let browserCompilation = null;
   let nodeCompilation = null;
   const staticRenderCallbacks = [];
   const serverRenderCallbacks = [];
-  let latestClientStats;
   let staticRenderer;
 
   const enableStaticRenderer = staticRoutes.length > 0;
@@ -52,6 +51,19 @@ module.exports = ({
     },
   });
 
+  const getClientStats = () =>
+    browserCompilation
+      ? browserCompilation.getStats().toJson({
+          hash: true,
+          publicPath: true,
+          assets: true,
+          chunks: false,
+          modules: false,
+          source: false,
+          errorDetails: false,
+          timings: false,
+        })
+      : null;
   const isBuildReady = () => browserBuildReady && nodeBuildReady;
   const isStaticRenderReady = () => isBuildReady() && staticRenderer;
   const isServerRenderReady = () => isBuildReady() && serverRendererReady;
@@ -63,11 +75,21 @@ module.exports = ({
     const files = getServerFiles(nodeCompilation);
 
     files["loadable-stats.json"] = `module.exports = ${JSON.stringify(
-      latestClientStats,
+      getClientStats(),
       null,
       2
     )}`;
     await pushNewServer({ entry: "server.js", sourceModules: files });
+  };
+
+  const createRendererIfReady = async () => {
+    if (!isBuildReady() || !enableStaticRenderer) {
+      return;
+    }
+    staticRenderer = createRenderer({
+      fileName: "render.js",
+      compilation: nodeCompilation,
+    });
   };
 
   const flushQueuedRequests = () => {
@@ -82,14 +104,14 @@ module.exports = ({
 
   const renderWhenStaticRenderReady = cb => {
     if (isStaticRenderReady()) {
-      cb({ latestClientStats, staticRenderer });
+      cb();
     } else {
       staticRenderCallbacks.push(cb);
     }
   };
   const renderWhenServerRenderReady = cb => {
     if (isServerRenderReady()) {
-      cb({ latestClientStats, staticRenderer });
+      cb();
     } else {
       serverRenderCallbacks.push(cb);
     }
@@ -113,6 +135,7 @@ module.exports = ({
     });
     browserCompiler.hooks.done.tap(PLUGIN_NAME, () => {
       browserBuildReady = true;
+      createRendererIfReady();
       startServerIfReady();
       flushQueuedRequests();
     });
@@ -120,16 +143,7 @@ module.exports = ({
     browserCompiler.hooks.afterEmit.tapPromise(
       PLUGIN_NAME,
       async compilation => {
-        latestClientStats = compilation.getStats().toJson({
-          hash: true,
-          publicPath: true,
-          assets: true,
-          chunks: false,
-          modules: false,
-          source: false,
-          errorDetails: false,
-          timings: false,
-        });
+        browserCompilation = compilation;
       }
     );
   };
@@ -143,6 +157,7 @@ module.exports = ({
 
     nodeCompiler.hooks.done.tap(PLUGIN_NAME, () => {
       nodeBuildReady = true;
+      createRendererIfReady();
       startServerIfReady();
       flushQueuedRequests();
     });
@@ -150,14 +165,6 @@ module.exports = ({
     nodeCompiler.hooks.beforeCompile.tap(PLUGIN_NAME, onKillServer);
 
     nodeCompiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, async compilation => {
-      if (enableStaticRenderer) {
-        staticRenderer = createRenderer({
-          fileName: "render.js",
-          compilation: compilation,
-        });
-        flushQueuedRequests();
-      }
-
       nodeCompilation = compilation;
     });
   };
@@ -166,13 +173,12 @@ module.exports = ({
 
   const formatErrorResponse = error => {
     let devServerScripts = [];
+    const webpackStats = getClientStats();
     try {
-      const devServerAssets =
-        latestClientStats.entrypoints.devServerOnly.assets;
+      const devServerAssets = webpackStats.entrypoints.devServerOnly.assets;
 
       devServerScripts = devServerAssets.map(
-        asset =>
-          `<script src="${latestClientStats.publicPath}${asset}"></script>`
+        asset => `<script src="${webpackStats.publicPath}${asset}"></script>`
       );
     } catch (err) {
       console.error("Unable to load Dev Server Scripts. Error: ", err);
@@ -207,12 +213,12 @@ module.exports = ({
         );
         try {
           res.send(
-            await staticRenderer({ route, clientStats: latestClientStats })
+            await staticRenderer({ route, clientStats: getClientStats() })
           );
-        } catch (err) {
+        } catch (error) {
           res.status(500).send(
             formatErrorResponse(
-              exceptionFormatter(err, {
+              exceptionFormatter(error, {
                 format: "html",
                 inlineStyle: true,
                 basepath: "webpack://static/./",
