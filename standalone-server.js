@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   req.url = req.url + "/index.html";
   next();
 });
-app.use(express.static("dist/html"));
+app.use(express.static("dist/document"));
 
 app.listen(ports.devServer, () => {
   console.log("Proxy server started on", ports.devServer);

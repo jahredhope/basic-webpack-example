@@ -24,7 +24,10 @@ if (usingFileSystem) {
   mkdirp(path.dirname(paths.clientStatsLocation));
 }
 
-module.exports = function getConfig({ nodePlugin, clientPlugin }) {
+module.exports = function getConfig({
+  serverRendererPlugin,
+  staticRendererPlugin,
+}) {
   const common = {
     mode,
     output: {
@@ -98,7 +101,8 @@ module.exports = function getConfig({ nodePlugin, clientPlugin }) {
         ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
       },
       plugins: [
-        clientPlugin,
+        serverRendererPlugin.clientPlugin,
+        staticRendererPlugin.clientPlugin,
         new LoadablePlugin({
           writeToDisk: usingFileSystem
             ? { filename: path.dirname(paths.clientStatsLocation) }
@@ -126,7 +130,10 @@ module.exports = function getConfig({ nodePlugin, clientPlugin }) {
       name: "server",
       target: "node",
       entry: { server: paths.serverEntry, render: paths.renderEntry },
-      plugins: [nodePlugin],
+      plugins: [
+        serverRendererPlugin.nodePlugin,
+        staticRendererPlugin.nodePlugin,
+      ],
     }),
   ];
 };

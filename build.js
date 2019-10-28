@@ -1,5 +1,6 @@
 const webpack = require("webpack");
-const createPlugin = require("./StaticAndServerRendererPlugin/StaticAndServerRendererPlugin");
+const createServerRendererPlugin = require("./RendererPlugin/ServerRendererPlugin");
+const createStaticRendererPlugin = require("./RendererPlugin/StaticRendererPlugin");
 const getConfig = require("./webpack.config");
 const {
   staticRoutes,
@@ -8,13 +9,25 @@ const {
   rendererHealthcheck,
 } = require("./config");
 
-const { clientPlugin, nodePlugin } = createPlugin({
-  runDevServer: false,
+const serverRendererPlugin = createServerRendererPlugin({
+  useDevServer: false,
   healthCheckEndpoint: rendererHealthcheck,
   rendererUrl,
-  serverRoutes,
-  staticRoutes,
+  routes: serverRoutes,
 });
-const compiler = webpack(getConfig({ clientPlugin, nodePlugin }));
+const staticRendererPlugin = createStaticRendererPlugin({
+  useDevServer: false,
+  healthCheckEndpoint: rendererHealthcheck,
+  rendererUrl,
+  routes: staticRoutes,
+});
 
-compiler.run();
+const compiler = webpack(
+  getConfig({ serverRendererPlugin, staticRendererPlugin })
+);
+
+compiler.run(err => {
+  if (err) {
+    console.error("Building finished with err", err);
+  }
+});

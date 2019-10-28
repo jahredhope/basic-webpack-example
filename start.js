@@ -1,7 +1,8 @@
 const webpack = require("webpack");
 const WebpackDevServer = require("webpack-dev-server");
 const debug = require("debug");
-const createPlugin = require("./StaticAndServerRendererPlugin/StaticAndServerRendererPlugin");
+const createServerRendererPlugin = require("./RendererPlugin/ServerRendererPlugin");
+const createStaticRendererPlugin = require("./RendererPlugin/StaticRendererPlugin");
 const proxy = require("express-http-proxy");
 const bodyParser = require("body-parser");
 const querystring = require("querystring");
@@ -41,14 +42,19 @@ const afterWebpackDevServer = app => {
   });
 };
 
-const { clientPlugin, nodePlugin, devServerRouter } = createPlugin({
+const serverRendererPlugin = createServerRendererPlugin({
   useDevServer: true,
   healthCheckEndpoint: rendererHealthcheck,
   rendererUrl,
-  serverRoutes,
-  staticRoutes,
+  routes: serverRoutes,
 });
-const compiler = webpack(getConfig({ clientPlugin, nodePlugin }));
+const staticRendererPlugin = createStaticRendererPlugin({
+  useDevServer: true,
+  routes: staticRoutes,
+});
+const compiler = webpack(
+  getConfig({ serverRendererPlugin, staticRendererPlugin })
+);
 
 const webpackDevServer = new WebpackDevServer(compiler, {
   publicPath: "/static/",
@@ -57,7 +63,8 @@ const webpackDevServer = new WebpackDevServer(compiler, {
   after: afterWebpackDevServer,
 });
 
-webpackDevServer.use(devServerRouter);
+webpackDevServer.use(serverRendererPlugin.devServerRouter);
+webpackDevServer.use(staticRendererPlugin.devServerRouter);
 
 webpackDevServer.app.disable("x-powered-by");
 

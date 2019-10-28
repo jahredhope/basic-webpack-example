@@ -6,6 +6,8 @@ const createRenderer = require("./createRenderer");
 
 const PLUGIN_NAME = "browser-loadable-status";
 
+const noop = () => {};
+
 async function emitAsset(fileSystem, dir, content) {
   const mkdirp =
     fileSystem.mkdirp ||
@@ -29,7 +31,7 @@ async function emitAsset(fileSystem, dir, content) {
   );
 }
 
-module.exports = ({ staticRoutes, emitAssetsToCompilation }) => {
+module.exports = ({ routes, emitAssetsToCompilation }) => {
   let browserCompilation = null;
   let nodeCompilation = null;
 
@@ -59,7 +61,7 @@ module.exports = ({ staticRoutes, emitAssetsToCompilation }) => {
 
     const htmlOutputDir = "/Users/jhope/code/basic-webpack/dist/document";
 
-    staticRoutes.forEach(async route => {
+    routes.forEach(async route => {
       const content = await renderer({ clientStats, route });
       const filePath = path.join(htmlOutputDir, routeToFilePath(route));
       if (emitAssetsToCompilation) {
@@ -90,6 +92,6 @@ module.exports = ({ staticRoutes, emitAssetsToCompilation }) => {
   return {
     clientPlugin,
     nodePlugin,
-    devServerRouter: null,
+    devServerRouter: noop,
   };
 };
