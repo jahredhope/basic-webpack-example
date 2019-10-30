@@ -27,10 +27,10 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
   const { pushNewServer, onKillServer } = createServer({
     onReady: async error => {
       if (error) {
-        debug("app:start:master")("Error from worker:", error);
+        debug("render:server:master")("Error from worker:", error);
       } else {
         await waitOnServer();
-        debug("app:start")("Healthcheck passed. Marking renderer ready");
+        debug("render:server")("Healthcheck passed. Marking renderer ready");
       }
       rendererError = error;
       rendererReady = true;
@@ -84,7 +84,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
 
   const waitOnServer = async () => {
     const timeoutId = setTimeout(() => {
-      debug("app:start")("Still waiting. Taking a while");
+      debug("render:server")("Still waiting. Taking a while");
     }, 4000);
     await waitOn({
       interval: 500,

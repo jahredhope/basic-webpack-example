@@ -2,7 +2,7 @@ const path = require("path");
 const evaluate = require("eval");
 const exceptionFormatter = require("exception-formatter");
 
-const log = require("debug")("app:start:worker");
+const log = require("debug")("render:server:worker");
 
 function getFromSourceModules(specifier, sourceModules) {
   const sourceModuleSpecifier = specifier.replace(/^\.\//, "");

@@ -38,18 +38,19 @@ module.exports = ({ routes }) => {
       fileName: "render.js",
       compilation: nodeCompilation,
     });
+    flushQueuedRequests();
   };
 
   const flushQueuedRequests = () => {
     if (isStaticRenderReady() && staticRenderCallbacks.length > 0) {
-      staticRenderCallbacks.shift()();
+      staticRenderCallbacks.shift()(staticRenderer);
       flushQueuedRequests();
     }
   };
 
-  const renderWhenStaticRenderReady = cb => {
+  const renderWhenReady = cb => {
     if (isStaticRenderReady()) {
-      cb();
+      cb(staticRenderer);
     } else {
       staticRenderCallbacks.push(cb);
     }
@@ -61,7 +62,6 @@ module.exports = ({ routes }) => {
     browserCompiler.hooks.done.tap(PLUGIN_NAME, () => {
       browserBuildReady = true;
       createRendererIfReady();
-      flushQueuedRequests();
     });
 
     browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async compilation => {
@@ -77,7 +77,6 @@ module.exports = ({ routes }) => {
     nodeCompiler.hooks.done.tap(PLUGIN_NAME, () => {
       nodeBuildReady = true;
       createRendererIfReady();
-      flushQueuedRequests();
     });
 
     nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, compilation => {
@@ -85,13 +84,11 @@ module.exports = ({ routes }) => {
     });
   };
 
-  const devServerRouter = express.Router();
-
   const formatErrorResponse = error => {
     let devServerScripts = [];
     const webpackStats = getClientStats();
     try {
-      const devServerAssets = webpackStats.entrypoints.devServerOnly.assets;
+      const devServerAssets = webpackStats.entrypoints.main.assets;
 
       devServerScripts = devServerAssets.map(
         asset => `<script src="${webpackStats.publicPath}${asset}"></script>`
@@ -103,16 +100,16 @@ module.exports = ({ routes }) => {
     return [error, ...devServerScripts].join("\n");
   };
 
+  const devServerRouter = express.Router();
+
   routes.forEach(route => {
     devServerRouter.get(route, async (req, res) => {
-      renderWhenStaticRenderReady(async () => {
-        debug("app:start:response")(
+      renderWhenReady(async renderer => {
+        debug("render:static:response")(
           `Static render for ${route} from ${req.path}`
         );
         try {
-          res.send(
-            await staticRenderer({ route, clientStats: getClientStats() })
-          );
+          res.send(await renderer({ route, clientStats: getClientStats() }));
         } catch (error) {
           res.status(500).send(
             formatErrorResponse(
