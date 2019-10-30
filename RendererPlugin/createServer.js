@@ -6,7 +6,7 @@ module.exports = function createMaster({ onReady }) {
   let currentWorker;
 
   cluster.setupMaster({
-    exec: path.join(__dirname, "child.js"),
+    exec: path.join(__dirname, "serverWorker.js"),
     silent: false,
   });
 
