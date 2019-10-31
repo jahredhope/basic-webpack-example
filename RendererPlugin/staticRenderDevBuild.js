@@ -6,6 +6,14 @@ const createRenderer = require("./createRenderer");
 
 const PLUGIN_NAME = "static-render";
 
+function getSourceFromCompilation(compilation) {
+  const files = {};
+  Object.entries(compilation.assets).forEach(([assetName, asset]) => {
+    files[assetName] = asset.source();
+  });
+  return files;
+}
+
 module.exports = ({ routes }) => {
   let browserBuildReady = false;
   let nodeBuildReady = false;
@@ -36,7 +44,7 @@ module.exports = ({ routes }) => {
     }
     staticRenderer = createRenderer({
       fileName: "render.js",
-      compilation: nodeCompilation,
+      source: getSourceFromCompilation(nodeCompilation),
     });
     flushQueuedRequests();
   };

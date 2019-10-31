@@ -56,8 +56,13 @@ module.exports = ({ routes, emitAssetsToCompilation }) => {
       compilation: nodeCompilation,
     });
 
-    const routeToFilePath = route =>
+    const baseDir = path.isAbsolute(htmlOutputDir)
+      ? path.resolve(htmlOutputDir)
+      : htmlOutputDir;
+
+    const routeToFilePath = route => {
       path.join(...route.split("/").filter(Boolean), "index.html");
+    };
 
     const htmlOutputDir = "/Users/jhope/code/basic-webpack/dist/document";
 

@@ -5,15 +5,15 @@ const debug = require("debug");
 
 const createServer = require("./createServer");
 
-function getServerFiles(compilation) {
+const PLUGIN_NAME = "server-render";
+
+function getSourceFromCompilation(compilation) {
   const files = {};
   Object.entries(compilation.assets).forEach(([assetName, asset]) => {
     files[assetName] = asset.source();
   });
   return files;
 }
-
-const PLUGIN_NAME = "server-render";
 
 module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
   let browserBuildReady = false;
@@ -58,7 +58,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
     if (!isBuildReady()) {
       return;
     }
-    const files = getServerFiles(nodeCompilation);
+    const files = getSourceFromCompilation(nodeCompilation);
 
     files["loadable-stats.json"] = `module.exports = ${JSON.stringify(
       getClientStats(),

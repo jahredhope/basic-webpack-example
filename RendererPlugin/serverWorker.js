@@ -4,17 +4,7 @@ const evalutateFromSource = require("./evalutateFromSource");
 
 const log = require("debug")("render:server:worker");
 
-function createRenderer({ fileName, sourceModules }) {
-  if (!fileName) {
-    throw new Error("Missing filename");
-  }
-  if (!sourceModules) {
-    throw new Error("Missing sourceModules");
-  }
-  return evalutateFromSource(fileName, sourceModules);
-}
-
-process.on("message", function({ entry, sourceModules }) {
+process.on("message", function({ entry, sourceModules, extraModules }) {
   log("Message recieved");
   if (!sourceModules[entry]) {
     throw new Error(
@@ -27,9 +17,9 @@ process.on("message", function({ entry, sourceModules }) {
   }
   let error;
   try {
-    createRenderer({ fileName: entry, sourceModules });
+    evalutateFromSource(entry, sourceModules, extraModules);
   } catch (err) {
-    log("Erroreed", err);
+    log("Errored", err);
     error = err;
   }
 

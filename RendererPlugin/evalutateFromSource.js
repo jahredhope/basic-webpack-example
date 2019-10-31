@@ -1,14 +1,13 @@
 const path = require("path");
 const evaluate = require("eval");
-const log = require("debug")("render:server:worker");
+const log = require("debug")("render:evaluate");
 
 function getFromSourceModules(specifier, sourceModules) {
   const sourceModuleSpecifier = specifier.replace(/^\.\//, "");
-  const source = sourceModules[sourceModuleSpecifier];
-  return source;
+  return sourceModules[sourceModuleSpecifier];
 }
 
-function evalutateFromSource(specifier, sourceModules) {
+function evalutateFromSource(specifier, sourceModules, extraModules) {
   log("Evaluating source for", specifier);
   let source;
   try {
@@ -20,7 +19,7 @@ function evalutateFromSource(specifier, sourceModules) {
     source,
     /* filename: */ specifier,
     /* scope: */ {
-      require: createLinker(specifier, sourceModules),
+      require: createLinker(specifier, sourceModules, extraModules),
       console,
       process,
       Buffer,
@@ -29,13 +28,21 @@ function evalutateFromSource(specifier, sourceModules) {
   );
 }
 
-function createLinker(parentModulePath, sourceModules) {
+function createLinker(parentModulePath, sourceModules, extraModules) {
   log("Creating linker for", parentModulePath);
   return function linker(specifier) {
+    if (extraModules && extraModules[specifier]) {
+      log(`Using custom module for ${specifier} from ${parentModulePath}`);
+      return extraModules[specifier];
+    }
     const absPath = path.join(path.dirname(parentModulePath), specifier);
     if (!getFromSourceModules(specifier, sourceModules)) {
+      log(`Using external require for ${specifier} from ${parentModulePath}`);
       return require(specifier);
     }
+    log(`Linking ${parentModulePath} to asset ${specifier}`);
     return evalutateFromSource(absPath, sourceModules);
   };
 }
+
+module.exports = evalutateFromSource;
