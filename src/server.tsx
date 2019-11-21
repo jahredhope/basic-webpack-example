@@ -3,7 +3,7 @@ import createDebug from "debug";
 import exceptionFormatter from "exception-formatter";
 import express from "express";
 import expressPino from "express-pino-logger";
-import pathToRegexp from "path-to-regexp";
+import { pathToRegexp } from "path-to-regexp";
 import pino from "pino";
 import uuidv4 from "uuid/v4";
 

@@ -1,6 +1,5 @@
 const path = require("path");
 const _mkdirp = require("mkdirp");
-const { RawSource } = require("webpack-sources");
 
 const createRenderer = require("./createRenderer");
 
@@ -31,11 +30,11 @@ async function emitAsset(fileSystem, dir, content) {
   );
 }
 
-module.exports = ({ routes, emitAssetsToCompilation }) => {
+module.exports = ({ routes, renderDirectory }) => {
   let browserCompilation = null;
   let nodeCompilation = null;
 
-  const renderWhenReady = lastCompilation => {
+  const renderWhenReady = () => {
     if (!browserCompilation || !nodeCompilation) {
       return;
     }
@@ -56,30 +55,21 @@ module.exports = ({ routes, emitAssetsToCompilation }) => {
       compilation: nodeCompilation,
     });
 
-    const baseDir = path.isAbsolute(htmlOutputDir)
-      ? path.resolve(htmlOutputDir)
-      : htmlOutputDir;
-
-    const routeToFilePath = route => {
+    const transformFilePath = route => {
       path.join(...route.split("/").filter(Boolean), "index.html");
     };
 
-    const htmlOutputDir = "/Users/jhope/code/basic-webpack/dist/document";
-
     routes.forEach(async route => {
       const content = await renderer({ clientStats, route });
-      const filePath = path.join(htmlOutputDir, routeToFilePath(route));
-      if (emitAssetsToCompilation) {
-        lastCompilation.assets[filePath] = new RawSource(content);
-      } else {
-        emitAsset(
-          browserCompilation.compiler.outputFileSystem,
-          filePath,
-          content
-        );
-      }
+
+      const filePath = path.join(renderDirectory, transformFilePath(route));
+
+      emitAsset(
+        browserCompilation.compiler.outputFileSystem,
+        filePath,
+        content
+      );
     });
-    return;
   };
 
   const clientPlugin = browserCompiler => {

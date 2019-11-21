@@ -147,22 +147,21 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
     return [error, ...devServerScripts].join("\n");
   };
 
+  const handleProxy = proxy(rendererUrl, {
+    proxyReqPathResolver: req => req.originalUrl,
+  });
+
   routes.forEach(route => {
     devServerRouter.use(route, async (req, res, next) => {
-      await new Promise(resolve => renderWhenReady(resolve));
+      renderWhenReady(() => {
+        if (rendererError) {
+          res.status(500).send(formatErrorResponse(rendererError));
+          return;
+        }
 
-      if (rendererError) {
-        res.status(500).send(formatErrorResponse(rendererError));
-        return;
-      }
-      next();
+        handleProxy(req, res, next);
+      });
     });
-    devServerRouter.use(
-      route,
-      proxy(rendererUrl, {
-        proxyReqPathResolver: req => req.originalUrl,
-      })
-    );
   });
 
   return {

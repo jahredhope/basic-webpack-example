@@ -4,12 +4,12 @@ const staticRenderDevBuild = require("./staticRenderDevBuild");
 module.exports = function createStaticRendererPlugin({
   useDevServer,
   routes,
-  emitAssetsToCompilation = false,
+  renderDirectory = "dist",
 }) {
   if (!useDevServer) {
     return staticBuild({
       routes,
-      emitAssetsToCompilation,
+      renderDirectory,
     });
   }
   return staticRenderDevBuild({

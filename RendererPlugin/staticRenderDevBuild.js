@@ -56,7 +56,7 @@ module.exports = ({ routes }) => {
     }
   };
 
-  const renderWhenReady = cb => {
+  const onRendererReady = cb => {
     if (isStaticRenderReady()) {
       cb(staticRenderer);
     } else {
@@ -112,7 +112,7 @@ module.exports = ({ routes }) => {
 
   routes.forEach(route => {
     devServerRouter.get(route, async (req, res) => {
-      renderWhenReady(async renderer => {
+      onRendererReady(async renderer => {
         debug("render:static:response")(
           `Static render for ${route} from ${req.path}`
         );
@@ -135,7 +135,8 @@ module.exports = ({ routes }) => {
 
   return {
     clientPlugin,
-    nodePlugin,
     devServerRouter,
+    nodePlugin,
+    onRendererReady,
   };
 };
