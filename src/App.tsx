@@ -153,7 +153,7 @@ function App({ error }: any) {
       <Banner>
         <Logo src={logoSrc} />
         <BannerHeading heading primary>
-          App Content: {count}
+          Appss Content: {count}
         </BannerHeading>
       </Banner>
       <Tabs>

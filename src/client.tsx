@@ -26,13 +26,29 @@ const store =
 // }, 250);
 
 const client = createGraphQlClient();
-loadableReady(() => {
-  ReactDOM.hydrate(
-    <ApolloProvider client={client}>
-      <Provider value={store}>
-        <App />
-      </Provider>
-    </ApolloProvider>,
-    document.getElementById("root")
-  );
-});
+
+const render = () => {
+  loadableReady(() => {
+    ReactDOM.hydrate(
+      <ApolloProvider client={client}>
+        <Provider value={store}>
+          <App />
+        </Provider>
+      </ApolloProvider>,
+      document.getElementById("root")
+    );
+  });
+};
+
+render();
+
+console.log("client.tsx");
+if (module.hot) {
+  console.log("client.tsx", "Module is HOT");
+  module.hot.accept("./App", () => {
+    console.log("Accepting ./App");
+    render();
+  });
+} else {
+  console.log("client.tsx", "Module is COLD");
+}

@@ -35,8 +35,9 @@ app.get("/ping", (req, res) => {
   res.status(200).send("pong");
 });
 
+let renderFunction = render;
 let requestCounter = 0;
-const pageBRegex = pathToRegexp("/b");
+// const pageBRegex = pathToRegexp("/b");
 
 app.get("*", async (req, res) => {
   requestCounter++;
@@ -53,12 +54,12 @@ app.get("*", async (req, res) => {
     user: null,
     username: req.cookies.username,
   };
-  if (pageBRegex.exec(req.url)) {
-    state = await onServerRender(state);
-  }
+  // if (pageBRegex.exec(req.url)) {
+  //   state = await onServerRender(state);
+  // }
   try {
     res.send(
-      await render({
+      await renderFunction({
         clientStatsFile,
         route: req.url,
         state,
@@ -79,3 +80,14 @@ app.get("*", async (req, res) => {
 app.listen(RENDER_SERVER_PORT, () => {
   console.log("Listening on", RENDER_SERVER_PORT);
 });
+
+console.log("server.tsx");
+if (module.hot) {
+  console.log("server.tsx", "Module is HOT");
+  module.hot.accept("./render", () => {
+    console.log("Accepting ./render");
+    renderFunction = render;
+  });
+} else {
+  console.log("server.tsx", "Module is COLD");
+}

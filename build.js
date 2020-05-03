@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 const createServerRendererPlugin = require("./RendererPlugin/ServerRendererPlugin");
-const createStaticRendererPlugin = require("./RendererPlugin/StaticRendererPlugin");
+const HtmlRenderPlugin = require("html-render-webpack-plugin");
 const getConfig = require("./webpack.config");
 const {
   staticRoutes,
@@ -15,16 +15,13 @@ const serverRendererPlugin = createServerRendererPlugin({
   rendererUrl,
   routes: serverRoutes,
 });
-const staticRendererPlugin = createStaticRendererPlugin({
-  useDevServer: false,
-  healthCheckEndpoint: rendererHealthcheck,
-  rendererUrl,
+const htmlRenderPlugin = new HtmlRenderPlugin({
+  renderDirectory: "dist/document",
+  renderEntry: "render",
   routes: staticRoutes,
 });
 
-const compiler = webpack(
-  getConfig({ serverRendererPlugin, staticRendererPlugin })
-);
+const compiler = webpack(getConfig({ serverRendererPlugin, htmlRenderPlugin }));
 
 compiler.run(err => {
   if (err) {

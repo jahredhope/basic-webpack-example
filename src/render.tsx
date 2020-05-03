@@ -45,7 +45,7 @@ function renderShell({ head = "", body = "" }) {
 const client = createGraphQlClient();
 
 export default async function render(params: any) {
-  const { route, clientStats, clientStatsFile, state } = params;
+  const { route, webpackStats, clientStatsFile, state } = params;
   if (state) {
     log("Rendering with state");
   } else {
@@ -54,12 +54,12 @@ export default async function render(params: any) {
   if (typeof route !== "string") {
     throw new Error(`Missing route during render`);
   }
-  if (!clientStats && !clientStatsFile) {
+  if (!webpackStats && !clientStatsFile) {
     throw new Error(`Missing clientStats or clientStatsFile during render`);
   }
   const extractor = new ChunkExtractor({
     entrypoints: ["main"],
-    stats: clientStats,
+    stats: webpackStats,
     statsFile: clientStatsFile,
   });
   const initialState = {
@@ -115,4 +115,15 @@ export default async function render(params: any) {
       ${extractor.getLinkTags()}
           `,
   });
+}
+
+console.log("render.tsx");
+if (module.hot) {
+  console.log("render.tsx", "Module is HOT");
+  module.hot.accept("./App", () => {
+    console.log("Accepting ./App");
+    // render();
+  });
+} else {
+  console.log("render.tsx", "Module is COLD");
 }

@@ -26,8 +26,9 @@ if (usingFileSystem) {
 
 module.exports = function getConfig({
   serverRendererPlugin,
-  staticRendererPlugin,
+  htmlRenderPlugin,
 }) {
+  console.log({ htmlRenderPlugin });
   const common = {
     mode,
     output: {
@@ -42,29 +43,12 @@ module.exports = function getConfig({
     //   chunkIds: "deterministic",
     //   moduleIds: "deterministic",
     // },
-    module: {
-      rules: [
-        {
-          test: /\.m?(j|t)sx?$/,
-          exclude: /(node_modules)/,
-          use: {
-            loader: "babel-loader",
-          },
-        },
-        {
-          test: /\.(jpg|png|ico)?$/,
-          use: {
-            loader: "file-loader",
-          },
-        },
-      ],
-    },
   };
   return [
     merge(common, {
       output: {
         path: paths.browserOutput,
-        filename: "[name]-[contenthash].js",
+        filename: "[name]-[hash].js",
       },
       devtool: mode === "production" ? "source-map" : "inline-source-map",
       optimization: {
@@ -94,6 +78,23 @@ module.exports = function getConfig({
           },
         },
       },
+      module: {
+        rules: [
+          {
+            test: /\.m?(j|t)sx?$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.(jpg|png|ico)?$/,
+            use: {
+              loader: "file-loader",
+            },
+          },
+        ],
+      },
       name: "client",
       target: "web",
       entry: {
@@ -102,12 +103,12 @@ module.exports = function getConfig({
       },
       plugins: [
         serverRendererPlugin.clientPlugin,
-        staticRendererPlugin.clientPlugin,
+        htmlRenderPlugin.statsCollectorPlugin,
         new LoadablePlugin({
           writeToDisk: usingFileSystem
             ? { filename: path.dirname(paths.clientStatsLocation) }
             : false,
-          filename: path.basename(paths.clientStatsLocation),
+          outputAsset: false,
         }),
         new BundleAnalyzerPlugin({
           analyzerMode: "static",
@@ -117,7 +118,6 @@ module.exports = function getConfig({
       ],
     }),
     merge(common, {
-      dependencies: ["client"],
       output: {
         path: paths.nodeOutput,
         libraryExport: "default",
@@ -127,12 +127,32 @@ module.exports = function getConfig({
         libraryTarget: "umd2",
         filename: "[name].js",
       },
+      module: {
+        rules: [
+          {
+            test: /\.m?(j|t)sx?$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.(jpg|png|ico)?$/,
+            use: {
+              loader: "file-loader",
+              options: {
+                emitFile: false,
+              },
+            },
+          },
+        ],
+      },
       name: "server",
       target: "node",
       entry: { server: paths.serverEntry, render: paths.renderEntry },
       plugins: [
         serverRendererPlugin.nodePlugin,
-        staticRendererPlugin.nodePlugin,
+        htmlRenderPlugin.rendererPlugin,
       ],
     }),
   ];

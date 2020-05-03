@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development node ./start.js",
+    "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development ts-node ./start.ts ",
     "build:fab": "npm run build",
     "build": "DEBUG=*,-babel*,-express* NODE_ENV=production node ./build.js",
     "serve": "npm run serve:renderer & npm run serve:static",
@@ -56,6 +56,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-helmet": "^5.0.14",
     "@types/uuid": "^3.4.6",
+    "@types/webpack-env": "^1.14.1",
     "abort-controller": "^3.0.0",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
@@ -85,7 +86,7 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "html-minifier": "^4.0.0",
-    "html-render-webpack-plugin": "^1.2.0",
+    "html-render-webpack-plugin": "../html-render-webpack-plugin/",
     "http-serve": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^24.8.0",
@@ -133,5 +134,9 @@
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2",
     "ws": "^7.2.0"
+  },
+  "dependencies": {
+    "null-loader": "^3.0.0",
+    "ts-node": "^8.5.2"
   }
 }
