@@ -9,7 +9,7 @@
     "build": "NODE_ENV=production webpack",
     "fab:build": "fab build",
     "fab:serve": "fab serve fab.zip",
-    "serve": "fab-serve fab.zip",
+    "serve": "npm run fab:serve",
     "lint.eslint": "eslint .",
     "lint.prettier": "prettier --list-different .",
     "lint.tslint": "tslint -c tslint.json --project tsconfig.json",
