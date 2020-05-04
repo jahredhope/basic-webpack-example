@@ -22,6 +22,7 @@ const config = {
     reportLocation: path.resolve(rootPath, "report", "client.html"),
     clientStatsLocation: path.resolve(nodeOutput, "loadable-stats.json"),
     browserOutput: path.resolve(distPath, "browser"),
+    documentOutput: path.resolve(distPath, "document"),
     htmlOutput: path.resolve(distPath, "html"),
     runtimeEntry: path.resolve(srcPath, "runtime.tsx"),
     renderEntry: path.resolve(srcPath, "render.tsx"),

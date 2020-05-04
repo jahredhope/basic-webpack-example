@@ -37,9 +37,12 @@ export default async function getConfig({ buildType }): Promise<any> {
     routes: serverRoutes,
   });
 
+  // TODO: Some tooling is doesn't currently support documents being anywhere but relative to root
+  const hackForceToRoot = true;
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
     routes: staticRoutes,
+    renderDirectory: hackForceToRoot ? paths.distPath : paths.documentOutput,
     skipAssets: buildType === "start",
     extraGlobals: { Buffer },
   });
@@ -61,7 +64,7 @@ export default async function getConfig({ buildType }): Promise<any> {
   const common = {
     mode,
     output: {
-      publicPath: "/static/",
+      publicPath: "/",
     },
     resolve: {
       alias: { path: "path-browserify" },
@@ -76,7 +79,7 @@ export default async function getConfig({ buildType }): Promise<any> {
   const configs: any = [
     merge(common, {
       output: {
-        path: paths.browserOutput,
+        path: hackForceToRoot ? paths.distPath : paths.browserOutput,
         filename: "[name]-[hash].js",
       },
       devtool: mode === "production" ? "source-map" : "inline-source-map",
@@ -183,6 +186,44 @@ export default async function getConfig({ buildType }): Promise<any> {
         serverRendererPlugin.nodePlugin,
         htmlRenderPlugin.rendererPlugin,
       ],
+    }),
+    merge(common, {
+      output: {
+        path: paths.runtimeOutput,
+        // libraryExport: "default",
+        // library: "static",
+        // libraryTarget: "umd2",
+        // libraryTarget: "commonjs2",
+        libraryTarget: "commonjs2",
+        filename: "[name].js",
+      },
+      module: {
+        rules: [
+          {
+            test: /\.m?(j|t)sx?$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.(jpg|png|ico)?$/,
+            use: {
+              loader: "file-loader",
+              options: {
+                emitFile: false,
+              },
+            },
+          },
+        ],
+      },
+      name: "runtime",
+      target: "webworker",
+      resolve: {
+        alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
+      },
+      entry: { response: paths.runtimeEntry },
+      plugins: [],
     }),
   ];
 
