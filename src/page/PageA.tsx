@@ -44,7 +44,7 @@ export default memo(function PageA() {
       </Text>
       <Text>Update your name</Text>
       <form
-        onSubmit={event => {
+        onSubmit={(event) => {
           event.preventDefault();
           onSubmit();
           return false;

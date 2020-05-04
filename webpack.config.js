@@ -24,20 +24,17 @@ const routes = [
   "/contact/us",
 ];
 
-const renderPlugin = new HtmlRenderPlugin({
+const htmlRenderPlugin = new HtmlRenderPlugin({
   routes,
   renderEntry: "main",
   extraGlobals: { Buffer },
   mapStatsToParams: ({ webpackStats }) => {
-    const clientStats = webpackStats
-      .toJson({})
-      .children.find(({ name }) => name === "client");
+    const clientStats = webpackStats.toJson({});
     return {
       clientStats,
     };
   },
   renderDirectory: distDirectory,
-  verbose: true,
 });
 
 const liveReload = process.env.NODE_ENV === "development";
@@ -111,7 +108,7 @@ module.exports = [
     name: "client",
     target: "web",
     entry: clientEntry,
-    plugins: [new LoadablePlugin(), renderPlugin],
+    plugins: [new LoadablePlugin(), htmlRenderPlugin.statsCollectorPlugin],
   }),
   merge(common, {
     dependencies: ["client"],
@@ -126,6 +123,6 @@ module.exports = [
     name: "render",
     target: "node",
     entry: paths.renderEntry,
-    plugins: [renderPlugin.render()],
+    plugins: [htmlRenderPlugin.rendererPlugin],
   }),
 ];

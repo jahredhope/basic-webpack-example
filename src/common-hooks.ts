@@ -4,13 +4,13 @@ export const useIncrementer = (
   initialState: number = 0
 ): [number, () => void] => {
   const [state, setState] = useState(initialState);
-  return [state, () => setState(oldState => oldState + 1)];
+  return [state, () => setState((oldState) => oldState + 1)];
 };
 export const useToggler = (
   initialState: boolean = false
 ): [boolean, () => void] => {
   const [state, setState] = useState(initialState);
-  return [state, () => setState(oldState => !oldState)];
+  return [state, () => setState((oldState) => !oldState)];
 };
 
 export const useLogMount = (pageName: string) => {

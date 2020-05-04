@@ -15,9 +15,8 @@ export interface ItemsState {
 }
 
 const selectItemsObj = (state: State) => state.items;
-const selectItems = createSelector(
-  selectItemsObj,
-  items => Object.values(items)
+const selectItems = createSelector(selectItemsObj, (items) =>
+  Object.values(items)
 );
 
 export const useSelectItems = () => useSelector(selectItems);
