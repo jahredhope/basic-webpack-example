@@ -3,11 +3,11 @@ import createDebug from "debug";
 import exceptionFormatter from "exception-formatter";
 import express from "express";
 import expressPino from "express-pino-logger";
-import { pathToRegexp } from "path-to-regexp";
+// import { pathToRegexp } from "path-to-regexp";
 import pino from "pino";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 
-import { onServerRender } from "src/page/PageB";
+// import { onServerRender } from "src/page/PageB";
 import render from "./render";
 import { State } from "./store";
 
@@ -44,7 +44,7 @@ app.get("*", async (req, res) => {
   const requestId = uuidv4();
   debug("render", req.url);
 
-  let state: State = {
+  const state: State = {
     environment: "development",
     items: {},
     lists: {},

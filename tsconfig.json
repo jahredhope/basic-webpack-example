@@ -13,6 +13,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": {
       "*": ["*"]
     }

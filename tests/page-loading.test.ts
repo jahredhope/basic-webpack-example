@@ -45,8 +45,7 @@ describe("Page Load", () => {
 
 describe("Links", () => {
   it("should be able to navigate to each page", async () => {
-    let page: Page;
-    page = await (global as any).__BROWSER__.newPage();
+    const page: Page = await (global as any).__BROWSER__.newPage();
     await page.goto(pageA);
 
     await page.click('[data-analytics="header-page-b"]');

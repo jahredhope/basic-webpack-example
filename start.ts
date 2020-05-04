@@ -1,23 +1,36 @@
-const webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
-const debug = require("debug");
-const createServerRendererPlugin = require("./RendererPlugin/ServerRendererPlugin");
-// const createStaticRendererPlugin = require("./RendererPlugin/StaticRendererPlugin");
+import webpack from "webpack";
+import WebpackDevServer from "webpack-dev-server";
+import debug from "debug";
+import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
+// import createStaticRendererPlugin from "./RendererPlugin/StaticRendererPlugin"
 import HtmlRenderPlugin from "html-render-webpack-plugin";
-const proxy = require("express-http-proxy");
-const bodyParser = require("body-parser");
-const querystring = require("querystring");
-const getConfig = require("./webpack.config");
+import proxy from "express-http-proxy";
+import bodyParser from "body-parser";
+import querystring from "querystring";
+import getConfig from "./webpack.config";
 // import Buffer from "buffer";
-const {
+import {
   staticRoutes,
   serverRoutes,
   rendererUrl,
   rendererHealthcheck,
-} = require("./config");
+} from "./config";
 
 const staticRegex = /^\/static/i;
 const apiRegex = /^\/api/i;
+
+const serverRendererPlugin = createServerRendererPlugin({
+  healthCheckEndpoint: rendererHealthcheck,
+  rendererUrl,
+  routes: serverRoutes,
+  useDevServer: true,
+});
+const htmlRenderPlugin = new HtmlRenderPlugin({
+  renderEntry: "render",
+  routes: staticRoutes,
+  skipAssets: true,
+  extraGlobals: { Buffer },
+});
 
 const afterWebpackDevServer = (app) => {
   app.use("/api/reddit/", proxy("https://api.reddit.com/"));
@@ -42,24 +55,17 @@ const afterWebpackDevServer = (app) => {
       next();
     }
   });
-};
 
-const serverRendererPlugin = createServerRendererPlugin({
-  healthCheckEndpoint: rendererHealthcheck,
-  rendererUrl,
-  routes: serverRoutes,
-  useDevServer: true,
-});
-const htmlRenderPlugin = new HtmlRenderPlugin({
-  renderEntry: "render",
-  routes: staticRoutes,
-  skipAssets: true,
-  // extraGlobals: { Buffer },
-});
+  app.use(serverRendererPlugin.devServerRouter);
+  app.use(htmlRenderPlugin.createDevRouter());
+};
 
 const compiler = webpack(getConfig({ serverRendererPlugin, htmlRenderPlugin }));
 
 const webpackDevServer = new WebpackDevServer(compiler, {
+  before: (app) => {
+    app.disable("x-powered-by");
+  },
   after: afterWebpackDevServer,
   disableHostCheck: true,
   hot: true,
@@ -67,11 +73,6 @@ const webpackDevServer = new WebpackDevServer(compiler, {
   publicPath: "/static/",
   serveIndex: false,
 });
-
-webpackDevServer.use(serverRendererPlugin.devServerRouter);
-webpackDevServer.use(htmlRenderPlugin.createDevRouter());
-
-webpackDevServer.app.disable("x-powered-by");
 
 webpackDevServer.listen(8080, (error) => {
   if (error) {
