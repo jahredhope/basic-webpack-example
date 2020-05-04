@@ -10,7 +10,7 @@ interface IProps {
   secondary?: boolean;
 }
 
-const background = ({  }: IProps) => {
+const background = ({}: IProps) => {
   return css`
     color: ${theme.colors.line.light};
     background-color: ${theme.colors.button.standard};
