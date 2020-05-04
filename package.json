@@ -9,7 +9,7 @@
     "build": "NODE_ENV=production webpack && fab-static dist",
     "serve": "fab-serve fab.zip",
     "lint.eslint": "eslint .",
-    "lint.prettier": "prettier --list-different **/*.{mjs,js,ts,tsx}",
+    "lint.prettier": "prettier --list-different .",
     "lint.tslint": "tslint -c tslint.json --project tsconfig.json",
     "fix.lint": "tslint -c tslint.json --project tsconfig.json --fix",
     "lint.type": "tsc --noEmit --project tsconfig.json",
