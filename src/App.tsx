@@ -90,8 +90,8 @@ const RouteNotFound = (_: any) => (
 );
 
 const ServerRenderedStatus = () => {
-  const requestId = useSelector(state => state.requestId);
-  const requestCounter = useSelector(state => state.requestCounter);
+  const requestId = useSelector((state) => state.requestId);
+  const requestCounter = useSelector((state) => state.requestCounter);
 
   if (!requestId && !requestCounter) {
     return null;

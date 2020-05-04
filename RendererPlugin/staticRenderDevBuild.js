@@ -56,14 +56,14 @@ module.exports = ({ routes }) => {
     }
   };
 
-  const onRendererReady = cb => {
+  const onRendererReady = (cb) => {
     if (isStaticRenderReady()) {
       cb(staticRenderer);
     } else {
       staticRenderCallbacks.push(cb);
     }
   };
-  const clientPlugin = browserCompiler => {
+  const clientPlugin = (browserCompiler) => {
     browserCompiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
       browserBuildReady = false;
     });
@@ -72,12 +72,12 @@ module.exports = ({ routes }) => {
       createRendererIfReady();
     });
 
-    browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async compilation => {
+    browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async (compilation) => {
       browserCompilation = compilation;
     });
   };
 
-  const nodePlugin = nodeCompiler => {
+  const nodePlugin = (nodeCompiler) => {
     nodeCompiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
       nodeBuildReady = false;
     });
@@ -87,19 +87,19 @@ module.exports = ({ routes }) => {
       createRendererIfReady();
     });
 
-    nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, compilation => {
+    nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, (compilation) => {
       nodeCompilation = compilation;
     });
   };
 
-  const formatErrorResponse = error => {
+  const formatErrorResponse = (error) => {
     let devServerScripts = [];
     const webpackStats = getClientStats();
     try {
       const devServerAssets = webpackStats.entrypoints.main.assets;
 
       devServerScripts = devServerAssets.map(
-        asset => `<script src="${webpackStats.publicPath}${asset}"></script>`
+        (asset) => `<script src="${webpackStats.publicPath}${asset}"></script>`
       );
     } catch (err) {
       console.error("Unable to load Dev Server Scripts. Error: ", err);
@@ -110,9 +110,9 @@ module.exports = ({ routes }) => {
 
   const devServerRouter = express.Router();
 
-  routes.forEach(route => {
+  routes.forEach((route) => {
     devServerRouter.get(route, async (req, res) => {
-      onRendererReady(async renderer => {
+      onRendererReady(async (renderer) => {
         debug("render:static:response")(
           `Static render for ${route} from ${req.path}`
         );

@@ -19,7 +19,7 @@ const {
 const staticRegex = /^\/static/i;
 const apiRegex = /^\/api/i;
 
-const afterWebpackDevServer = app => {
+const afterWebpackDevServer = (app) => {
   app.use("/api/reddit/", proxy("https://api.reddit.com/"));
   app.use("/api/countries/", proxy("https://countries.trevorblades.com/"));
   app.use("/events/", bodyParser.text());
@@ -73,7 +73,7 @@ webpackDevServer.use(htmlRenderPlugin.createDevRouter());
 
 webpackDevServer.app.disable("x-powered-by");
 
-webpackDevServer.listen(8080, error => {
+webpackDevServer.listen(8080, (error) => {
   if (error) {
     console.error(error);
     throw error;

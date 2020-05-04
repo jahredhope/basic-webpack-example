@@ -31,7 +31,7 @@ const UpdateNameForm = () => {
   const onSubmit = () => setFirstName(formFirstName);
   return (
     <form
-      onSubmit={event => {
+      onSubmit={(event) => {
         event.preventDefault();
         onSubmit();
         return false;

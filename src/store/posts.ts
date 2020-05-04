@@ -24,11 +24,11 @@ export const setSubredditPosts = (
 ): Partial<State> => ({
   lists: {
     ...state.lists,
-    [subreddit]: posts.map(post => post.id),
+    [subreddit]: posts.map((post) => post.id),
   },
   posts: {
     ...state.posts,
-    ...Object.fromEntries(posts.map(post => [post.id, post])),
+    ...Object.fromEntries(posts.map((post) => [post.id, post])),
   },
 });
 export const useSetSubredditPosts = () => useAction(setSubredditPosts);
@@ -39,9 +39,8 @@ export const selectSubPosts = (state: State, subreddit: string) =>
     : null;
 
 const selectPostsObj = (state: State) => state.posts;
-const selectPosts = createSelector(
-  selectPostsObj,
-  posts => Object.values(posts)
+const selectPosts = createSelector(selectPostsObj, (posts) =>
+  Object.values(posts)
 );
 
 export const useSelectPosts = () => useSelector(selectPosts);
@@ -58,10 +57,10 @@ export const loadPosts = (subreddit: string): Promise<Post[]> => {
     signal,
   })
     .then((res: Response) => res.json())
-    .then(res => res.data.children)
-    .then(data => data.map((v: any) => v.data))
-    .then(data => data.slice(0, 5))
-    .then(data =>
+    .then((res) => res.data.children)
+    .then((data) => data.map((v: any) => v.data))
+    .then((data) => data.slice(0, 5))
+    .then((data) =>
       data.map((post: Post) => ({
         id: post.id,
         permalink: post.permalink,

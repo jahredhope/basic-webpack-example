@@ -25,7 +25,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
   const renderCallbacks = [];
 
   const { pushNewServer, onKillServer } = createServer({
-    onReady: async error => {
+    onReady: async (error) => {
       if (error) {
         debug("render:server:master")("Error from worker:", error);
       } else {
@@ -74,7 +74,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
       flushQueuedRequests();
     }
   };
-  const renderWhenReady = cb => {
+  const renderWhenReady = (cb) => {
     if (isRendererReady()) {
       cb();
     } else {
@@ -94,7 +94,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
     clearTimeout(timeoutId);
   };
 
-  const clientPlugin = browserCompiler => {
+  const clientPlugin = (browserCompiler) => {
     browserCompiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
       browserBuildReady = false;
     });
@@ -104,12 +104,12 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
       flushQueuedRequests();
     });
 
-    browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async compilation => {
+    browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async (compilation) => {
       browserCompilation = compilation;
     });
   };
 
-  const nodePlugin = nodeCompiler => {
+  const nodePlugin = (nodeCompiler) => {
     nodeCompiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
       nodeBuildReady = false;
       rendererReady = false;
@@ -124,21 +124,21 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
 
     nodeCompiler.hooks.beforeCompile.tap(PLUGIN_NAME, onKillServer);
 
-    nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, compilation => {
+    nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, (compilation) => {
       nodeCompilation = compilation;
     });
   };
 
   const devServerRouter = express.Router();
 
-  const formatErrorResponse = error => {
+  const formatErrorResponse = (error) => {
     let devServerScripts = [];
     const webpackStats = getClientStats();
     try {
       const devServerAssets = webpackStats.entrypoints.devServerOnly.assets;
 
       devServerScripts = devServerAssets.map(
-        asset => `<script src="${webpackStats.publicPath}${asset}"></script>`
+        (asset) => `<script src="${webpackStats.publicPath}${asset}"></script>`
       );
     } catch (err) {
       console.error("Unable to load Dev Server Scripts. Error: ", err);
@@ -148,10 +148,10 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
   };
 
   const handleProxy = proxy(rendererUrl, {
-    proxyReqPathResolver: req => req.originalUrl,
+    proxyReqPathResolver: (req) => req.originalUrl,
   });
 
-  routes.forEach(route => {
+  routes.forEach((route) => {
     devServerRouter.use(route, async (req, res, next) => {
       renderWhenReady(() => {
         if (rendererError) {

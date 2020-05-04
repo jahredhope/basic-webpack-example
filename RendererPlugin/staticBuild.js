@@ -12,7 +12,7 @@ async function emitAsset(fileSystem, dir, content) {
     fileSystem.mkdirp ||
     ((directory, cb) => _mkdirp(directory, { fs: fileSystem }, cb));
   await new Promise((resolve, reject) =>
-    mkdirp(path.dirname(dir), error => {
+    mkdirp(path.dirname(dir), (error) => {
       if (error) {
         reject(error);
       }
@@ -20,7 +20,7 @@ async function emitAsset(fileSystem, dir, content) {
     })
   );
   return new Promise((resolve, reject) =>
-    fileSystem.writeFile(dir, content, error => {
+    fileSystem.writeFile(dir, content, (error) => {
       if (error) {
         reject(error);
       }
@@ -55,11 +55,11 @@ module.exports = ({ routes, renderDirectory }) => {
       compilation: nodeCompilation,
     });
 
-    const transformFilePath = route => {
+    const transformFilePath = (route) => {
       path.join(...route.split("/").filter(Boolean), "index.html");
     };
 
-    routes.forEach(async route => {
+    routes.forEach(async (route) => {
       const content = await renderer({ clientStats, route });
 
       const filePath = path.join(renderDirectory, transformFilePath(route));
@@ -72,14 +72,14 @@ module.exports = ({ routes, renderDirectory }) => {
     });
   };
 
-  const clientPlugin = browserCompiler => {
-    browserCompiler.hooks.emit.tapPromise(PLUGIN_NAME, async compilation => {
+  const clientPlugin = (browserCompiler) => {
+    browserCompiler.hooks.emit.tapPromise(PLUGIN_NAME, async (compilation) => {
       browserCompilation = compilation;
       renderWhenReady(compilation);
     });
   };
-  const nodePlugin = nodeCompiler => {
-    nodeCompiler.hooks.emit.tapPromise(PLUGIN_NAME, async compilation => {
+  const nodePlugin = (nodeCompiler) => {
+    nodeCompiler.hooks.emit.tapPromise(PLUGIN_NAME, async (compilation) => {
       nodeCompilation = compilation;
       renderWhenReady(compilation);
     });

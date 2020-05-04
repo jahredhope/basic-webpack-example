@@ -11,7 +11,7 @@ function ShowMore() {
       <Link
         name="show-more"
         href="#"
-        onClick={event => {
+        onClick={(event) => {
           event.preventDefault();
           toggleShowMore();
         }}

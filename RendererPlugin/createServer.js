@@ -27,7 +27,7 @@ module.exports = function createMaster({ onReady }) {
     debug("render:server:master")(cluster.workers);
     const worker = cluster.fork();
 
-    worker.on("message", function(msg) {
+    worker.on("message", function (msg) {
       if (msg.error) {
         debug("render:server:master")("Error from worker:", msg.error);
         onReady(msg.error);

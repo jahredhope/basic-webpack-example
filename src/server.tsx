@@ -63,7 +63,7 @@ app.get("*", async (req, res) => {
         clientStatsFile,
         route: req.url,
         state,
-      }).catch(err => {
+      }).catch((err) => {
         console.error("Caught an error");
         throw err;
       })

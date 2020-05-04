@@ -23,7 +23,7 @@ const htmlRenderPlugin = new HtmlRenderPlugin({
 
 const compiler = webpack(getConfig({ serverRendererPlugin, htmlRenderPlugin }));
 
-compiler.run(err => {
+compiler.run((err) => {
   if (err) {
     console.error("Building finished with err", err);
   }

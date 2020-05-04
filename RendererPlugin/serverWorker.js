@@ -4,14 +4,14 @@ const evalutateFromSource = require("./evalutateFromSource");
 
 const log = require("debug")("render:server:worker");
 
-process.on("message", function({ entry, sourceModules, extraModules }) {
+process.on("message", function ({ entry, sourceModules, extraModules }) {
   log("Message recieved");
   if (!sourceModules[entry]) {
     throw new Error(
       `Unable to find entry "${entry}" in source modules. Valid options are ${Object.keys(
         sourceModules
       )
-        .map(v => `"${v}"`)
+        .map((v) => `"${v}"`)
         .join(", ")}.`
     );
   }

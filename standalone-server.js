@@ -28,11 +28,11 @@ app.use((req, res, next) => {
   }
 });
 
-serverRoutes.forEach(route => {
+serverRoutes.forEach((route) => {
   app.use(
     route,
     proxy(rendererUrl, {
-      proxyReqPathResolver: req => req.originalUrl,
+      proxyReqPathResolver: (req) => req.originalUrl,
     })
   );
 });

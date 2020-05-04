@@ -12,7 +12,7 @@ import {
 
 const useTopRedditPosts = (subreddit: string) => {
   const setSubredditPosts = useSetSubredditPosts();
-  const posts = useSelector(state => selectSubPosts(state, subreddit));
+  const posts = useSelector((state) => selectSubPosts(state, subreddit));
   useEffect(() => {
     const promise: any = loadPosts(subreddit).then((newPosts: Post[]) =>
       setSubredditPosts(subreddit, newPosts)
