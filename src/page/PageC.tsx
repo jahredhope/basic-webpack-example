@@ -63,7 +63,7 @@ export default memo(function PageC() {
       <Button onClick={() => addItem({ id: "3", name: "hi there" })}>
         Add
       </Button>
-      {items.map(item => {
+      {items.map((item) => {
         return (
           <SecondarySectionGreen key={item.name}>
             {item.name}

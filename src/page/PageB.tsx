@@ -47,7 +47,7 @@ export default memo(function PageB() {
       <Card>
         <a
           href="#"
-          onClick={event => {
+          onClick={(event) => {
             event.preventDefault();
             toggleShowMore();
           }}
