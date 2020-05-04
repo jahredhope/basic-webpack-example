@@ -1,33 +1,62 @@
 // const webpack = require("webpack")
-const merge = require("webpack-merge");
-// const { Buffer } = require("buffer");
-const path = require("path");
-const LoadablePlugin = require("@loadable/webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const { promisify } = require("util");
-const mkdirp = promisify(require("mkdirp"));
+import merge from "webpack-merge";
+import { Buffer } from "buffer";
+import path from "path";
+import LoadablePlugin from "@loadable/webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import mkdirp from "mkdirp";
+import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
+// import createStaticRendererPlugin from "./RendererPlugin/StaticRendererPlugin"
+import HtmlRenderPlugin from "html-render-webpack-plugin";
 
-const { paths } = require("./config");
+import { paths } from "./config";
 
-const liveReload = process.env.NODE_ENV === "development";
-const mode =
-  process.env.NODE_ENV === "development" ? "development" : "production";
-
-const usingFileSystem = mode === "production";
+import {
+  staticRoutes,
+  serverRoutes,
+  rendererUrl,
+  rendererHealthcheck,
+} from "./config";
 
 const domain = "http://localhost:8080";
 const liveReloadEntry = `${require.resolve(
   "webpack-dev-server/client/"
 )}?${domain}`;
 
-if (usingFileSystem) {
-  mkdirp(path.dirname(paths.clientStatsLocation));
-}
+export default async function getConfig({ buildType }): Promise<any> {
+  const liveReload = buildType === "start";
+  const mode =
+    process.env.NODE_ENV === "development" ? "development" : "production";
 
-module.exports = function getConfig({
-  serverRendererPlugin,
-  htmlRenderPlugin,
-}) {
+  const usingFileSystem = buildType === "build";
+
+  const serverRendererPlugin = createServerRendererPlugin({
+    useDevServer: buildType === "start",
+    healthCheckEndpoint: rendererHealthcheck,
+    rendererUrl,
+    routes: serverRoutes,
+  });
+
+  const htmlRenderPlugin = new HtmlRenderPlugin({
+    renderEntry: "render",
+    routes: staticRoutes,
+    skipAssets: buildType === "start",
+    extraGlobals: { Buffer },
+  });
+
+  if (usingFileSystem) {
+    const dir = path.dirname(paths.clientStatsLocation);
+    try {
+      await mkdirp(dir);
+    } catch (error) {
+      console.error(
+        "Error creating clientStats Location. Location: ",
+        dir,
+        "Error: ",
+        error
+      );
+    }
+  }
   console.log({ htmlRenderPlugin });
   const common = {
     mode,
@@ -44,7 +73,7 @@ module.exports = function getConfig({
     //   moduleIds: "deterministic",
     // },
   };
-  return [
+  const configs: any = [
     merge(common, {
       output: {
         path: paths.browserOutput,
@@ -156,4 +185,8 @@ module.exports = function getConfig({
       ],
     }),
   ];
-};
+
+  configs.htmlRenderPlugin = htmlRenderPlugin;
+  configs.serverRendererPlugin = serverRendererPlugin;
+  return configs;
+}
