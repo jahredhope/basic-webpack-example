@@ -12,9 +12,10 @@ import theme from "./theme";
 const PageA = loadable(() => import("./page/PageA"), {
   fallback: <Loader />,
 });
-const PageB = loadable(() => import("./page/PageB"), {
-  fallback: <Loader />,
-});
+import PageB from "./page/PageB";
+// const PageB = loadable(() => import("./page/PageB"), {
+//   fallback: <Loader />,
+// });
 const PageC = loadable(() => import("./page/PageC"), {
   fallback: <Loader />,
 });

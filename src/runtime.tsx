@@ -4,13 +4,13 @@ import createDebug from "debug";
 // import exceptionFormatter from "exception-formatter";
 // import express from "express";
 // import expressPino from "express-pino-logger";
-// import { pathToRegexp } from "path-to-regexp";
-// import pino from "pino";
-// import { v4 as uuidv4 } from "uuid";
+import { pathToRegexp } from "path-to-regexp";
+import pino from "pino";
+import { v4 as uuidv4 } from "uuid";
 
-// import { onServerRender } from "src/page/PageB";
-// import render from "./render";
-// import { State } from "./store";
+import { onServerRender } from "src/page/PageB";
+import render from "./render";
+import { State } from "./store";
 import { match } from "path-to-regexp";
 const debug = createDebug("app:server");
 
@@ -20,10 +20,12 @@ const pingMatch = match("/ping");
 // const clientStatsFile = "./loadable-stats.json";
 // const LOG_TO_CONSOLE = false;
 
+let requestCounter = 0;
+
 export const runtime = (args, metadata) => {
   debug({ args, metadata });
   return async ({ request, settings, url }) => {
-    // const webpackStats = metadata.webpackStats;
+    const webpackStats = metadata.webpackStats;
     debug({ request, settings, url });
 
     if (healthCheckMatch(url.pathname)) {
@@ -33,6 +35,48 @@ export const runtime = (args, metadata) => {
     if (pingMatch(url.pathname)) {
       debug("ping", url);
       return new Response("pong", { status: 200 });
+    }
+
+    if (pingMatch(url.pathname)) {
+      debug("ping", url);
+      return new Response("pong", { status: 200 });
+    }
+    console.log("Checking for ", url.pathname);
+    if (match("/b/")(url.pathname)) {
+      console.log("Rendering for ", url.pathname);
+      const state: State = {
+        environment: "development",
+        items: {},
+        lists: {},
+        posts: {},
+        requestCounter: ++requestCounter,
+        requestId: Math.floor(Math.random() * 1000000).toString(10),
+        user: null,
+        username: "my-username",
+      };
+
+      let content;
+
+      try {
+        content = await render({
+          webpackStats,
+          route: url.pathname,
+          state,
+        }).catch((err) => {
+          console.error("Caught an error");
+          throw err;
+        });
+      } catch (error) {
+        console.error("Error occurred rendering", error);
+      }
+
+      if (content) {
+        console.log("Content for ", url.pathname);
+        return new Response(content, {
+          status: 200,
+          headers: { "content-type": "text/html; charset=UTF-8" },
+        });
+      }
     }
 
     // NOT IMPLEMENTED

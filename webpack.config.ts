@@ -1,4 +1,4 @@
-// const webpack = require("webpack")
+import webpack from "webpack";
 import merge from "webpack-merge";
 import { Buffer } from "buffer";
 import path from "path";
@@ -221,9 +221,20 @@ export default async function getConfig({ buildType }): Promise<any> {
       target: "webworker",
       resolve: {
         alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
+        aliasFields: ["main"],
+        mainFields: ["module", "main"],
       },
       entry: { response: paths.runtimeEntry },
-      plugins: [],
+      plugins: [
+        /**
+         * This build is currently targetted at a webworker but actually runs inside a V8 Isolate
+         * V8 Isolate doesn't have a notion of 'self', so this hacks around this
+         */
+        new webpack.BannerPlugin({
+          banner: "let self = global;\n",
+          raw: true,
+        }),
+      ],
     }),
   ];
 

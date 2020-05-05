@@ -6,7 +6,7 @@
   "scripts": {
     "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development ts-node ./start.ts ",
     "build:fab": "npm run build && npm run fab:build",
-    "build": "DEBUG=*,-babel*,-express* NODE_ENV=production ts-node ./build.ts",
+    "build": "DEBUG=*,-babel*,-express* NODE_ENV=development ts-node ./build.ts",
     "serve": "npm run serve:renderer & npm run serve:static",
     "serve:static": "DEBUG=*,-babel*,-express*,-send* node standalone-server.js",
     "serve:renderer": "DEBUG=*,-babel*,-express* node ./dist/node/server",

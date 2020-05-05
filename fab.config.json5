@@ -6,12 +6,12 @@
       // Leave this as root as it breaks other plugins, temporarily search static assets from root
       dir: "dist",
     },
-    "@fab/plugin-render-html": {
-      fallback: "/index.html",
-    },
     // Disable Appending Slashes while assets are still in root
     // "./fab-plugin-append-slash/runtime.js": {},
     "./fab-response": {},
+    "@fab/plugin-render-html": {
+      fallback: "/index.html",
+    },
     "@fab/plugin-rewire-assets": {},
   },
   settings: {
