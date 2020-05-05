@@ -8,6 +8,7 @@
     },
     // Disable Appending Slashes while assets are still in root
     // "./fab-plugin-append-slash/runtime.js": {},
+    "./fab-response/runtime.ts": {},
     "./fab-response": {},
     "@fab/plugin-render-html": {
       fallback: "/index.html",

@@ -173,7 +173,7 @@ function App({ error }: any) {
           data-analytics="header-page-b"
           name="header-page-b"
           onMouseOver={() => {
-            PageB.preload();
+            // PageB.preload();
           }}
         >
           Page B

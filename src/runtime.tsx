@@ -4,11 +4,11 @@ import createDebug from "debug";
 // import exceptionFormatter from "exception-formatter";
 // import express from "express";
 // import expressPino from "express-pino-logger";
-import { pathToRegexp } from "path-to-regexp";
-import pino from "pino";
-import { v4 as uuidv4 } from "uuid";
+// import { pathToRegexp } from "path-to-regexp";
+// import pino from "pino";
+// import { v4 as uuidv4 } from "uuid";
 
-import { onServerRender } from "src/page/PageB";
+// import { onServerRender } from "src/page/PageB";
 import render from "./render";
 import { State } from "./store";
 import { match } from "path-to-regexp";
@@ -22,11 +22,14 @@ const pingMatch = match("/ping");
 
 let requestCounter = 0;
 
-export const runtime = (args, metadata) => {
-  debug({ args, metadata });
+export const runtime = (metadata) => {
+  debug({ metadata });
   return async ({ request, settings, url }) => {
     const webpackStats = metadata.webpackStats;
     debug({ request, settings, url });
+    if (!webpackStats) {
+      throw new Error("Missing webpackStats");
+    }
 
     if (healthCheckMatch(url.pathname)) {
       debug("healthcheck", url);

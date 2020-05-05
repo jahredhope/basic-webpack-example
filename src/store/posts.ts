@@ -1,4 +1,4 @@
-import AbortController from "abort-controller";
+// import AbortController from "abort-controller";
 import { createSelector } from "reselect";
 import { State, useAction, useSelector } from ".";
 
@@ -50,11 +50,12 @@ export const loadPosts = (subreddit: string): Promise<Post[]> => {
   if (postsCache[subreddit]) {
     return postsCache[subreddit];
   }
-  const controller = new AbortController();
-  const signal = controller.signal;
+  // TODO: Temporarily disable AbortController as it's not working in V8 Isolate
+  // const controller = new AbortController();
+  // const signal = controller.signal;
   const host = typeof window === "undefined" ? "http://localhost:8080" : "";
   const promise: any = fetch(`${host}/api/reddit/r/${subreddit}?limit=5`, {
-    signal,
+    // signal,
   })
     .then((res: Response) => res.json())
     .then((res) => res.data.children)
@@ -74,7 +75,7 @@ export const loadPosts = (subreddit: string): Promise<Post[]> => {
       }
     });
   promise.cancel = () => {
-    controller.abort();
+    // controller.abort();
   };
   postsCache[subreddit] = promise;
   return promise;

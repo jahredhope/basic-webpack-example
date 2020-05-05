@@ -222,7 +222,7 @@ export default async function getConfig({ buildType }): Promise<any> {
       resolve: {
         alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
         aliasFields: ["main"],
-        mainFields: ["module", "main"],
+        // mainFields: ["module", "main"],
       },
       entry: { response: paths.runtimeEntry },
       plugins: [
