@@ -221,7 +221,7 @@ export default async function getConfig({ buildType }): Promise<any> {
       target: "webworker",
       resolve: {
         alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
-        aliasFields: ["main"],
+        // aliasFields: ["main"],
         // mainFields: ["module", "main"],
       },
       entry: { response: paths.runtimeEntry },
