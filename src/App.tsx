@@ -1,11 +1,11 @@
 import loadable from "@loadable/component";
 import { Router } from "@reach/router";
 import React, { Fragment } from "react";
-import Loader from "./components/Loader";
 
+import Loader from "./components/Loader";
+import Card from "./components/Card";
 import Text from "./components/Text";
 import TextLink from "./components/TextLink";
-import { useSelector } from "./store/index";
 
 import theme from "./theme";
 
@@ -28,23 +28,29 @@ const BannerHeading = styled(Text)`
 `;
 
 const Banner = styled("div")`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr max-content 1fr;
+  grid-auto-columns: minmax(min-content, max-content);
+  grid-auto-flow: column;
+  justify-content: space-between;
   width: 100vw;
+  box-sizing: border-box;
   padding: 12px 18px;
-  margin-bottom: 12px;
+  align-items: flex-end;
   background-color: ${theme.colors.fill.secondary};
 `;
 
 const TabItem = styled(TextLink)`
-  padding: 0 12px 12px 0;
+  padding: 0 12px 0 0;
   :last-child {
     padding-right: 0;
   }
 `;
 
 const Tabs = styled("div")`
-  padding: 0 18px;
+  padding: 10px 18px;
+  background-color: var(--color-orange);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -61,12 +67,8 @@ const Logo = styled("img")`
   height: 60px;
   width: 60px;
 `;
-import {
-  useIncrementalTimer,
-  useIncrementer,
-  useLogMount,
-} from "src/common-hooks";
-import Card from "./components/Card";
+import { useLogMount } from "src/common-hooks";
+import PageDetails from "./components/PageDetails";
 const RoutePageA = (_: any) => (
   <Fragment>
     <PageA />
@@ -90,22 +92,6 @@ const RouteNotFound = (_: any) => (
   </Fragment>
 );
 
-const ServerRenderedStatus = () => {
-  const requestId = useSelector((state) => state.requestId);
-  const requestCounter = useSelector((state) => state.requestCounter);
-
-  if (!requestId && !requestCounter) {
-    return null;
-  }
-  return (
-    <Card>
-      <Text>
-        This page was server rendered (ID: {requestId}, Count: {requestCounter})
-      </Text>
-    </Card>
-  );
-};
-
 const addErrorBoundary = (Child: any) =>
   class ErrorCatcher extends React.Component<any, any> {
     public static getDerivedStateFromError(error: any) {
@@ -124,8 +110,6 @@ function App({ error }: any) {
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
-  const [count, incrementCount] = useIncrementer(1);
-  useIncrementalTimer(incrementCount, 3000);
   useLogMount("App");
 
   return (
@@ -153,9 +137,8 @@ function App({ error }: any) {
       />{" "}
       <Banner>
         <Logo src={logoSrc} />
-        <BannerHeading heading primary>
-          Appss Content: {count}
-        </BannerHeading>
+        <BannerHeading heading>Basic Webpack Example</BannerHeading>
+        <div />
       </Banner>
       <Tabs>
         <TabItem
@@ -202,7 +185,7 @@ function App({ error }: any) {
           <RouteNotFound default />
         </Router>
       )}
-      <ServerRenderedStatus />
+      <PageDetails />
     </div>
   );
 }

@@ -62,8 +62,9 @@ export default async function render(params: any) {
     stats: webpackStats,
     statsFile: clientStatsFile,
   });
-  const initialState = {
+  const store = createStore({
     ...state,
+    initialRoute: route,
     items: {
       "1": {
         id: "1",
@@ -78,8 +79,7 @@ export default async function render(params: any) {
       firstName: "Fred",
       lastName: "Jones",
     },
-  };
-  const store = createStore(initialState);
+  });
   log({ route });
 
   const WrappedApp = (
@@ -102,7 +102,7 @@ export default async function render(params: any) {
     body: `
     <div id="root">${appHtml}</div>
     <script>window.initialRoute = "${route}";</script>
-    <script>window.initialState = ${JSON.stringify(initialState)};</script>
+    <script>window.initialState = ${JSON.stringify(store.getState())};</script>
     ${extractor.getScriptTags()}
     <script>
       window.__APOLLO_STATE__ = ${JSON.stringify(client.extract())}

@@ -10,6 +10,7 @@ import Text from "src/components/Text";
 import { State } from "src/store";
 import { loadPosts, setSubredditPosts } from "src/store/posts";
 import { useDisplayName } from "src/store/user";
+import { SegmentedPage } from "src/components/SegmentedPage";
 
 export default memo(function PageB() {
   const displayName = useDisplayName();
@@ -18,18 +19,27 @@ export default memo(function PageB() {
   useTrackPageView("PageB");
 
   return (
-    <div>
+    <SegmentedPage>
       <Helmet>
         <title>Page B</title>
       </Helmet>
       <Card>
-        <Text heading>Page B - {displayName}</Text>
+        <Text heading>Page B</Text>
+        <Text>
+          This page contains a mix of server-or-client side content and
+          client-only side content.
+        </Text>
       </Card>
       <Card>
         <Continents />
       </Card>
-      <RedditPosts />
-    </div>
+      <Card>
+        <RedditPosts />
+      </Card>
+      <Card>
+        <Text>Full name: {displayName}</Text>
+      </Card>
+    </SegmentedPage>
   );
 });
 

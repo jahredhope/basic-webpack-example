@@ -15,6 +15,7 @@ type Environment = "production" | "staging" | "development";
 export type State = PostsState &
   UserState &
   ItemsState & {
+    initialRoute: string;
     environment: Environment;
     requestId?: string;
     requestCounter?: number;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "src/components/Button";
-import Card from "src/components/Card";
 import Text from "src/components/Text";
 import { useSelector } from "src/store";
 import {
@@ -27,7 +26,7 @@ const RedditPosts = () => {
   const posts = useTopRedditPosts(subreddit);
 
   return (
-    <Card>
+    <>
       <Text heading>Reddit ReactJS Posts</Text>
       <Button onClick={() => setSubreddit("reactjs")}>React JS</Button>
       <Button onClick={() => setSubreddit("webpack")}>Webpack</Button>
@@ -63,7 +62,7 @@ const RedditPosts = () => {
           </li>
         </ul>
       )}
-    </Card>
+    </>
   );
 };
 

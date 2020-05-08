@@ -1,5 +1,4 @@
-import styled from "@emotion/styled";
-import React, { Fragment, memo } from "react";
+import React, { memo } from "react";
 import { Helmet } from "react-helmet";
 import {
   useBattery,
@@ -17,12 +16,7 @@ import { useHasMounted, useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import Text from "src/components/Text";
-
-const Section = styled("div")`
-  background-color: hsl(280, 15%, 80%);
-  color: hsl(280, 98%, 24%);
-  padding: 12px 3vw;
-`;
+import { SegmentedPage } from "src/components/SegmentedPage";
 
 export default memo(function PageC() {
   useLogMount("PageC");
@@ -41,49 +35,51 @@ export default memo(function PageC() {
   const windowSize = useWindowSize();
 
   return (
-    <Fragment>
+    <SegmentedPage>
       <Helmet>
         <title>Page C</title>
       </Helmet>
       <Card>
-        <Text heading>Currently on Page C</Text>
+        <Text heading>Page C</Text>
+        <Text>
+          This page contains mostly client-side content with minimal static
+          rendering.
+        </Text>
       </Card>
       {hasMounted ? (
-        <Fragment>
-          <Section>
+        <>
+          <Text>
             {battery.level
               ? `Battery: ${battery.level * 100}%${
                   battery.charging ? " Charging" : ""
                 }`
               : "\u00a0"}
-          </Section>
-          <Section>
+          </Text>
+          <Text>
             {geolocation.latitude
               ? `Geolocation: ${geolocation.longitude.toFixed(
                   6
                 )} ${geolocation.latitude.toFixed(6)}`
               : "\u00a0"}
-          </Section>
-          <Section>Idle: {JSON.stringify(idle)}</Section>
-          <Section>
-            {location.href ? `Location: ${location.href}` : "\u00a0"}
-          </Section>
-          <Section>
+          </Text>
+          <Text>Idle: {JSON.stringify(idle)}</Text>
+          <Text>{location.href ? `Location: ${location.href}` : "\u00a0"}</Text>
+          <Text>
             {network.effectiveType
               ? `Network: ${network.online ? "Online" : "Offline"} (Latency ${
                   network.rtt
                 }ms)`
               : "\u00a0"}
-          </Section>
-          <Section>
+          </Text>
+          <Text>
             Window scroll {windowScroll.x} x {windowScroll.y}
-          </Section>
-          <Section>
+          </Text>
+          <Text>
             {windowSize.height > 10 && windowSize.height < 100000
               ? `Window Size ${windowSize.height} x ${windowSize.width}`
               : "\u00a0"}
-          </Section>
-          <Section>
+          </Text>
+          <Text>
             {orientation.type
               ? `Orientation: ${
                   orientation.type.match(/landscape/i)
@@ -91,11 +87,11 @@ export default memo(function PageC() {
                     : "Portrait"
                 }`
               : "\u00a0"}
-          </Section>
-        </Fragment>
+          </Text>
+        </>
       ) : (
         <Loader />
       )}
-    </Fragment>
+    </SegmentedPage>
   );
 });
