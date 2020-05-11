@@ -2,11 +2,11 @@
 // import "isomorphic-fetch";
 // import "regenerator-runtime/runtime";
 
-import { ApolloProvider } from "@apollo/react-hooks";
-import { getDataFromTree } from "@apollo/react-ssr";
-import { ChunkExtractor } from "@loadable/server";
-import { ServerLocation } from "@reach/router";
-import debug from "debug";
+// import { ApolloProvider } from "@apollo/react-hooks";
+// import { getDataFromTree } from "@apollo/react-ssr";
+// import { ChunkExtractor } from "@loadable/server";
+// import { ServerLocation } from "@reach/router";
+// import debug from "debug";
 import { Helmet } from "react-helmet";
 
 // import { createStore, Provider } from "src/store";

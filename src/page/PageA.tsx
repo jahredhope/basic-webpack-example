@@ -36,6 +36,9 @@ export default memo(function PageA() {
 
   return (
     <Root>
+      <Helmet>
+        <title>Page A - Static content</title>
+      </Helmet>
       <div>
         <Text heading as={"h3"} primary>
           Page A - Static content

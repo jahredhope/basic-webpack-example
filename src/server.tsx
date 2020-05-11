@@ -46,6 +46,7 @@ app.get("*", async (req, res) => {
 
   const state: State = {
     environment: "development",
+    initialRoute: req.url,
     items: {},
     lists: {},
     posts: {},

@@ -7,7 +7,7 @@ import Card from "./Card";
 import { useDisplayName } from "src/store/user";
 import styled from "@emotion/styled";
 import { useLocation } from "@reach/router";
-import ToolingImages from "./ToolingImages";
+// import ToolingImages from "./ToolingImages";
 
 const Root = styled(Card)`
   grid-area: meta;

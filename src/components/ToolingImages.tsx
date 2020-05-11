@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+// import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 
 import React from "react";
@@ -9,7 +9,7 @@ import imgPuppeteer from "src/tooling-images/puppeteer-icon.png";
 import imgTypeScript from "src/tooling-images/typescript-icon.png";
 import imgWebpack from "src/tooling-images/webpack-icon.png";
 
-import theme from "src/tooling-images/src/theme";
+// import theme from "src/tooling-images/src/theme";
 
 const Root = styled("div")`
   display: grid;
