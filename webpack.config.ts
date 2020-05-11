@@ -38,7 +38,7 @@ export default async function getConfig({ buildType }): Promise<any> {
   });
 
   // TODO: Some tooling is doesn't currently support documents being anywhere but relative to root
-  const hackForceToRoot = true;
+  const hackForceToRoot = false;
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
     routes: staticRoutes,
@@ -64,7 +64,7 @@ export default async function getConfig({ buildType }): Promise<any> {
   const common = {
     mode,
     output: {
-      publicPath: "/",
+      publicPath: hackForceToRoot ? "/" : "/static/",
     },
     resolve: {
       alias: { path: "path-browserify" },
@@ -278,6 +278,13 @@ export default async function getConfig({ buildType }): Promise<any> {
       optimization: {
         // We no not want to minimize our code.
         minimize: false,
+        splitChunks: {
+          // chunks(chunk) {
+          //   console.log("CHUNKEYYY2", chunk.name, chunk);
+          //   // exclude `my-excluded-chunk`
+          //   return chunk.name === "response";
+          // },
+        },
       },
       output: {
         path: paths.cloudflareOutput,
@@ -317,7 +324,11 @@ export default async function getConfig({ buildType }): Promise<any> {
       },
 
       entry: { response: paths.cloudflareEntry },
-      plugins: [],
+      plugins: [
+        new webpack.optimize.LimitChunkCountPlugin({
+          maxChunks: 1,
+        }),
+      ],
     }),
   ];
 

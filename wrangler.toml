@@ -1,0 +1,9 @@
+name = "basic-webpack-example"
+type = "javascript"
+account_id = "73cc8adfa07a87188f8341415599027b"
+workers_dev = true
+route = ""
+zone_id = ""
+kv-namespaces = [
+         { binding = "BASIC_WEBPACK", id = "0493300392eb47edbf381f17b22cc3f1" }
+]

@@ -31,6 +31,4 @@ The application as much as possible without/before JavaScript has loaded. With t
 - Testing in the browser with [Puppeteer](https://github.com/GoogleChrome/puppeteer) and [Jest](https://jestjs.io/)
 - Server and Static rendering with production-like dev environments
 - Same-domain enabled development
-- Loading content via Markdown
-- Server and Static rendering
-- See
+- Loading static content from Markdown (.md) files with [markdown-loader](https://github.com/peerigon/markdown-loader)

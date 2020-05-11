@@ -1,35 +1,26 @@
-// import loadable from "@loadable/component";
+import loadable from "@loadable/component";
 import { Router, useLocation } from "@reach/router";
 import React, { Fragment } from "react";
 
-// import Loader from "./components/Loader";
+import Loader from "./components/Loader";
 import Card from "./components/Card";
 import Text from "./components/Text";
 import TextLink from "./components/TextLink";
 
 import theme from "./theme";
 
-import PageA from "./page/PageA";
-// const PageA = loadable(
-//   () => import(/* webpackMode: "eager" */ "./page/PageA"),
-//   {
-//     fallback: <Loader />,
-//   }
-// );
-import PageB from "./page/PageB";
-// const PageB = loadable(
-//   () => import(/* webpackMode: "eager" */ "./page/PageB"),
-//   {
-//     fallback: <Loader />,
-//   }
-// );
-import PageC from "./page/PageC";
-// const PageC = loadable(
-//   () => import(/* webpackMode: "eager" */ "./page/PageC"),
-//   {
-//     fallback: <Loader />,
-//   }
-// );
+// import PageA from "./page/PageA";
+const PageA = loadable(() => import("./page/PageA"), {
+  fallback: <Loader />,
+});
+// import PageB from "./page/PageB";
+const PageB = loadable(() => import("./page/PageB"), {
+  fallback: <Loader />,
+});
+// import PageC from "./page/PageC";
+const PageC = loadable(() => import("./page/PageC"), {
+  fallback: <Loader />,
+});
 
 import { css, Global } from "@emotion/core";
 import styled from "@emotion/styled";
