@@ -24,6 +24,8 @@ const config = {
     browserOutput: path.resolve(distPath, "browser"),
     documentOutput: path.resolve(distPath, "document"),
     htmlOutput: path.resolve(distPath, "html"),
+    cloudflareOutput: path.resolve(distPath, "cloudflare"),
+    cloudflareEntry: path.resolve(srcPath, "cloudflare.tsx"),
     runtimeEntry: path.resolve(srcPath, "runtime.tsx"),
     renderEntry: path.resolve(srcPath, "render.tsx"),
     serverEntry: path.resolve(srcPath, "server.tsx"),

@@ -4,41 +4,49 @@ import { Helmet } from "react-helmet";
 import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
 import Text from "src/components/Text";
+import Card from "src/components/Card";
+import theme from "src/theme";
 import UpdateNameForm from "src/components/UpdateNameForm";
-import { useDisplayName } from "src/store/user";
-import { SegmentedPage } from "src/components/SegmentedPage";
+import ToolingImages from "src/components/ToolingImages";
+
+import content from "../content.md";
+import styled from "@emotion/styled";
+
+const MarkdownContent = styled("section")`
+  font-size: ${theme.type.size.body};
+  font-weight: ${theme.type.weight.light};
+  & h1 {
+    font-size: ${theme.type.size.heading};
+    font-weight: ${theme.type.weight.heavy};
+  }
+  & h2 {
+    font-size: ${theme.type.size.heading};
+    font-weight: ${theme.type.weight.heavy};
+  }
+`;
+
+const Root = styled(Card)`
+  max-width: 100%;
+  overflow: hidden;
+`;
 
 export default memo(function PageA() {
   useLogMount("PageA");
   useTrackPageView("PageA");
-  const displayName = useDisplayName();
 
   return (
-    <SegmentedPage>
-      <Helmet>
-        <title>Page A</title>
-      </Helmet>
+    <Root>
       <div>
-        <Text heading as={"h3"}>
-          Page A
+        <Text heading as={"h3"} primary>
+          Page A - Static content
         </Text>
-        <Text>
-          This application is a demo ground for testing web application
-          behaviours. In order to be a good testing ground it contains example
-          functionality that needs to be supported. Some behaviours include:
-          Multiple pages, async loading application, static and server
-          rendering, and client side JavaScript.
-        </Text>
-        <Text>
-          This page presents static content to the user that can be statically
-          rendered. It also includes a dynamic form.
-        </Text>
+        <MarkdownContent dangerouslySetInnerHTML={{ __html: content }} />
       </div>
       <div>
         <Text heading>Example form</Text>
         <UpdateNameForm />
-        <Text heading>{displayName}</Text>
       </div>
-    </SegmentedPage>
+      <ToolingImages />
+    </Root>
   );
 });

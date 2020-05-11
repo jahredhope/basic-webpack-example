@@ -9,19 +9,15 @@ import RedditPosts from "src/components/RedditPosts";
 import Text from "src/components/Text";
 import { State } from "src/store";
 import { loadPosts, setSubredditPosts } from "src/store/posts";
-import { useDisplayName } from "src/store/user";
-import { SegmentedPage } from "src/components/SegmentedPage";
 
 export default memo(function PageB() {
-  const displayName = useDisplayName();
-
   useLogMount("PageB");
   useTrackPageView("PageB");
 
   return (
-    <SegmentedPage>
+    <>
       <Helmet>
-        <title>Page B</title>
+        <title>Page B - Dynamic content</title>
       </Helmet>
       <Card>
         <Text heading>Page B</Text>
@@ -36,10 +32,7 @@ export default memo(function PageB() {
       <Card>
         <RedditPosts />
       </Card>
-      <Card>
-        <Text>Full name: {displayName}</Text>
-      </Card>
-    </SegmentedPage>
+    </>
   );
 });
 

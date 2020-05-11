@@ -1,7 +1,3 @@
-import "core-js/stable";
-import "isomorphic-fetch";
-import "regenerator-runtime/runtime";
-
 import { ApolloProvider } from "@apollo/react-hooks";
 import { getDataFromTree } from "@apollo/react-ssr";
 import { ChunkExtractor } from "@loadable/server";
@@ -92,7 +88,7 @@ export default async function render(params: any) {
     </ApolloProvider>
   );
 
-  await getDataFromTree(WrappedApp);
+  // await getDataFromTree(WrappedApp);
   const appHtml = renderStylesToString(
     renderToString(extractor.collectChunks(WrappedApp))
   );

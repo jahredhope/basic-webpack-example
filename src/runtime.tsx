@@ -49,6 +49,7 @@ export const runtime = (metadata) => {
       console.log("Rendering for ", url.pathname);
       const state: State = {
         environment: "development",
+        initialRoute: url.pathname,
         items: {},
         lists: {},
         posts: {},

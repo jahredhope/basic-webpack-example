@@ -16,7 +16,6 @@ import { useHasMounted, useLogMount } from "src/common-hooks";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import Text from "src/components/Text";
-import { SegmentedPage } from "src/components/SegmentedPage";
 
 export default memo(function PageC() {
   useLogMount("PageC");
@@ -35,19 +34,19 @@ export default memo(function PageC() {
   const windowSize = useWindowSize();
 
   return (
-    <SegmentedPage>
+    <div>
       <Helmet>
         <title>Page C</title>
       </Helmet>
       <Card>
-        <Text heading>Page C</Text>
+        <Text heading>Page C - Client-side</Text>
         <Text>
           This page contains mostly client-side content with minimal static
           rendering.
         </Text>
       </Card>
       {hasMounted ? (
-        <>
+        <Card>
           <Text>
             {battery.level
               ? `Battery: ${battery.level * 100}%${
@@ -88,10 +87,10 @@ export default memo(function PageC() {
                 }`
               : "\u00a0"}
           </Text>
-        </>
+        </Card>
       ) : (
         <Loader />
       )}
-    </SegmentedPage>
+    </div>
   );
 });

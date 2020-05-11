@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
+
 import React from "react";
 
 import theme from "src/theme";
@@ -25,7 +26,7 @@ const background = ({ primary, secondary }: IProps) => {
     background-color: ${theme.colors.fill.standard};
   `;
 };
-export default styled("span")`
+export default styled("div")`
   display: block;
   padding: 12px 18px 0px;
   margin-bottom: 6px;

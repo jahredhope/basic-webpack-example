@@ -70,19 +70,36 @@ export default async function getConfig({ buildType }): Promise<any> {
       alias: { path: "path-browserify" },
       extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
     },
+    module: {
+      rules: [
+        {
+          test: /\.md$/,
+          use: [
+            {
+              loader: "raw-loader",
+            },
+            {
+              loader: "markdown-loader",
+              options: {},
+            },
+          ],
+        },
+      ],
+    },
     // Webpack 5 Optimization
     // optimization: {
     //   chunkIds: "deterministic",
     //   moduleIds: "deterministic",
     // },
   };
+
   const configs: any = [
     merge(common, {
       output: {
         path: hackForceToRoot ? paths.distPath : paths.browserOutput,
         filename: "[name]-[hash].js",
       },
-      devtool: mode === "production" ? "source-map" : "inline-source-map",
+      devtool: mode === "production" ? "source-map" : "cheap-module-source-map",
       optimization: {
         runtimeChunk: {
           name: "runtime",
@@ -181,13 +198,30 @@ export default async function getConfig({ buildType }): Promise<any> {
       },
       name: "server",
       target: "node",
-      entry: { server: paths.serverEntry, render: paths.renderEntry },
+      entry: {
+        server: [
+          "core-js/stable",
+          "isomorphic-fetch",
+          "regenerator-runtime/runtime",
+          paths.serverEntry,
+        ],
+        render: [
+          "core-js/stable",
+          "isomorphic-fetch",
+          "regenerator-runtime/runtime",
+          paths.renderEntry,
+        ],
+      },
       plugins: [
         serverRendererPlugin.nodePlugin,
         htmlRenderPlugin.rendererPlugin,
       ],
     }),
     merge(common, {
+      node: {
+        // Buffer: false,
+        // process: false,
+      },
       output: {
         path: paths.runtimeOutput,
         // libraryExport: "default",
@@ -221,8 +255,8 @@ export default async function getConfig({ buildType }): Promise<any> {
       target: "webworker",
       resolve: {
         alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
-        // aliasFields: ["main"],
-        // mainFields: ["module", "main"],
+        aliasFields: ["main"],
+        mainFields: ["module", "main"],
       },
       entry: { response: paths.runtimeEntry },
       plugins: [
@@ -235,6 +269,55 @@ export default async function getConfig({ buildType }): Promise<any> {
           raw: true,
         }),
       ],
+    }),
+    merge(common, {
+      node: {
+        // Buffer: false,
+        // process: false,
+      },
+      optimization: {
+        // We no not want to minimize our code.
+        minimize: false,
+      },
+      output: {
+        path: paths.cloudflareOutput,
+        // libraryExport: "default",
+        // library: "static",
+        // libraryTarget: "umd2",
+        // libraryTarget: "commonjs2",
+        // libraryTarget: "commonjs2",
+        filename: "[name].js",
+      },
+      module: {
+        rules: [
+          {
+            test: /\.m?(j|t)sx?$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.(jpg|png|ico)?$/,
+            use: {
+              loader: "file-loader",
+              options: {
+                emitFile: false,
+              },
+            },
+          },
+        ],
+      },
+      name: "cloudflare",
+      target: "webworker",
+      resolve: {
+        alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
+        aliasFields: ["main"],
+        mainFields: ["module", "main"],
+      },
+
+      entry: { response: paths.cloudflareEntry },
+      plugins: [],
     }),
   ];
 

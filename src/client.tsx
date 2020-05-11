@@ -4,6 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "regenerator-runtime/runtime";
 import devtools from "unistore/devtools";
+import { LocationProvider } from "@reach/router";
 
 import { createStore, Provider, State } from "src/store";
 import App from "./App";
@@ -30,11 +31,13 @@ const client = createGraphQlClient();
 const render = () => {
   loadableReady(() => {
     ReactDOM.hydrate(
-      <ApolloProvider client={client}>
-        <Provider value={store}>
-          <App />
-        </Provider>
-      </ApolloProvider>,
+      <LocationProvider>
+        <ApolloProvider client={client}>
+          <Provider value={store}>
+            <App />
+          </Provider>
+        </ApolloProvider>
+      </LocationProvider>,
       document.getElementById("root")
     );
   });

@@ -4,8 +4,18 @@ import Text from "src/components/Text";
 import { useSelector } from "src/store/index";
 import { useIncrementer, useIncrementalTimer } from "src/common-hooks";
 import Card from "./Card";
+import { useDisplayName } from "src/store/user";
+import styled from "@emotion/styled";
+import { useLocation } from "@reach/router";
+import ToolingImages from "./ToolingImages";
+
+const Root = styled(Card)`
+  grid-area: meta;
+`;
 
 export default function PageDetails() {
+  const location = useLocation();
+  const displayName = useDisplayName();
   const initialRoute = useSelector((state) => state.initialRoute);
   const requestId = useSelector((state) => state.requestId);
   const requestCounter = useSelector((state) => state.requestCounter);
@@ -13,9 +23,9 @@ export default function PageDetails() {
   useIncrementalTimer(incrementCount, 3000);
   const isServerRender = Boolean(requestId || requestCounter);
   return (
-    <Card>
+    <Root>
       <Text heading primary>
-        Page Details
+        App info
       </Text>
       <Text
         title={
@@ -30,10 +40,12 @@ export default function PageDetails() {
         Dynamic Value: {count}
       </Text>
       <Text>Initial Route: {initialRoute}</Text>
+      <Text>Current Route: {location.pathname}</Text>
       {requestId ? <Text>Request Id: {requestId}</Text> : null}
       {typeof requestCounter === "number" ? (
         <Text>Request Counter: {requestCounter}</Text>
       ) : null}
-    </Card>
+      <Text>User: {displayName}</Text>
+    </Root>
   );
 }

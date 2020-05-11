@@ -6,7 +6,7 @@
   "scripts": {
     "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development ts-node ./start.ts ",
     "build:fab": "npm run build && npm run fab:build",
-    "build": "DEBUG=*,-babel*,-express* NODE_ENV=development ts-node ./build.ts",
+    "build": "DEBUG=*,-babel*,-express* NODE_ENV=production ts-node ./build.ts",
     "serve": "npm run serve:renderer & npm run serve:static",
     "serve:static": "DEBUG=*,-babel*,-express*,-send* node standalone-server.js",
     "serve:renderer": "DEBUG=*,-babel*,-express* node ./dist/node/server",
@@ -34,8 +34,8 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
+    "@cloudflare/workers-types": "^1.0.9",
+    "@dollarshaveclub/cloudworker": "^0.1.2",
     "@fab/actions": "^0.2.4",
     "@fab/cli": "^0.2.4",
     "@fab/input-static": "^0.2.4",
@@ -76,7 +76,6 @@
     "apollo-link-http": "^1.5.16",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "babel-plugin-emotion": "^10.0.33",
     "babel-plugin-module-resolver": "^4.0.0",
     "chalk": "^4.0.0",
     "color-convert": "^2.0.0",
@@ -104,6 +103,7 @@
     "jest": "^26.0.1",
     "jest-puppeteer": "^4.4.0",
     "keyboardjs": "^2.5.1",
+    "markdown-loader": "^5.1.0",
     "md5": "^2.2.1",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.3",
@@ -115,9 +115,9 @@
     "prettier": "^2.0.5",
     "pretty": "^2.0.0",
     "puppeteer": "^3.0.4",
+    "raw-loader": "^4.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-emotion": "^10.0.0",
     "react-helmet": "^6.0.0",
     "react-loadable": "^5.5.0",
     "react-unistore": "^0.0.4",
@@ -146,6 +146,8 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.1",
-    "ws": "^7.2.5"
+    "ws": "^7.2.5",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27"
   }
 }
