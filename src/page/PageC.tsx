@@ -36,10 +36,12 @@ export default memo(function PageC() {
   return (
     <div>
       <Helmet>
-        <title>Page C</title>
+        <title>Page C - Client-side content</title>
       </Helmet>
       <Card>
-        <Text heading>Page C - Client-side</Text>
+        <Text heading as={"h3"} primary>
+          Page C - Client-side content
+        </Text>
         <Text>
           This page contains mostly client-side content with minimal static
           rendering.

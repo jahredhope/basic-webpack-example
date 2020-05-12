@@ -20,7 +20,9 @@ export default memo(function PageB() {
         <title>Page B - Dynamic content</title>
       </Helmet>
       <Card>
-        <Text heading>Page B</Text>
+        <Text heading as={"h3"} primary>
+          Page B - Server-side dynamic content
+        </Text>
         <Text>
           This page contains a mix of server-or-client side content and
           client-only side content.

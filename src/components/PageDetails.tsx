@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Text from "src/components/Text";
 import { useSelector } from "src/store/index";
@@ -13,6 +13,27 @@ const Root = styled(Card)`
   grid-area: meta;
 `;
 
+const usePaintTiming = () => {
+  const [state, setState] = useState({
+    firstPaint: null,
+    firstContentfulPaint: null,
+  });
+  useEffect(() => {
+    setTimeout(() => {
+      const entries = performance.getEntriesByType("paint");
+      const firstPaint = entries.find((v) => v.name === "first-paint");
+      const firstContentfulPaint = entries.find(
+        (v) => v.name === "first-contentful-paint"
+      );
+      setState({
+        firstPaint: firstPaint?.startTime,
+        firstContentfulPaint: firstContentfulPaint?.startTime,
+      });
+    }, 1000);
+  }, []);
+  return state;
+};
+
 export default function PageDetails() {
   const location = useLocation();
   const displayName = useDisplayName();
@@ -22,6 +43,7 @@ export default function PageDetails() {
   const [count, incrementCount] = useIncrementer(1);
   useIncrementalTimer(incrementCount, 3000);
   const isServerRender = Boolean(requestId || requestCounter);
+  const paintTiming = usePaintTiming();
   return (
     <Root>
       <Text heading primary>
@@ -41,6 +63,18 @@ export default function PageDetails() {
       </Text>
       <Text>Initial Route: {initialRoute}</Text>
       <Text>Current Route: {location.pathname}</Text>
+      <Text>
+        First Paint:{" "}
+        {paintTiming.firstPaint
+          ? `${Math.floor(paintTiming.firstPaint)}ms`
+          : ""}
+      </Text>
+      <Text>
+        FCP:{" "}
+        {paintTiming.firstContentfulPaint
+          ? `${Math.floor(paintTiming.firstContentfulPaint)}ms`
+          : ""}
+      </Text>
       {requestId ? <Text>Request Id: {requestId}</Text> : null}
       {typeof requestCounter === "number" ? (
         <Text>Request Counter: {requestCounter}</Text>
