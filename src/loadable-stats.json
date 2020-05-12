@@ -67,12 +67,8 @@
     {
       "name": "apollo-30ede291ea5d1d9f196d.js",
       "size": 133369,
-      "chunks": [
-        1
-      ],
-      "chunkNames": [
-        "apollo"
-      ],
+      "chunks": [1],
+      "chunkNames": ["apollo"],
       "info": {
         "immutable": true
       },
@@ -81,12 +77,8 @@
     {
       "name": "apollo-30ede291ea5d1d9f196d.js.map",
       "size": 186280,
-      "chunks": [
-        1
-      ],
-      "chunkNames": [
-        "apollo"
-      ],
+      "chunks": [1],
+      "chunkNames": ["apollo"],
       "info": {
         "development": true
       },
@@ -119,12 +111,8 @@
     {
       "name": "main-30ede291ea5d1d9f196d.js",
       "size": 110582,
-      "chunks": [
-        2
-      ],
-      "chunkNames": [
-        "main"
-      ],
+      "chunks": [2],
+      "chunkNames": ["main"],
       "info": {
         "immutable": true
       },
@@ -133,12 +121,8 @@
     {
       "name": "main-30ede291ea5d1d9f196d.js.map",
       "size": 458635,
-      "chunks": [
-        2
-      ],
-      "chunkNames": [
-        "main"
-      ],
+      "chunks": [2],
+      "chunkNames": ["main"],
       "info": {
         "development": true
       },
@@ -147,12 +131,8 @@
     {
       "name": "modules-30ede291ea5d1d9f196d.js",
       "size": 122489,
-      "chunks": [
-        0
-      ],
-      "chunkNames": [
-        "modules"
-      ],
+      "chunks": [0],
+      "chunkNames": ["modules"],
       "info": {
         "immutable": true
       },
@@ -161,12 +141,8 @@
     {
       "name": "modules-30ede291ea5d1d9f196d.js.map",
       "size": 175342,
-      "chunks": [
-        0
-      ],
-      "chunkNames": [
-        "modules"
-      ],
+      "chunks": [0],
+      "chunkNames": ["modules"],
       "info": {
         "development": true
       },
@@ -175,12 +151,8 @@
     {
       "name": "page-PageA-30ede291ea5d1d9f196d.js",
       "size": 5363,
-      "chunks": [
-        3
-      ],
-      "chunkNames": [
-        "page-PageA"
-      ],
+      "chunks": [3],
+      "chunkNames": ["page-PageA"],
       "info": {
         "immutable": true
       },
@@ -189,12 +161,8 @@
     {
       "name": "page-PageA-30ede291ea5d1d9f196d.js.map",
       "size": 4142,
-      "chunks": [
-        3
-      ],
-      "chunkNames": [
-        "page-PageA"
-      ],
+      "chunks": [3],
+      "chunkNames": ["page-PageA"],
       "info": {
         "development": true
       },
@@ -203,12 +171,8 @@
     {
       "name": "page-PageB-30ede291ea5d1d9f196d.js",
       "size": 3303,
-      "chunks": [
-        4
-      ],
-      "chunkNames": [
-        "page-PageB"
-      ],
+      "chunks": [4],
+      "chunkNames": ["page-PageB"],
       "info": {
         "immutable": true
       },
@@ -217,12 +181,8 @@
     {
       "name": "page-PageB-30ede291ea5d1d9f196d.js.map",
       "size": 5108,
-      "chunks": [
-        4
-      ],
-      "chunkNames": [
-        "page-PageB"
-      ],
+      "chunks": [4],
+      "chunkNames": ["page-PageB"],
       "info": {
         "development": true
       },
@@ -231,12 +191,8 @@
     {
       "name": "page-PageC-30ede291ea5d1d9f196d.js",
       "size": 1666,
-      "chunks": [
-        5
-      ],
-      "chunkNames": [
-        "page-PageC"
-      ],
+      "chunks": [5],
+      "chunkNames": ["page-PageC"],
       "info": {
         "immutable": true
       },
@@ -245,12 +201,8 @@
     {
       "name": "page-PageC-30ede291ea5d1d9f196d.js.map",
       "size": 3294,
-      "chunks": [
-        5
-      ],
-      "chunkNames": [
-        "page-PageC"
-      ],
+      "chunks": [5],
+      "chunkNames": ["page-PageC"],
       "info": {
         "development": true
       },
@@ -259,12 +211,8 @@
     {
       "name": "react-30ede291ea5d1d9f196d.js",
       "size": 123799,
-      "chunks": [
-        6
-      ],
-      "chunkNames": [
-        "react"
-      ],
+      "chunks": [6],
+      "chunkNames": ["react"],
       "info": {
         "immutable": true
       },
@@ -273,12 +221,8 @@
     {
       "name": "react-30ede291ea5d1d9f196d.js.map",
       "size": 168040,
-      "chunks": [
-        6
-      ],
-      "chunkNames": [
-        "react"
-      ],
+      "chunks": [6],
+      "chunkNames": ["react"],
       "info": {
         "development": true
       },
@@ -287,12 +231,8 @@
     {
       "name": "runtime-30ede291ea5d1d9f196d.js",
       "size": 2425,
-      "chunks": [
-        7
-      ],
-      "chunkNames": [
-        "runtime"
-      ],
+      "chunks": [7],
+      "chunkNames": ["runtime"],
       "info": {
         "immutable": true
       },
@@ -301,12 +241,8 @@
     {
       "name": "runtime-30ede291ea5d1d9f196d.js.map",
       "size": 12582,
-      "chunks": [
-        7
-      ],
-      "chunkNames": [
-        "runtime"
-      ],
+      "chunks": [7],
+      "chunkNames": ["runtime"],
       "info": {
         "development": true
       },
@@ -316,12 +252,7 @@
   "filteredAssets": 0,
   "entrypoints": {
     "main": {
-      "chunks": [
-        7,
-        1,
-        6,
-        2
-      ],
+      "chunks": [7, 1, 6, 2],
       "assets": [
         "runtime-30ede291ea5d1d9f196d.js",
         "runtime-30ede291ea5d1d9f196d.js.map",
@@ -338,12 +269,7 @@
   },
   "namedChunkGroups": {
     "main": {
-      "chunks": [
-        7,
-        1,
-        6,
-        2
-      ],
+      "chunks": [7, 1, 6, 2],
       "assets": [
         "runtime-30ede291ea5d1d9f196d.js",
         "runtime-30ede291ea5d1d9f196d.js.map",
@@ -358,10 +284,7 @@
       "childAssets": {}
     },
     "page-PageA": {
-      "chunks": [
-        0,
-        3
-      ],
+      "chunks": [0, 3],
       "assets": [
         "modules-30ede291ea5d1d9f196d.js",
         "modules-30ede291ea5d1d9f196d.js.map",
@@ -372,11 +295,7 @@
       "childAssets": {}
     },
     "page-PageB": {
-      "chunks": [
-        1,
-        0,
-        4
-      ],
+      "chunks": [1, 0, 4],
       "assets": [
         "apollo-30ede291ea5d1d9f196d.js",
         "apollo-30ede291ea5d1d9f196d.js.map",
@@ -389,10 +308,7 @@
       "childAssets": {}
     },
     "page-PageC": {
-      "chunks": [
-        0,
-        5
-      ],
+      "chunks": [0, 5],
       "assets": [
         "modules-30ede291ea5d1d9f196d.js",
         "modules-30ede291ea5d1d9f196d.js.map",
