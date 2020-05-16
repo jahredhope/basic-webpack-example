@@ -86,7 +86,7 @@ const PageGrid = styled("div")`
 `;
 
 import { useLogMount } from "src/common-hooks";
-import PageDetails from "./components/PageDetails";
+import DebugInfo from "./components/DebugInfo";
 import { pathToRegexp } from "path-to-regexp";
 const RoutePageA = (_: any) => (
   <Fragment>
@@ -222,7 +222,7 @@ function App({ error }: any) {
             <RouteNotFound default />
           </Router>
         )}
-        <PageDetails />
+        <DebugInfo />
       </PageGrid>
     </div>
   );

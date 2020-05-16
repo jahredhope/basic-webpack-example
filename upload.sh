@@ -1,19 +1,17 @@
 # set -x
 set -e
 
+# Incremement Dev Version
+OLD_VERSION="$(cat dev-version.txt)" || OLD_VERSION="0"
+export VERSION=$(($OLD_VERSION + 1))
+echo "$VERSION" > dev-version.txt
+
+echo "Deploying Version: $VERSION"
+
 rm -rf ./dist/
 
 yarn build
 
-# So much hack!
-# TODO: Implement a way to get webpack stats during build. Currently building twice and copying.
-cp ./dist/node/loadable-stats.json ./src/
-
-rm -rf ./dist/
-
-yarn build
-
-# cd ./dist/browser
 for f in $(find ./dist/browser/ -name '*.*'); do
   key="static${f/\.\/dist\/browser\//}"
   echo "Uploading $key"
@@ -21,7 +19,7 @@ for f in $(find ./dist/browser/ -name '*.*'); do
 done
 
 for f in $(find ./dist/document/ -name '*.*'); do
-  key="document${f/\.\/dist\/document\//}"
+  key="document/$VERSION${f/\.\/dist\/document\//}"
   echo "Uploading $key"
   yarn wrangler kv:key put --binding=BASIC_WEBPACK "$key" $f --path
 done

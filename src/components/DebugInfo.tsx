@@ -34,11 +34,13 @@ const usePaintTiming = () => {
   return state;
 };
 
-export default function PageDetails() {
+export default function DebugInfo() {
   const location = useLocation();
   const displayName = useDisplayName();
+  const version = useSelector((state) => state.version);
   const initialRoute = useSelector((state) => state.initialRoute);
   const requestId = useSelector((state) => state.requestId);
+  const visitorId = useSelector((state) => state.visitorId);
   const requestCounter = useSelector((state) => state.requestCounter);
   const [count, incrementCount] = useIncrementer(1);
   useIncrementalTimer(incrementCount, 3000);
@@ -47,7 +49,7 @@ export default function PageDetails() {
   return (
     <Root>
       <Text heading primary>
-        App info
+        Debug info
       </Text>
       <Text
         title={
@@ -63,6 +65,7 @@ export default function PageDetails() {
       </Text>
       <Text>Initial Route: {initialRoute}</Text>
       <Text>Current Route: {location.pathname}</Text>
+      <Text>Version: {version}</Text>
       <Text>
         First Paint:{" "}
         {paintTiming.firstPaint
@@ -80,6 +83,7 @@ export default function PageDetails() {
         <Text>Request Counter: {requestCounter}</Text>
       ) : null}
       <Text>User: {displayName}</Text>
+      <Text>Visitor Id: {(visitorId || "").substr(0, 8)}</Text>
     </Root>
   );
 }

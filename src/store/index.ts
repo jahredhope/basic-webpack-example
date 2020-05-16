@@ -17,6 +17,8 @@ export type State = PostsState &
   ItemsState & {
     initialRoute: string;
     environment: Environment;
+    visitorId?: string;
+    version?: string;
     requestId?: string;
     requestCounter?: number;
   };

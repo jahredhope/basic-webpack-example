@@ -1,3 +1,5 @@
+declare const VERSION: string;
+
 import { ApolloProvider } from "@apollo/react-hooks";
 // import { getDataFromTree } from "@apollo/react-ssr";
 import { ChunkExtractor } from "@loadable/server";
@@ -60,6 +62,7 @@ export default async function render(params: any) {
   });
   const store = createStore({
     ...state,
+    version: VERSION,
     initialRoute: route,
     items: {
       "1": {

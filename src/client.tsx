@@ -5,6 +5,8 @@ import ReactDOM from "react-dom";
 import "regenerator-runtime/runtime";
 import devtools from "unistore/devtools";
 import { LocationProvider } from "@reach/router";
+import { v4 as uuidv4 } from "uuid";
+import Cookies from "js-cookie";
 
 import { createStore, Provider, State } from "src/store";
 import App from "./App";
@@ -44,6 +46,18 @@ const render = () => {
 };
 
 render();
+
+let visitorId = Cookies.get("visitor-id");
+if (!visitorId) {
+  visitorId = uuidv4();
+  document.cookie = `visitor-id=${visitorId}`;
+}
+if (store.getState().visitorId && store.getState().visitorId !== visitorId) {
+  console.error("Mismatch of visitor id. Something may have gone wrong.");
+  console.error("Cookie", Cookies.get("visitor-id"));
+  console.error("State", store.getState().visitorId);
+}
+store.setState({ visitorId });
 
 console.log("client.tsx");
 if (module.hot) {

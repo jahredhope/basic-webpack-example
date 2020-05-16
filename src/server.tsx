@@ -44,6 +44,11 @@ app.get("*", async (req, res) => {
   const requestId = uuidv4();
   debug("render", req.url);
 
+  const visitorId = req.cookies["visitor-id"] || uuidv4();
+  res.cookie("visitor-id", visitorId, {
+    maxAge: 3.154e7,
+  });
+
   const state: State = {
     environment: "development",
     initialRoute: req.url,
@@ -52,6 +57,7 @@ app.get("*", async (req, res) => {
     posts: {},
     requestCounter,
     requestId,
+    visitorId,
     user: null,
     username: req.cookies.username,
   };

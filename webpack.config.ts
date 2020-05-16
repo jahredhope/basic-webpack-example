@@ -11,12 +11,22 @@ import HtmlRenderPlugin from "html-render-webpack-plugin";
 
 import { paths } from "./config";
 
+if (!process.env.VERSION) {
+  throw new Error(
+    "Unable to create Webpack config without VERSION env variable"
+  );
+}
+
 import {
   staticRoutes,
   serverRoutes,
   rendererUrl,
   rendererHealthcheck,
 } from "./config";
+
+const defineVersionPlugin = new webpack.DefinePlugin({
+  VERSION: process.env.VERSION,
+});
 
 const domain = "http://localhost:8080";
 const liveReloadEntry = `${require.resolve(
@@ -37,7 +47,7 @@ export default async function getConfig({ buildType }): Promise<any> {
     routes: serverRoutes,
   });
 
-  // TODO: Some tooling is doesn't currently support documents being anywhere but relative to root
+  // TODO: Some tooling doesn't currently support documents being anywhere but relative to root
   const hackForceToRoot = false;
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
@@ -60,7 +70,6 @@ export default async function getConfig({ buildType }): Promise<any> {
       );
     }
   }
-  console.log({ htmlRenderPlugin });
   const common = {
     mode,
     output: {
@@ -213,6 +222,7 @@ export default async function getConfig({ buildType }): Promise<any> {
         ],
       },
       plugins: [
+        defineVersionPlugin,
         serverRendererPlugin.nodePlugin,
         htmlRenderPlugin.rendererPlugin,
       ],
@@ -328,6 +338,7 @@ export default async function getConfig({ buildType }): Promise<any> {
         new webpack.optimize.LimitChunkCountPlugin({
           maxChunks: 1,
         }),
+        defineVersionPlugin,
       ],
     }),
   ];
