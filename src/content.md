@@ -16,7 +16,7 @@ Each page has it's own chunks that are only loaded on that page, however all chu
 
 Pages contain a mix of dynamic content that can be server-side rendered and dynamic content that is only client-side rendered.
 
-The application as much as possible without/before JavaScript has loaded. With the exception of content that is both dynamic and not server-side renderable.
+The application works, as much as possible, without/before JavaScript has loaded. With the exception of content that is both dynamic and not server-side renderable.
 
 ## Features
 
