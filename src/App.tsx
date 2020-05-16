@@ -1,5 +1,5 @@
 import loadable from "@loadable/component";
-import { Switch, Route, useLocation, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import React from "react";
 import Loader from "./components/Loader";
 import Card from "./components/Card";
@@ -115,7 +115,6 @@ function usePageName() {
 }
 
 function App({ error }: any) {
-  const match = useRouteMatch();
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
@@ -161,7 +160,7 @@ function App({ error }: any) {
             data-analytics="header-page-a"
             name="header-page-a"
             onMouseOver={() => {
-              // PageA.preload();
+              PageA.preload();
             }}
           >
             Page A
@@ -171,7 +170,7 @@ function App({ error }: any) {
             data-analytics="header-page-b"
             name="header-page-b"
             onMouseOver={() => {
-              // PageB.preload();
+              PageB.preload();
             }}
           >
             Page B
@@ -181,7 +180,7 @@ function App({ error }: any) {
             data-analytics="header-page-c"
             name="header-page-c"
             onMouseOver={() => {
-              // PageC.preload();
+              PageC.preload();
             }}
           >
             Page C

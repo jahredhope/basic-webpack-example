@@ -105,7 +105,7 @@ export default async function getConfig({ buildType }): Promise<any> {
     merge(common, {
       output: {
         path: hackForceToRoot ? paths.distPath : paths.browserOutput,
-        filename: "[name]-[hash].js",
+        filename: "[name]-[contenthash].js",
       },
       devtool: mode === "production" ? "source-map" : "cheap-module-source-map",
       optimization: {
