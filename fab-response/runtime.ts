@@ -1,4 +1,5 @@
 import { FABRuntime } from "@fab/core";
+// @ts-ignore: Assume this file exists by the time it's used
 import resp from "../dist/runtime/response";
 
 export default function ({ Router, Metadata }: FABRuntime) {
