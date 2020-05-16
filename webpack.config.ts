@@ -11,12 +11,6 @@ import HtmlRenderPlugin from "html-render-webpack-plugin";
 
 import { paths } from "./config";
 
-if (!process.env.VERSION) {
-  throw new Error(
-    "Unable to create Webpack config without VERSION env variable"
-  );
-}
-
 import {
   staticRoutes,
   serverRoutes,
@@ -24,16 +18,21 @@ import {
   rendererHealthcheck,
 } from "./config";
 
-const defineVersionPlugin = new webpack.DefinePlugin({
-  VERSION: process.env.VERSION,
-});
-
 const domain = "http://localhost:8080";
 const liveReloadEntry = `${require.resolve(
   "webpack-dev-server/client/"
 )}?${domain}`;
 
 export default async function getConfig({ buildType }): Promise<any> {
+  if (!process.env.VERSION) {
+    throw new Error(
+      "Unable to create Webpack config without VERSION env variable"
+    );
+  }
+  const defineVersionPlugin = new webpack.DefinePlugin({
+    VERSION: `"${process.env.VERSION}"`,
+  });
+
   const liveReload = buildType === "start";
   const mode =
     process.env.NODE_ENV === "development" ? "development" : "production";

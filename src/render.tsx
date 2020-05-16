@@ -3,7 +3,7 @@ declare const VERSION: string;
 import { ApolloProvider } from "@apollo/react-hooks";
 // import { getDataFromTree } from "@apollo/react-ssr";
 import { ChunkExtractor } from "@loadable/server";
-import { ServerLocation } from "@reach/router";
+import { StaticRouter as Router } from "react-router-dom";
 import debug from "debug";
 import { renderStylesToString } from "emotion-server";
 import React from "react";
@@ -81,12 +81,14 @@ export default async function render(params: any) {
   });
   log({ route });
 
+  const routerContext = {};
+
   const WrappedApp = (
     <ApolloProvider client={client}>
       <Provider value={store}>
-        <ServerLocation url={route}>
+        <Router location={route} context={routerContext}>
           <App />
-        </ServerLocation>
+        </Router>
       </Provider>
     </ApolloProvider>
   );

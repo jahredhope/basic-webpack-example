@@ -15,7 +15,7 @@ export default memo(function PageB() {
   useTrackPageView("PageB");
 
   return (
-    <>
+    <div>
       <Helmet>
         <title>Page B - Dynamic content</title>
       </Helmet>
@@ -34,7 +34,7 @@ export default memo(function PageB() {
       <Card>
         <RedditPosts />
       </Card>
-    </>
+    </div>
   );
 });
 

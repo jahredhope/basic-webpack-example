@@ -10,10 +10,14 @@ import getConfig from "./webpack.config";
 const staticRegex = /^\/static/i;
 const apiRegex = /^\/api/i;
 
+process.env.VERSION = "dev";
+
 async function run() {
   const webpackConfigs = await getConfig({ buildType: "start" });
   const { serverRendererPlugin, htmlRenderPlugin } = webpackConfigs;
-  const compiler = webpack(webpackConfigs);
+  const compiler = webpack(
+    webpackConfigs.filter((c) => c.name !== "cloudflare")
+  );
 
   const webpackDevServer = new WebpackDevServer(compiler, {
     before: (app) => {

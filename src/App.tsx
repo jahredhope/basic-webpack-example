@@ -1,7 +1,6 @@
 import loadable from "@loadable/component";
-import { Router, useLocation } from "@reach/router";
-import React, { Fragment } from "react";
-
+import { Switch, Route, useLocation, useRouteMatch } from "react-router-dom";
+import React from "react";
 import Loader from "./components/Loader";
 import Card from "./components/Card";
 import Text from "./components/Text";
@@ -88,28 +87,6 @@ const PageGrid = styled("div")`
 import { useLogMount } from "src/common-hooks";
 import DebugInfo from "./components/DebugInfo";
 import { pathToRegexp } from "path-to-regexp";
-const RoutePageA = (_: any) => (
-  <Fragment>
-    <PageA />
-  </Fragment>
-);
-const RoutePageB = (_: any) => (
-  <Fragment>
-    <PageB />
-  </Fragment>
-);
-const RoutePageC = (_: any) => (
-  <Fragment>
-    <PageC />
-  </Fragment>
-);
-const RouteNotFound = (_: any) => (
-  <Fragment>
-    <Card>
-      <Text>Page not found</Text>
-    </Card>
-  </Fragment>
-);
 
 const addErrorBoundary = (Child: any) =>
   class ErrorCatcher extends React.Component<any, any> {
@@ -138,6 +115,7 @@ function usePageName() {
 }
 
 function App({ error }: any) {
+  const match = useRouteMatch();
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
@@ -214,13 +192,25 @@ function App({ error }: any) {
             <Text>Unable to render. {error.toString()}</Text>
           </Card>
         ) : (
-          <Router>
-            <RoutePageA path="/" />
-            <RoutePageA path="/a" />
-            <RoutePageB path="/b" />
-            <RoutePageC path="/c" />
-            <RouteNotFound default />
-          </Router>
+          <Switch>
+            <Route exact path="/">
+              <PageA />
+            </Route>
+            <Route path="/a">
+              <PageA />
+            </Route>
+            <Route path="/b">
+              <PageB />
+            </Route>
+            <Route path="/c">
+              <PageC />
+            </Route>
+            <Route>
+              <Card>
+                <Text>Page not found</Text>
+              </Card>
+            </Route>
+          </Switch>
         )}
         <DebugInfo />
       </PageGrid>

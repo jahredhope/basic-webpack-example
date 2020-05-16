@@ -20,7 +20,7 @@ The application works, as much as possible, without/before JavaScript has loaded
 
 ## Features
 
-- Multi page application with [@react/router](https://github.com/reach/router)
+- Multi page application with [React Router](https://reacttraining.com/react-router/)
 - Statically renders multiple routes with [html-render-webpack-plugin](https://github.com/jahredhope/html-render-webpack-plugin)
 - Code splitting per route with [loadable-components](https://github.com/smooth-code/loadable-components)
 - Dynamic code loading with [loadable-components](https://github.com/smooth-code/loadable-components)

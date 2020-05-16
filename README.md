@@ -4,7 +4,7 @@ A project for testing web application patterns starting from a basic web applica
 
 Currently includes:
 
-- Multi page application with [@react/router](https://github.com/reach/router)
+- Multi page application with [@reach/router](https://github.com/reach/router)
 - Statically renders multiple routes with [html-render-webpack-plugin](https://github.com/jahredhope/html-render-webpack-plugin)
 - Code splitting per route with [loadable-components](https://github.com/smooth-code/loadable-components)
 - Dynamic code loading with [loadable-components](https://github.com/smooth-code/loadable-components)
