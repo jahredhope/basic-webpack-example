@@ -12,6 +12,9 @@ rm -rf ./dist/
 
 yarn build
 
+# wrangler requires the main attribuet of package json to be set to the file path
+sed -i '' 's+"wrangler_main": "dist/cloudflare/response.js",+"main": "dist/cloudflare/response.js",+g' package.json
+
 for f in $(find ./dist/browser/ -name '*.*'); do
   key="static${f/\.\/dist\/browser\//}"
   echo "Uploading $key"
@@ -26,3 +29,5 @@ done
 
 echo "Publish Worker"
 yarn wrangler publish
+
+sed -i '' 's+"main": "dist/cloudflare/response.js",+"wrangler_main": "dist/cloudflare/response.js",+g' package.json

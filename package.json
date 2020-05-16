@@ -2,7 +2,7 @@
   "name": "basic-webpack-example",
   "version": "1.0.0",
   "description": "",
-  "_main": "dist/cloudflare/response.js",
+  "wrangler_main": "dist/cloudflare/response.js",
   "scripts": {
     "start": "DEBUG=*,-babel*,-express*,-body-parser:text NODE_ENV=development ts-node ./start.ts ",
     "build:fab": "npm run build && npm run fab:build",
