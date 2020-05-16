@@ -50,7 +50,6 @@ export const runtime = (metadata) => {
       const state: State = {
         environment: "development",
         initialRoute: url.pathname,
-        items: {},
         lists: {},
         posts: {},
         requestCounter: ++requestCounter,
@@ -93,7 +92,6 @@ export const runtime = (metadata) => {
     // debug("render", req.url);
     // const state: State = {
     //   environment: "development",
-    //   items: {},
     //   lists: {},
     //   posts: {},
     //   requestCounter,

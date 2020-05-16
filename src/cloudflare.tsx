@@ -80,7 +80,6 @@ async function handleRequest(request: Request) {
     const state: State = {
       environment: "development",
       initialRoute: url.pathname,
-      items: {},
       lists: {},
       posts: {},
       version: VERSION,

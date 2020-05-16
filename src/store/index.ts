@@ -6,15 +6,13 @@ import {
   useSelector as _useSelector,
 } from "react-unistore";
 import createStore from "unistore";
-import { ItemsState } from "./items";
 import { PostsState } from "./posts";
 import { UserState } from "./user";
 
 type Environment = "production" | "staging" | "development";
 
 export type State = PostsState &
-  UserState &
-  ItemsState & {
+  UserState & {
     initialRoute: string;
     environment: Environment;
     visitorId?: string;

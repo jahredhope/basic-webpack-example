@@ -64,16 +64,6 @@ export default async function render(params: any) {
     ...state,
     version: VERSION,
     initialRoute: route,
-    items: {
-      "1": {
-        id: "1",
-        name: "First",
-      },
-      "2": {
-        id: "2",
-        name: "Second",
-      },
-    },
     user: {
       firstName: "Fred",
       lastName: "Jones",

@@ -19,6 +19,8 @@ async function run() {
     webpackConfigs.filter((c) => c.name !== "cloudflare")
   );
 
+  new webpack.ProgressPlugin().apply(compiler);
+
   const webpackDevServer = new WebpackDevServer(compiler, {
     before: (app) => {
       app.disable("x-powered-by");
