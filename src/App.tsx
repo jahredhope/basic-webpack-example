@@ -1,12 +1,18 @@
+import { css, Global } from "@emotion/core";
+import { Switch, Route } from "react-router-dom";
 import loadable from "@loadable/component";
-import { Switch, Route, useLocation } from "react-router-dom";
 import React from "react";
-import Loader from "./components/Loader";
-import Card from "./components/Card";
-import Text from "./components/Text";
-import TextLink from "./components/TextLink";
+import styled from "@emotion/styled";
 
-import theme from "./theme";
+import { useLogMount } from "src/common-hooks";
+import Card from "src/components/Card";
+import DebugInfo from "src/components/DebugInfo";
+import Loader from "src/components/Loader";
+import logoSrc from "src/soccer.png";
+import Text from "src/components/Text";
+import TextLink from "src/components/TextLink";
+import theme from "src/theme";
+import Header from "./components/Header";
 
 // import PageA from "./page/PageA";
 const PageA = loadable(() => import("./page/PageA"), {
@@ -20,28 +26,6 @@ const PageB = loadable(() => import("./page/PageB"), {
 const PageC = loadable(() => import("./page/PageC"), {
   fallback: <Loader />,
 });
-
-import { css, Global } from "@emotion/core";
-import styled from "@emotion/styled";
-
-const BannerHeading = styled(Text)`
-  align-self: flex-end;
-`;
-
-const Banner = styled("div")`
-  display: grid;
-  grid-area: header;
-  gap: 15px;
-  grid-template-columns: 1fr max-content 1fr;
-  grid-auto-columns: minmax(min-content, max-content);
-  grid-auto-flow: column;
-  justify-content: space-between;
-  width: 100vw;
-  box-sizing: border-box;
-  padding: 12px 18px;
-  align-items: flex-end;
-  background-color: ${theme.colors.fill.secondary};
-`;
 
 const TabItem = styled(TextLink)`
   padding: 0 12px 0 0;
@@ -58,8 +42,6 @@ const Tabs = styled("div")`
   flex-direction: row;
   justify-content: flex-start;
 `;
-
-import logoSrc from "./soccer.png";
 
 if (!logoSrc) {
   throw new Error(`"Missing logoSrc", ${logoSrc}`);
@@ -84,10 +66,6 @@ const PageGrid = styled("div")`
   }
 `;
 
-import { useLogMount } from "src/common-hooks";
-import DebugInfo from "./components/DebugInfo";
-import { pathToRegexp } from "path-to-regexp";
-
 const addErrorBoundary = (Child: any) =>
   class ErrorCatcher extends React.Component<any, any> {
     public static getDerivedStateFromError(error: any) {
@@ -102,25 +80,11 @@ const addErrorBoundary = (Child: any) =>
     }
   };
 
-const getIsPageA = pathToRegexp("/a/");
-const getIsPageB = pathToRegexp("/b/");
-const getIsPageC = pathToRegexp("/c/");
-
-function usePageName() {
-  const location = useLocation();
-  if (location.pathname.match(getIsPageA)) return "Page A";
-  if (location.pathname.match(getIsPageB)) return "Page B";
-  if (location.pathname.match(getIsPageC)) return "Page C";
-  return "Page A";
-}
-
 function App({ error }: any) {
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
   useLogMount("App");
-
-  const pageName = usePageName();
 
   return (
     <div>
@@ -147,13 +111,7 @@ function App({ error }: any) {
         `}
       />{" "}
       <PageGrid>
-        <Banner>
-          <div />
-          <BannerHeading heading>
-            Basic Webpack Example - {pageName}
-          </BannerHeading>
-          <div />
-        </Banner>
+        <Header />
         <Tabs>
           <TabItem
             href="/"

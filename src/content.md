@@ -32,3 +32,4 @@ The application works, as much as possible, without/before JavaScript has loaded
 - Server and Static rendering with production-like dev environments
 - Same-domain enabled development
 - Loading static content from Markdown (.md) files with [markdown-loader](https://github.com/peerigon/markdown-loader)
+- "Every environment, every build" version switching

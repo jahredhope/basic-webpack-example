@@ -9,6 +9,10 @@ interface IProps {
   [propName: string]: any;
 }
 
+function isExternal(href: string) {
+  return Boolean(href.match(/^http/));
+}
+
 export default function Link({
   href,
   name,
@@ -22,6 +26,13 @@ export default function Link({
       onClick(event);
     }
   };
+  if (isExternal(href)) {
+    return (
+      <a {...rest} href={href} onClick={handleClick}>
+        {children}
+      </a>
+    );
+  }
   return (
     <RouterLink {...rest} to={href} onClick={handleClick}>
       {children}
