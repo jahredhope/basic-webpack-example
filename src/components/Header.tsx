@@ -8,7 +8,6 @@ import Link from "src/components/Link";
 import theme from "src/theme";
 
 import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
-import { css } from "@emotion/core";
 
 const BannerHeading = styled(Text)`
   align-self: flex-end;

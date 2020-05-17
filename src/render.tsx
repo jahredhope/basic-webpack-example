@@ -1,7 +1,7 @@
 declare const VERSION: string;
 
 import { ApolloProvider } from "@apollo/react-hooks";
-// import { getDataFromTree } from "@apollo/react-ssr";
+import { getDataFromTree } from "@apollo/react-ssr";
 import { ChunkExtractor } from "@loadable/server";
 import { StaticRouter as Router } from "react-router-dom";
 import debug from "debug";
@@ -83,7 +83,9 @@ export default async function render(params: any) {
     </ApolloProvider>
   );
 
-  // await getDataFromTree(WrappedApp);
+  await getDataFromTree(WrappedApp).catch((error) =>
+    console.error("An error occured prefetching data for render. Error:", error)
+  );
   const appHtml = renderStylesToString(
     renderToString(extractor.collectChunks(WrappedApp))
   );

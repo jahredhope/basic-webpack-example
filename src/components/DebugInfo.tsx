@@ -7,7 +7,6 @@ import Card from "./Card";
 import { useDisplayName } from "src/store/user";
 import styled from "@emotion/styled";
 import { useLocation } from "react-router-dom";
-// import ToolingImages from "./ToolingImages";
 
 const Root = styled(Card)`
   grid-area: meta;
@@ -58,16 +57,16 @@ export default function DebugInfo() {
             : "This application was served by a statically rendered document at build time."
         }
       >
-        Type: {isServerRender ? "Live Server" : "Static"}
+        Render type: {isServerRender ? "Live Server" : "Static"}
       </Text>
       <Text title="This value is updated client side.">
-        Dynamic Value: {count}
+        Dynamic value: {count}
       </Text>
-      <Text>Initial Route: {initialRoute}</Text>
-      <Text>Current Route: {location.pathname}</Text>
+      <Text>Initial route: {initialRoute}</Text>
+      <Text>Current route: {location.pathname}</Text>
       <Text>Version: {version}</Text>
       <Text>
-        First Paint:{" "}
+        First paint:{" "}
         {paintTiming.firstPaint
           ? `${Math.floor(paintTiming.firstPaint)}ms`
           : ""}
@@ -78,12 +77,12 @@ export default function DebugInfo() {
           ? `${Math.floor(paintTiming.firstContentfulPaint)}ms`
           : ""}
       </Text>
-      {requestId ? <Text>Request Id: {requestId}</Text> : null}
+      {requestId ? <Text>Request id: {requestId}</Text> : null}
       {typeof requestCounter === "number" ? (
-        <Text>Request Counter: {requestCounter}</Text>
+        <Text>Request counter: {requestCounter}</Text>
       ) : null}
       <Text>User: {displayName}</Text>
-      <Text>Visitor Id: {(visitorId || "").substr(0, 8)}</Text>
+      <Text>Visitor id: {(visitorId || "").substr(0, 8)}</Text>
     </Root>
   );
 }

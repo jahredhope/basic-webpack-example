@@ -22,5 +22,6 @@ module.exports = {
         extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
       },
     ],
+    "emotion",
   ],
 };

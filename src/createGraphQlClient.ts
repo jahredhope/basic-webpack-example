@@ -24,7 +24,8 @@ export default () => {
         }
       }),
       new HttpLink({
-        credentials: "same-origin",
+        // HACK: Disabled credentials as this causes issues with CloudFlare workers
+        // credentials: "same-origin",
 
         uri:
           typeof window !== "undefined"
