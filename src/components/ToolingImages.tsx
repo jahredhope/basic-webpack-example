@@ -36,19 +36,22 @@ export default function ToolingImages() {
   return (
     <Root>
       <ToolingImageWrapper>
-        <ToolingImage src={imgEmotion} />
+        <ToolingImage src={imgEmotion} alt="Emotion logo" />
       </ToolingImageWrapper>
       <ToolingImageWrapper>
-        <ToolingImage src={imgLoadableComponents} />
+        <ToolingImage
+          src={imgLoadableComponents}
+          alt="Loadable components logo"
+        />
       </ToolingImageWrapper>
       <ToolingImageWrapper>
-        <ToolingImage src={imgPuppeteer} />
+        <ToolingImage src={imgPuppeteer} alt="Puppeteer logo" />
       </ToolingImageWrapper>
       <ToolingImageWrapper>
-        <ToolingImage src={imgTypeScript} />
+        <ToolingImage src={imgTypeScript} alt="TypeScript logo" />
       </ToolingImageWrapper>
       <ToolingImageWrapper>
-        <ToolingImage src={imgWebpack} />
+        <ToolingImage src={imgWebpack} alt="Webpack logo" />
       </ToolingImageWrapper>
     </Root>
   );

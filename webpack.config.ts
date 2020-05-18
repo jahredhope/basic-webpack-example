@@ -6,8 +6,8 @@ import LoadablePlugin from "@loadable/webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import mkdirp from "mkdirp";
 import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
-// import createStaticRendererPlugin from "./RendererPlugin/StaticRendererPlugin"
 import HtmlRenderPlugin from "html-render-webpack-plugin";
+import AppManifestPlugin from "webpack-web-app-manifest-plugin";
 
 import { paths } from "./config";
 
@@ -160,19 +160,40 @@ export default async function getConfig({ buildType }): Promise<any> {
         ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
       },
       plugins: [
-        serverRendererPlugin.clientPlugin,
-        htmlRenderPlugin.statsCollectorPlugin,
+        new BundleAnalyzerPlugin({
+          analyzerMode: "static",
+          reportFilename: paths.reportLocation,
+          openAnalyzer: false,
+        }),
+        new AppManifestPlugin({
+          isAssetManifestIcon: (fileName) => {
+            console.log("isAssetManifestIcon", "fileName", fileName);
+
+            const res = Boolean(
+              fileName.match(/manifest\/icon_\d+-\w*\.(png|jpeg|jpg)$/)
+            );
+            console.log({ res });
+            return res;
+          },
+          content: {
+            name: "Basic Webpack Example",
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            short_name: "Basic",
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            background_color: "#fefbfb",
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            theme_color: "#21728c",
+          },
+          destination: "",
+        }),
         new LoadablePlugin({
           writeToDisk: usingFileSystem
             ? { filename: path.dirname(paths.clientStatsLocation) }
             : false,
           outputAsset: false,
         }),
-        new BundleAnalyzerPlugin({
-          analyzerMode: "static",
-          reportFilename: paths.reportLocation,
-          openAnalyzer: false,
-        }),
+        serverRendererPlugin.clientPlugin,
+        htmlRenderPlugin.statsCollectorPlugin,
       ],
     }),
     merge(common, {
@@ -208,6 +229,7 @@ export default async function getConfig({ buildType }): Promise<any> {
       name: "server",
       target: "node",
       entry: {
+        manifest: paths.manifestEntry,
         server: [
           "core-js/stable",
           "isomorphic-fetch",

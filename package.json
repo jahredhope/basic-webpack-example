@@ -38,6 +38,7 @@
     "@cloudflare/workers-types": "^1.0.9",
     "@cloudflare/wrangler": "^1.9.0",
     "@dollarshaveclub/cloudworker": "^0.1.2",
+    "@emotion/babel-preset-css-prop": "^10.0.27",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@fab/actions": "^1.0.0-rc.1",
@@ -77,6 +78,7 @@
     "apollo-link": "^1.2.13",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
+    "assets-webpack-plugin": "^3.9.12",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-emotion": "^10.0.33",
@@ -153,6 +155,7 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.1",
+    "webpack-web-app-manifest-plugin": "^3.0.0",
     "ws": "^7.3.0"
   },
   "dependencies": {

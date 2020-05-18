@@ -25,7 +25,7 @@ import favicon from "./assets/favicon.ico";
 
 function renderShell({ head = "", body = "" }) {
   return `<!DOCTYPE html>
-  <html>
+  <html lang="en">
     <head>
       <link rel="shortcut icon" href="${favicon}" type="image/x-icon" />
       <link rel="icon" type="image/png" sizes="32x32" href="${favicon32}">
@@ -60,6 +60,10 @@ export default async function render(params: any) {
     stats: webpackStats,
     statsFile: clientStatsFile,
   });
+  const publicPath = (extractor as any).stats.publicPath;
+  const manifestFileName = (extractor as any).stats.assetsByChunkName[
+    "app-manifest"
+  ];
   const store = createStore({
     ...state,
     version: VERSION,
@@ -102,6 +106,8 @@ export default async function render(params: any) {
     </script>
     `,
     head: `
+      <meta name="description" content="A project for testing web application patterns starting from a basic web application">
+      <link rel="manifest" href="${(publicPath || "") + manifestFileName}">
       ${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}

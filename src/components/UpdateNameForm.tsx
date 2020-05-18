@@ -37,11 +37,13 @@ const UpdateNameForm = () => {
         return false;
       }}
     >
-      <TextField
-        type="text"
-        onChange={onChangeFirstName}
-        value={formFirstName}
-      />
+      <label>
+        <TextField
+          type="text"
+          onChange={onChangeFirstName}
+          value={formFirstName}
+        />
+      </label>
       <Button onClick={onSubmit}>Update First Name</Button>
     </form>
   );
