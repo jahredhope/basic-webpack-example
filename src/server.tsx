@@ -14,7 +14,8 @@ import { State } from "./store";
 const debug = createDebug("app:server");
 
 const RENDER_SERVER_PORT = 3001;
-const clientStatsFile = "./loadable-stats.json";
+const clientStatsFile = "./client-stats.json";
+const workerStatsFile = "./worker-stats.json";
 
 const LOG_TO_CONSOLE = false;
 
@@ -67,6 +68,8 @@ app.get("*", async (req, res) => {
     res.send(
       await renderFunction({
         clientStatsFile,
+        // HACK: Access file at server runtime
+        serviceWorkerStats: eval("require")(workerStatsFile),
         route: req.url,
         state,
       }).catch((err) => {

@@ -60,7 +60,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
     }
     const files = getSourceFromCompilation(nodeCompilation);
 
-    files["loadable-stats.json"] = `module.exports = ${JSON.stringify(
+    files["client-stats.json"] = `module.exports = ${JSON.stringify(
       getClientStats(),
       null,
       2

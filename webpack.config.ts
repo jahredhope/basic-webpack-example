@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import webpack from "webpack";
 import merge from "webpack-merge";
 import { Buffer } from "buffer";
@@ -7,7 +8,7 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import mkdirp from "mkdirp";
 import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
 import HtmlRenderPlugin from "html-render-webpack-plugin";
-import AppManifestPlugin from "webpack-web-app-manifest-plugin";
+import WebpackPwaManifest from "webpack-pwa-manifest";
 
 import { paths } from "./config";
 
@@ -51,6 +52,16 @@ export default async function getConfig({ buildType }): Promise<any> {
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
     routes: staticRoutes,
+    mapStatsToParams: ({ webpackStats }) => {
+      return {
+        webpackStats: webpackStats.stats
+          .find((v) => v.compilation.name === "client")
+          .toJson(),
+        serviceWorkerStats: webpackStats.stats
+          .find((v) => v.compilation.name === "service-worker")
+          .toJson(),
+      };
+    },
     renderDirectory: hackForceToRoot ? paths.distPath : paths.documentOutput,
     skipAssets: buildType === "start",
     extraGlobals: { Buffer },
@@ -102,6 +113,28 @@ export default async function getConfig({ buildType }): Promise<any> {
   };
 
   const configs: any = [
+    merge(common, {
+      name: "service-worker",
+      target: "webworker",
+      output: {
+        chunkFilename: "[name]-[contenthash].js",
+        path: hackForceToRoot ? paths.distPath : paths.browserOutput,
+        filename: "[name]-[hash].js",
+      },
+      entry: {
+        main: paths.serviceWorkerEntry,
+      },
+      plugins: [
+        new LoadablePlugin({
+          filename: path.basename(paths.workerStatsLocation),
+          writeToDisk: usingFileSystem
+            ? { filename: path.dirname(paths.workerStatsLocation) }
+            : false,
+          outputAsset: false,
+        }),
+        htmlRenderPlugin.statsCollectorPlugin,
+      ],
+    }),
     merge(common, {
       output: {
         chunkFilename: "[name]-[contenthash].js",
@@ -160,33 +193,32 @@ export default async function getConfig({ buildType }): Promise<any> {
         ...(liveReload ? { devServerOnly: liveReloadEntry } : {}),
       },
       plugins: [
-        new BundleAnalyzerPlugin({
-          analyzerMode: "static",
-          reportFilename: paths.reportLocation,
-          openAnalyzer: false,
-        }),
-        new AppManifestPlugin({
-          isAssetManifestIcon: (fileName) => {
-            console.log("isAssetManifestIcon", "fileName", fileName);
-
-            const res = Boolean(
-              fileName.match(/manifest\/icon_\d+-\w*\.(png|jpeg|jpg)$/)
-            );
-            console.log({ res });
-            return res;
-          },
-          content: {
-            name: "Basic Webpack Example",
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            short_name: "Basic",
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            background_color: "#fefbfb",
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            theme_color: "#21728c",
-          },
-          destination: "",
+        new WebpackPwaManifest({
+          name: "Basic webpack exmaple",
+          short_name: "Basic",
+          start_url: "/",
+          description:
+            "A project for testing web application patterns starting from a basic web application.",
+          background_color: "#fefbfb",
+          theme_color: "#21728c",
+          // crossorigin: "use-credentials", //can be null, use-credentials or anonymous
+          icons: [
+            {
+              src: path.resolve("src/manifest/icon_512-basic.png"),
+              sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+            },
+            {
+              src: path.resolve("src/manifest/icon_512-basic.png"),
+              size: "1024x1024", // you can also use the specifications pattern
+            },
+            {
+              src: path.resolve("src/manifest/icon_512-basic.png"),
+              size: "1024x1024",
+            },
+          ],
         }),
         new LoadablePlugin({
+          filename: path.basename(paths.clientStatsLocation),
           writeToDisk: usingFileSystem
             ? { filename: path.dirname(paths.clientStatsLocation) }
             : false,
@@ -194,6 +226,11 @@ export default async function getConfig({ buildType }): Promise<any> {
         }),
         serverRendererPlugin.clientPlugin,
         htmlRenderPlugin.statsCollectorPlugin,
+        new BundleAnalyzerPlugin({
+          analyzerMode: "static",
+          reportFilename: paths.reportLocation,
+          openAnalyzer: false,
+        }),
       ],
     }),
     merge(common, {
@@ -229,7 +266,6 @@ export default async function getConfig({ buildType }): Promise<any> {
       name: "server",
       target: "node",
       entry: {
-        manifest: paths.manifestEntry,
         server: [
           "core-js/stable",
           "isomorphic-fetch",

@@ -17,7 +17,7 @@ const debug = createDebug("app:server");
 const healthCheckMatch = match("/healthcheck");
 const pingMatch = match("/ping");
 
-// const clientStatsFile = "./loadable-stats.json";
+// const clientStatsFile = "./client-stats.json";
 // const LOG_TO_CONSOLE = false;
 
 let requestCounter = 0;

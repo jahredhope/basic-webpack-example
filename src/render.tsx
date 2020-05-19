@@ -22,6 +22,7 @@ import favicon16 from "./assets/favicon-16x16.png";
 import favicon32 from "./assets/favicon-32x32.png";
 // @ts-ignore: non-ts file
 import favicon from "./assets/favicon.ico";
+import { Stats } from "webpack";
 
 function renderShell({ head = "", body = "" }) {
   return `<!DOCTYPE html>
@@ -43,7 +44,13 @@ function renderShell({ head = "", body = "" }) {
 const client = createGraphQlClient();
 
 export default async function render(params: any) {
-  const { route, webpackStats, clientStatsFile, state } = params;
+  const {
+    route,
+    webpackStats,
+    clientStatsFile,
+    state,
+    serviceWorkerStats,
+  } = params;
   if (state) {
     log("Rendering with state");
   } else {
@@ -61,9 +68,13 @@ export default async function render(params: any) {
     statsFile: clientStatsFile,
   });
   const publicPath = (extractor as any).stats.publicPath;
-  const manifestFileName = (extractor as any).stats.assetsByChunkName[
-    "app-manifest"
-  ];
+  const manifestFileName = ((extractor as any)
+    .stats as Stats.ToJsonOutput).assets.find((v) =>
+    v.name.match(/manifest\.[^.]+\.json/i)
+  )?.name;
+  if (!manifestFileName) {
+    throw new Error("Unable to determin manifestFileName");
+  }
   const store = createStore({
     ...state,
     version: VERSION,
@@ -98,6 +109,16 @@ export default async function render(params: any) {
   return renderShell({
     body: `
     <div id="root">${appHtml}</div>
+    ${
+      serviceWorkerStats
+        ? `<script>window.serviceWorkerPath = "${
+            serviceWorkerStats.publicPath +
+            (Array.isArray(serviceWorkerStats.assetsByChunkName.main)
+              ? serviceWorkerStats.assetsByChunkName.main[0]
+              : serviceWorkerStats.assetsByChunkName.main)
+          }";</script>`
+        : ""
+    }
     <script>window.initialRoute = "${route}";</script>
     <script>window.initialState = ${JSON.stringify(store.getState())};</script>
     ${extractor.getScriptTags()}
@@ -106,8 +127,9 @@ export default async function render(params: any) {
     </script>
     `,
     head: `
-      <meta name="description" content="A project for testing web application patterns starting from a basic web application">
-      <link rel="manifest" href="${(publicPath || "") + manifestFileName}">
+      <meta name="theme-color" content="#21728c" />
+      <meta name="description" content="A project for testing web application patterns starting from a basic web application" />
+      <link rel="manifest" href="${(publicPath || "") + manifestFileName}" />
       ${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}

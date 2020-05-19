@@ -9,7 +9,12 @@ const app = express();
 
 app.disable("x-powered-by");
 
-app.use("/static", express.static("./dist/browser"));
+app.use(
+  "/static",
+  express.static("./dist/browser", {
+    setHeaders: (res) => res.set("Service-Worker-Allowed", "/"),
+  })
+);
 app.use("/api/reddit/", proxy("https://api.reddit.com/"));
 app.use("/api/countries/", proxy("https://countries.trevorblades.com/"));
 app.use("/api", proxy("http://localhost:8081"));

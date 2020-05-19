@@ -22,6 +22,9 @@ async function run() {
   new webpack.ProgressPlugin().apply(compiler);
 
   const webpackDevServer = new WebpackDevServer(compiler, {
+    headers: {
+      "Service-Worker-Allowed": "/",
+    },
     before: (app) => {
       app.disable("x-powered-by");
     },

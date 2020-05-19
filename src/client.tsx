@@ -59,13 +59,38 @@ if (store.getState().visitorId && store.getState().visitorId !== visitorId) {
 }
 store.setState({ visitorId });
 
-console.log("client.tsx");
+// @ts-ignore: TODO add hot optional value to NodeModule
 if (module.hot) {
   console.log("client.tsx", "Module is HOT");
+  // @ts-ignore: TODO add hot optional value to NodeModule
   module.hot.accept("./App", () => {
     console.log("Accepting ./App");
     render();
   });
 } else {
   console.log("client.tsx", "Module is COLD");
+}
+
+// Load Service Worker
+const serviceWorkerScript = window.serviceWorkerPath;
+if (serviceWorkerScript) {
+  if (navigator.serviceWorker.controller) {
+    console.log(
+      navigator.serviceWorker.controller.scriptURL + " (onload)",
+      "controller"
+    );
+    console.log(
+      "An active service worker controller was found, " + "no need to register"
+    );
+  } else {
+    // Register the ServiceWorker
+    navigator.serviceWorker
+      .register(serviceWorkerScript, {
+        scope: "./",
+      })
+      .then(function (reg) {
+        console.log(reg.scope, "register");
+        console.log("Service worker change, registered the service worker");
+      });
+  }
 }

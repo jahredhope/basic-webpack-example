@@ -156,6 +156,14 @@ function App({ error }: any) {
             <Route path="/a">
               <PageA />
             </Route>
+            <Route path="/error/offline">
+              <Card>
+                <Text>
+                  Looks like you are offline. Please check your internet
+                  connection and try again.
+                </Text>
+              </Card>
+            </Route>
             <Route path="/b">
               <PageB />
             </Route>
