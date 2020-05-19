@@ -8,6 +8,7 @@ import {
   selectSubPosts,
   useSetSubredditPosts,
 } from "src/store/posts";
+import Link from "./Link";
 
 const useTopRedditPosts = (subreddit: string) => {
   const setSubredditPosts = useSetSubredditPosts();
@@ -36,9 +37,9 @@ const RedditPosts = () => {
           {posts.map((post: any) => (
             <li key={post.id}>
               <Text>
-                <a href={`https://reddit.com${post.permalink}`}>
+                <Link href={`https://reddit.com${post.permalink}`}>
                   {post.title.substr(0, 100)}
-                </a>
+                </Link>
               </Text>
             </li>
           ))}
