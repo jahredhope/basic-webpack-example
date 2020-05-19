@@ -13,6 +13,7 @@ import Text from "src/components/Text";
 import TextLink from "src/components/TextLink";
 import theme from "src/theme";
 import Header from "./components/Header";
+import { usePageName } from "./components/usePageName";
 
 // import PageA from "./page/PageA";
 const PageA = loadable(() => import("./page/PageA"), {
@@ -29,6 +30,7 @@ const PageC = loadable(() => import("./page/PageC"), {
 
 const TabItem = styled(TextLink)`
   padding: 0 12px 0 0;
+  ${({ active }) => (active ? `text-decoration: underline;` : "")}
   :last-child {
     padding-right: 0;
   }
@@ -81,6 +83,7 @@ const addErrorBoundary = (Child: any) =>
   };
 
 function App({ error }: any) {
+  const pageName = usePageName();
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
@@ -115,6 +118,7 @@ function App({ error }: any) {
         <Tabs>
           <TabItem
             href="/"
+            active={pageName === "Page A"}
             data-analytics="header-page-a"
             name="header-page-a"
             onMouseOver={() => {
@@ -125,6 +129,7 @@ function App({ error }: any) {
           </TabItem>
           <TabItem
             href="/b/"
+            active={pageName === "Page B"}
             data-analytics="header-page-b"
             name="header-page-b"
             onMouseOver={() => {
@@ -135,6 +140,7 @@ function App({ error }: any) {
           </TabItem>
           <TabItem
             href="/c/"
+            active={pageName === "Page C"}
             data-analytics="header-page-c"
             name="header-page-c"
             onMouseOver={() => {

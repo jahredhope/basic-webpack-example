@@ -1,11 +1,10 @@
-import { pathToRegexp } from "path-to-regexp";
-import { useLocation } from "react-router-dom";
 import React from "react";
 import styled from "@emotion/styled";
 
 import Text from "src/components/Text";
 import Link from "src/components/Link";
 import theme from "src/theme";
+import { usePageName } from "./usePageName";
 
 import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
 
@@ -39,18 +38,6 @@ const GithubLogo = styled("img")`
   height: 24px;
   width: 24px;
 `;
-
-const getIsPageA = pathToRegexp("/a/");
-const getIsPageB = pathToRegexp("/b/");
-const getIsPageC = pathToRegexp("/c/");
-
-function usePageName() {
-  const location = useLocation();
-  if (location.pathname.match(getIsPageA)) return "Page A";
-  if (location.pathname.match(getIsPageB)) return "Page B";
-  if (location.pathname.match(getIsPageC)) return "Page C";
-  return "Page A";
-}
 
 export default function Header() {
   const pageName = usePageName();
