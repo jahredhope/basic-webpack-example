@@ -46,7 +46,7 @@ const client = createGraphQlClient();
 export default async function render(params: any) {
   const {
     route,
-    webpackStats,
+    clientStats,
     clientStatsFile,
     state,
     serviceWorkerStats,
@@ -59,12 +59,12 @@ export default async function render(params: any) {
   if (typeof route !== "string") {
     throw new Error(`Missing route during render`);
   }
-  if (!webpackStats && !clientStatsFile) {
+  if (!clientStats && !clientStatsFile) {
     throw new Error(`Missing clientStats or clientStatsFile during render`);
   }
   const extractor = new ChunkExtractor({
     entrypoints: ["main"],
-    stats: webpackStats,
+    stats: clientStats,
     statsFile: clientStatsFile,
   });
   const publicPath = (extractor as any).stats.publicPath;
@@ -111,23 +111,25 @@ export default async function render(params: any) {
     <div id="root">${appHtml}</div>
     ${
       serviceWorkerStats
-        ? `<script>window.serviceWorkerPath = "${
-            serviceWorkerStats.publicPath +
-            (Array.isArray(serviceWorkerStats.assetsByChunkName.main)
-              ? serviceWorkerStats.assetsByChunkName.main[0]
-              : serviceWorkerStats.assetsByChunkName.main)
-          }";</script>`
+        ? `
+        <script type="plain/text" id="serviceWorkerPath">${
+          serviceWorkerStats.publicPath +
+          (Array.isArray(serviceWorkerStats.assetsByChunkName.main)
+            ? serviceWorkerStats.assetsByChunkName.main[0]
+            : serviceWorkerStats.assetsByChunkName.main)
+        }</script>`
         : ""
     }
-    <script>window.initialRoute = "${route}";</script>
-    <script>window.initialState = ${JSON.stringify(store.getState())};</script>
+    <script type="plain/text" id="initialRoute">${route}</script>
+    <script type="application/json" id="initialState">${JSON.stringify(
+      store.getState()
+    )}</script>
+    <script type="application/json" id="__APOLLO_STATE__">${JSON.stringify(
+      client.extract()
+    )}</script>
     ${extractor.getScriptTags()}
-    <script>
-      window.__APOLLO_STATE__ = ${JSON.stringify(client.extract())}
-    </script>
     `,
-    head: `
-      <meta name="theme-color" content="#21728c" />
+    head: `<meta name="theme-color" content="#21728c" />
       <meta name="description" content="A project for testing web application patterns starting from a basic web application" />
       <link rel="manifest" href="${(publicPath || "") + manifestFileName}" />
       ${helmet.title.toString()}

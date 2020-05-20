@@ -12,7 +12,13 @@ import { createStore, Provider, State } from "src/store";
 import App from "./App";
 import createGraphQlClient from "./createGraphQlClient";
 
-const initialState = (window as any).initialState as State;
+import debug from "debug";
+
+const log = debug("app:client");
+
+const initialState = JSON.parse(
+  document.getElementById("initialState")?.textContent || null
+) as State;
 if (!initialState) {
   throw new Error("Missing initialState");
 }
@@ -25,7 +31,7 @@ const store =
 // Uncomment to test State Updates
 // setInterval(() => {
 //   store.setState({ val: store.getState().val ? store.getState().val + 1 : 1 });
-//   console.log("State Update to", store.getState().val);
+//   log("State Update to", store.getState().val);
 // }, 250);
 
 const client = createGraphQlClient();
@@ -61,36 +67,60 @@ store.setState({ visitorId });
 
 // @ts-ignore: TODO add hot optional value to NodeModule
 if (module.hot) {
-  console.log("client.tsx", "Module is HOT");
+  log("client.tsx", "Module is HOT");
   // @ts-ignore: TODO add hot optional value to NodeModule
   module.hot.accept("./App", () => {
-    console.log("Accepting ./App");
+    log("Accepting ./App");
     render();
   });
 } else {
-  console.log("client.tsx", "Module is COLD");
+  log("client.tsx", "Module is COLD");
 }
 
-// Load Service Worker
-const serviceWorkerScript = window.serviceWorkerPath;
-if (serviceWorkerScript) {
-  if (navigator.serviceWorker.controller) {
-    console.log(
-      navigator.serviceWorker.controller.scriptURL + " (onload)",
-      "controller"
-    );
-    console.log(
-      "An active service worker controller was found, " + "no need to register"
-    );
-  } else {
+async function loadServiceWorker() {
+  const serviceWorkerScript = document.getElementById("serviceWorkerPath")
+    ?.textContent;
+  if (serviceWorkerScript) {
+    // Check for existing service worker
+    if (navigator.serviceWorker.controller) {
+      const installedScriptName = navigator.serviceWorker.controller.scriptURL.match(
+        /\/([^/]*\.js)$/
+      )[1];
+      const newScriptName = serviceWorkerScript.match(/\/([^/]*\.js)$/)[1];
+      log(
+        navigator.serviceWorker.controller.scriptURL + " (onload)",
+        "controller"
+      );
+      if (newScriptName === installedScriptName) {
+        log(
+          `An active service worker controller with same name (${newScriptName}) was found, no need to register`
+        );
+      } else {
+        log(
+          `Old service worker found. Replacing ${installedScriptName} with ${newScriptName}`
+        );
+      }
+    }
+
     // Register the ServiceWorker
-    navigator.serviceWorker
+    await navigator.serviceWorker
       .register(serviceWorkerScript, {
         scope: "./",
       })
-      .then(function (reg) {
-        console.log(reg.scope, "register");
-        console.log("Service worker change, registered the service worker");
+      .then((reg) => {
+        log(reg.scope, "register");
+        log("Service worker change, registered the service worker");
       });
   }
 }
+
+loadServiceWorker()
+  .then(() => {
+    navigator.serviceWorker.controller.postMessage([
+      "setDebug",
+      localStorage.debug,
+    ]);
+  })
+  .catch((error) =>
+    log("An error occurred loading service worker. Error: ", error)
+  );

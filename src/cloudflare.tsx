@@ -71,7 +71,7 @@ async function handleRequest(request: Request) {
     return new Response(`No API for ${url.pathname}`, { status: 404 });
   }
   if (url.pathname.match(/^\/events\//)) {
-    return new Response("", { status: 204 });
+    return new Response(null, { status: 204 });
   }
 
   const requestedVersion = url.searchParams.get("version");

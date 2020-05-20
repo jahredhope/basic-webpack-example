@@ -54,7 +54,7 @@ export default async function getConfig({ buildType }): Promise<any> {
     routes: staticRoutes,
     mapStatsToParams: ({ webpackStats }) => {
       return {
-        webpackStats: webpackStats.stats
+        clientStats: webpackStats.stats
           .find((v) => v.compilation.name === "client")
           .toJson(),
         serviceWorkerStats: webpackStats.stats
@@ -123,6 +123,17 @@ export default async function getConfig({ buildType }): Promise<any> {
       },
       entry: {
         main: paths.serviceWorkerEntry,
+      },
+      module: {
+        rules: [
+          {
+            test: /\.m?(j|t)sx?$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+        ],
       },
       plugins: [
         new LoadablePlugin({

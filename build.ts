@@ -1,12 +1,15 @@
-import webpack from "webpack";
+import webpack, { Compiler } from "webpack";
 import getConfig from "./webpack.config";
+
+const isBrowserCompiler = (c: Compiler) =>
+  ["client", "service-worker"].includes(c.name);
 
 async function run() {
   const configs = await getConfig({ buildType: "build" });
-  const clientCompiler = webpack(configs.find((c) => c.name === "client"));
-  const renderCompilers = webpack(configs.filter((c) => c.name !== "client"));
+  const clientsBuild = webpack(configs.filter((c) => isBrowserCompiler(c)));
+  const renderBuilds = webpack(configs.filter((c) => !isBrowserCompiler(c)));
 
-  clientCompiler.run((err, stats) => {
+  clientsBuild.run(async (err, stats) => {
     if (err) {
       console.error("Client: Building finished with err", err);
     }
@@ -15,7 +18,7 @@ async function run() {
       const info = stats.toJson();
       console.error(info.errors);
     }
-    renderCompilers.run((err, stats) => {
+    renderBuilds.run((err, stats) => {
       if (err) {
         console.error("Non-Clients: Building finished with err", err);
       }

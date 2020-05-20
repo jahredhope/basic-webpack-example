@@ -7,8 +7,11 @@ import { HttpLink } from "apollo-link-http";
 export default () => {
   return new ApolloClient({
     cache:
-      typeof window !== "undefined" && (window as any).__APOLLO_STATE__
-        ? new InMemoryCache().restore((window as any).__APOLLO_STATE__)
+      typeof window !== "undefined" &&
+      document.getElementById("__APOLLO_STATE__")
+        ? new InMemoryCache().restore(
+            JSON.parse(document.getElementById("__APOLLO_STATE__").textContent)
+          )
         : new InMemoryCache(),
     link: ApolloLink.from([
       onError(({ graphQLErrors, networkError }) => {
