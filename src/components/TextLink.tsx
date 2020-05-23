@@ -11,7 +11,7 @@ interface IProps {
 export default function TextLink({ href, name, className, ...rest }: IProps) {
   return (
     <Link href={href} className={className} name={name}>
-      <Text link {...rest} />
+      <Text tone="link" {...rest} />
     </Link>
   );
 }

@@ -1,28 +1,27 @@
-import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 
-import React from "react";
+import React, { SFC } from "react";
 
 import theme from "src/theme";
+import Box, { CardProps } from "./Box";
 
-interface IProps {
-  children?: React.ReactNode;
-  primary?: boolean;
-  secondary?: boolean;
-}
-
-const background = ({}: IProps) => {
-  return css`
-    color: ${theme.colors.line.light};
-    background-color: ${theme.colors.button.standard};
-  `;
-};
-export default styled("button")`
+const StyledButton = styled(Box)`
   cursor: pointer;
   border: none;
-  padding: ${theme.grid.height.medium} ${theme.grid.width.medium};
-  margin: ${theme.grid.height.small} ${theme.grid.width.small};
+  min-width: 100px;
   line-height: 1.1rem;
   font-size: ${theme.type.size.body};
-  ${background}
 `;
+
+const Button: SFC<CardProps> = (props) => (
+  <StyledButton
+    as="button"
+    padding="small"
+    margin="xsmall"
+    background="brand"
+    color="white"
+    {...props}
+  />
+);
+
+export default Button;

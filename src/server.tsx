@@ -58,8 +58,6 @@ app.get("*", async (req, res) => {
     requestCounter,
     requestId,
     visitorId,
-    user: null,
-    username: req.cookies.username,
   };
   // if (pageBRegex.exec(req.url)) {
   //   state = await onServerRender(state);
@@ -67,9 +65,8 @@ app.get("*", async (req, res) => {
   try {
     res.send(
       await renderFunction({
-        clientStatsFile,
         // HACK: Access file at server runtime
-        serviceWorkerStats: eval("require")(workerStatsFile),
+        webpackStats: eval("require")(clientStatsFile),
         route: req.url,
         state,
       }).catch((err) => {

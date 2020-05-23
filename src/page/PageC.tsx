@@ -13,9 +13,10 @@ import {
 } from "react-use";
 import { useTrackPageView } from "src/analytics";
 import { useHasMounted, useLogMount } from "src/common-hooks";
-import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import Text from "src/components/Text";
+import Page from "src/components/page";
+import Stack from "src/components/Stack";
 
 export default memo(function PageC() {
   useLogMount("PageC");
@@ -34,65 +35,69 @@ export default memo(function PageC() {
   const windowSize = useWindowSize();
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Page C - Client-side content</title>
       </Helmet>
-      <Card>
-        <Text heading as={"h3"} primary>
-          Page C - Client-side content
-        </Text>
-        <Text>
-          This page contains mostly client-side content with minimal static
-          rendering.
-        </Text>
-      </Card>
-      {hasMounted ? (
-        <Card>
-          <Text>
-            {battery.level
-              ? `Battery: ${battery.level * 100}%${
-                  battery.charging ? " Charging" : ""
-                }`
-              : "\u00a0"}
+      <Page>
+        <Stack space="medium" inset>
+          <Text size="hero" tone="primary" center>
+            Client-side content
           </Text>
-          <Text>
-            {geolocation.latitude
-              ? `Geolocation: ${geolocation.longitude.toFixed(
-                  6
-                )} ${geolocation.latitude.toFixed(6)}`
-              : "\u00a0"}
+          <Text center>
+            This page contains mostly client-side content with minimal static
+            rendering.
           </Text>
-          <Text>Idle: {JSON.stringify(idle)}</Text>
-          <Text>{location.href ? `Location: ${location.href}` : "\u00a0"}</Text>
-          <Text>
-            {network.effectiveType
-              ? `Network: ${network.online ? "Online" : "Offline"} (Latency ${
-                  network.rtt
-                }ms)`
-              : "\u00a0"}
-          </Text>
-          <Text>
-            Window scroll {windowScroll.x} x {windowScroll.y}
-          </Text>
-          <Text>
-            {windowSize.height > 10 && windowSize.height < 100000
-              ? `Window Size ${windowSize.height} x ${windowSize.width}`
-              : "\u00a0"}
-          </Text>
-          <Text>
-            {orientation.type
-              ? `Orientation: ${
-                  orientation.type.match(/landscape/i)
-                    ? "Landscape"
-                    : "Portrait"
-                }`
-              : "\u00a0"}
-          </Text>
-        </Card>
-      ) : (
-        <Loader />
-      )}
-    </div>
+        </Stack>
+        {hasMounted ? (
+          <Stack space="small" inset>
+            <Text>
+              {battery.level
+                ? `Battery: ${battery.level * 100}%${
+                    battery.charging ? " Charging" : ""
+                  }`
+                : "\u00a0"}
+            </Text>
+            <Text>
+              {geolocation.latitude
+                ? `Geolocation: ${geolocation.longitude.toFixed(
+                    6
+                  )} ${geolocation.latitude.toFixed(6)}`
+                : "\u00a0"}
+            </Text>
+            <Text>Idle: {JSON.stringify(idle)}</Text>
+            <Text>
+              {location.href ? `Location: ${location.href}` : "\u00a0"}
+            </Text>
+            <Text>
+              {network.effectiveType
+                ? `Network: ${network.online ? "Online" : "Offline"} (Latency ${
+                    network.rtt
+                  }ms)`
+                : "\u00a0"}
+            </Text>
+            <Text>
+              Window scroll {windowScroll.x} x {windowScroll.y}
+            </Text>
+            <Text>
+              {windowSize.height > 10 && windowSize.height < 100000
+                ? `Window Size ${windowSize.height} x ${windowSize.width}`
+                : "\u00a0"}
+            </Text>
+            <Text>
+              {orientation.type
+                ? `Orientation: ${
+                    orientation.type.match(/landscape/i)
+                      ? "Landscape"
+                      : "Portrait"
+                  }`
+                : "\u00a0"}
+            </Text>
+          </Stack>
+        ) : (
+          <Loader />
+        )}
+      </Page>
+    </>
   );
 });

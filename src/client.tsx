@@ -116,10 +116,12 @@ async function loadServiceWorker() {
 
 loadServiceWorker()
   .then(() => {
-    navigator.serviceWorker.controller.postMessage([
-      "setDebug",
-      localStorage.debug,
-    ]);
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage([
+        "setDebug",
+        localStorage.debug,
+      ]);
+    }
   })
   .catch((error) =>
     log("An error occurred loading service worker. Error: ", error)

@@ -5,7 +5,6 @@ const rootPath = cwd;
 const srcPath = path.resolve(cwd, "src");
 const distPath = path.resolve(cwd, "dist");
 const nodeOutput = path.resolve(distPath, "node");
-const runtimeOutput = path.resolve(distPath, "runtime");
 
 const ports = {
   devServer: 8080,
@@ -18,16 +17,15 @@ const config = {
   paths: {
     distPath,
     nodeOutput,
-    runtimeOutput,
     reportLocation: path.resolve(rootPath, "report", "client.html"),
     clientStatsLocation: path.resolve(nodeOutput, "client-stats.json"),
+    loadableStatsLocation: path.resolve(nodeOutput, "loadable.json"),
     workerStatsLocation: path.resolve(nodeOutput, "worker-stats.json"),
     browserOutput: path.resolve(distPath, "browser"),
     documentOutput: path.resolve(distPath, "document"),
     htmlOutput: path.resolve(distPath, "html"),
     cloudflareOutput: path.resolve(distPath, "cloudflare"),
     cloudflareEntry: path.resolve(srcPath, "cloudflare.tsx"),
-    runtimeEntry: path.resolve(srcPath, "runtime.tsx"),
     renderEntry: path.resolve(srcPath, "render.tsx"),
     serviceWorkerEntry: path.resolve(srcPath, "service-worker.ts"),
     serverEntry: path.resolve(srcPath, "server.tsx"),

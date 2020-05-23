@@ -31,3 +31,5 @@ echo "Publish Worker"
 yarn wrangler publish
 
 sed -i '' 's+"main": "dist/cloudflare/response.js",+"wrangler_main": "dist/cloudflare/response.js",+g' package.json
+
+echo "Successfully deployed version: $VERSION"

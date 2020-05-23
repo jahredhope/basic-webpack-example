@@ -1,9 +1,13 @@
+const MultiStats = require("webpack/lib/MultiStats");
 const express = require("express");
 const proxy = require("express-http-proxy");
 const waitOn = require("wait-on");
 const debug = require("debug");
+const fs = require("fs");
 
 const createServer = require("./createServer");
+
+const log = debug("RenderPlugin");
 
 const PLUGIN_NAME = "server-render";
 
@@ -15,22 +19,30 @@ function getSourceFromCompilation(compilation) {
   return files;
 }
 
-module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
-  let browserBuildReady = false;
+module.exports = ({
+  useDevServer,
+  healthCheckEndpoint,
+  filename,
+  rendererUrl,
+  routes,
+}) => {
+  // let browserBuildReady = false;
   let nodeBuildReady = false;
   let rendererReady = false;
   let rendererError = null;
-  let browserCompilation = null;
+  const clientCompilations = [];
   let nodeCompilation = null;
   const renderCallbacks = [];
 
   const { pushNewServer, onKillServer } = createServer({
     onReady: async (error) => {
       if (error) {
-        debug("render:server:master")("Error from worker:", error);
+        debug("RenderPlugin:server:master")("Error from worker:", error);
       } else {
         await waitOnServer();
-        debug("render:server")("Healthcheck passed. Marking renderer ready");
+        debug("RenderPlugin:server")(
+          "Healthcheck passed. Marking renderer ready"
+        );
       }
       rendererError = error;
       rendererReady = true;
@@ -38,26 +50,51 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
     },
   });
 
-  const getClientStats = () =>
-    browserCompilation
-      ? browserCompilation.getStats().toJson({
-          hash: true,
-          publicPath: true,
-          assets: true,
-          chunks: false,
-          modules: false,
-          source: false,
-          errorDetails: false,
-          timings: false,
-        })
-      : null;
-  const isBuildReady = () => browserBuildReady && nodeBuildReady;
+  const getClientStats = () => {
+    const clientStats = (clientCompilations.length === 1
+      ? clientCompilations[0].compilation.getStats()
+      : new MultiStats(
+          clientCompilations
+            .map((compilationStatus) => compilationStatus.compilation)
+            .filter(Boolean)
+            .map((compilation) => compilation.getStats())
+        )
+    ).toJson({
+      hash: true,
+      publicPath: true,
+      assets: true,
+      chunks: false,
+      modules: false,
+      source: false,
+      errorDetails: false,
+      timings: false,
+    });
+
+    return clientStats;
+  };
+  const isBuildReady = () => {
+    return (
+      clientCompilations.every((c, i) => {
+        if (!c.compilation) {
+          log("isReady", `No compilation for config index ${i}`);
+          return false;
+        }
+        if (!c.isReady) {
+          log("isReady", `${c.compilation.name} not ready`);
+          return false;
+        }
+        return true;
+      }) && nodeBuildReady
+    );
+  };
   const isRendererReady = () => isBuildReady() && rendererReady;
 
   const startServerIfReady = async () => {
     if (!isBuildReady()) {
+      log("startServerIfReady", "server not ready");
       return;
     }
+    log("startServerIfReady", "server ready");
     const files = getSourceFromCompilation(nodeCompilation);
 
     files["client-stats.json"] = `module.exports = ${JSON.stringify(
@@ -84,7 +121,7 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
 
   const waitOnServer = async () => {
     const timeoutId = setTimeout(() => {
-      debug("render:server")("Still waiting. Taking a while");
+      debug("RenderPlugin:server")("Still waiting. Taking a while");
     }, 4000);
     await waitOn({
       interval: 500,
@@ -95,18 +132,31 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
   };
 
   const clientPlugin = (browserCompiler) => {
+    const compilationStatus = {
+      compilation: null,
+      isReady: false,
+    };
+
     browserCompiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
-      browserBuildReady = false;
-    });
-    browserCompiler.hooks.done.tap(PLUGIN_NAME, () => {
-      browserBuildReady = true;
-      startServerIfReady();
-      flushQueuedRequests();
+      compilationStatus.isReady = false;
     });
 
     browserCompiler.hooks.afterEmit.tap(PLUGIN_NAME, async (compilation) => {
-      browserCompilation = compilation;
+      compilationStatus.compilation = compilation;
+      compilationStatus.isReady = true;
+      if (useDevServer) {
+        startServerIfReady();
+        flushQueuedRequests();
+      } else {
+        log("browser compiler", "afterEmit");
+        if (clientCompilations.every((c) => c.isReady)) {
+          log("browser compiler", "afterEmit", "ready", filename);
+          const content = JSON.stringify(getClientStats(), null, 2);
+          fs.writeFileSync(filename, content);
+        }
+      }
     });
+    clientCompilations.push(compilationStatus);
   };
 
   const nodePlugin = (nodeCompiler) => {
@@ -116,17 +166,27 @@ module.exports = ({ healthCheckEndpoint, rendererUrl, routes }) => {
       rendererError = null;
     });
 
-    nodeCompiler.hooks.done.tap(PLUGIN_NAME, () => {
+    nodeCompiler.hooks.emit.tap(PLUGIN_NAME, (compilation) => {
+      nodeCompilation = compilation;
       nodeBuildReady = true;
-      startServerIfReady();
-      flushQueuedRequests();
+      if (useDevServer) {
+        startServerIfReady();
+        flushQueuedRequests();
+      } else {
+        const statsString = JSON.stringify(getClientStats());
+        log("Generate client-stats.json of length:", statsString.length);
+        compilation.assets["client-stats.json"] = {
+          source: () => {
+            return statsString;
+          },
+          size: () => {
+            return statsString.length;
+          },
+        };
+      }
     });
 
     nodeCompiler.hooks.beforeCompile.tap(PLUGIN_NAME, onKillServer);
-
-    nodeCompiler.hooks.afterEmit.tap(PLUGIN_NAME, (compilation) => {
-      nodeCompilation = compilation;
-    });
   };
 
   const devServerRouter = express.Router();

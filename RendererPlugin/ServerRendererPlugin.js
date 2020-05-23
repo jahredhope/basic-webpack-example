@@ -5,18 +5,14 @@ const noop = () => {};
 
 module.exports = function createServerRendererPlugin({
   useDevServer,
+  filename,
   healthCheckEndpoint,
   rendererUrl,
   routes,
 }) {
-  if (!useDevServer) {
-    return {
-      nodePlugin: noop,
-      clientPlugin: noop,
-      devServerRouter: noop,
-    };
-  }
   return serverRenderDevBuild({
+    filename,
+    useDevServer,
     healthCheckEndpoint,
     rendererUrl,
     routes,

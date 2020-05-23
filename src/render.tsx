@@ -44,13 +44,7 @@ function renderShell({ head = "", body = "" }) {
 const client = createGraphQlClient();
 
 export default async function render(params: any) {
-  const {
-    route,
-    clientStats,
-    clientStatsFile,
-    state,
-    serviceWorkerStats,
-  } = params;
+  const { route, webpackStats, clientStatsFile, state } = params;
   if (state) {
     log("Rendering with state");
   } else {
@@ -59,7 +53,21 @@ export default async function render(params: any) {
   if (typeof route !== "string") {
     throw new Error(`Missing route during render`);
   }
+  if (!webpackStats) {
+    console.log("Params passed:", Object.keys(params));
+    console.log(Object.entries(params));
+    throw new Error(`Missing webpackStats during render`);
+  }
+  console.log({ webpackStats });
+
+  const serviceWorkerStats: Stats.ToJsonOutput = webpackStats.children.find(
+    (s) => s.name === "service-worker"
+  );
+  const clientStats: Stats.ToJsonOutput = webpackStats.children.find(
+    (s) => s.name === "client"
+  );
   if (!clientStats && !clientStatsFile) {
+    console.log({ params });
     throw new Error(`Missing clientStats or clientStatsFile during render`);
   }
   const extractor = new ChunkExtractor({
@@ -68,8 +76,7 @@ export default async function render(params: any) {
     statsFile: clientStatsFile,
   });
   const publicPath = (extractor as any).stats.publicPath;
-  const manifestFileName = ((extractor as any)
-    .stats as Stats.ToJsonOutput).assets.find((v) =>
+  const manifestFileName = clientStats.assets.find((v) =>
     v.name.match(/manifest\.[^.]+\.json/i)
   )?.name;
   if (!manifestFileName) {
@@ -87,7 +94,6 @@ export default async function render(params: any) {
   log({ route });
 
   const routerContext = {};
-
   const WrappedApp = (
     <ApolloProvider client={client}>
       <Provider value={store}>
@@ -135,8 +141,7 @@ export default async function render(params: any) {
       ${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
-      ${extractor.getLinkTags()}
-          `,
+      ${extractor.getLinkTags()}`,
   });
 }
 

@@ -3,14 +3,9 @@ import styled from "@emotion/styled";
 
 import Text from "src/components/Text";
 import Link from "src/components/Link";
-import theme from "src/theme";
 import { usePageName } from "./usePageName";
 
 import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
-
-const BannerHeading = styled(Text)`
-  align-self: flex-end;
-`;
 
 const Banner = styled("div")`
   display: grid;
@@ -24,7 +19,12 @@ const Banner = styled("div")`
   box-sizing: border-box;
   padding: 12px 18px;
   align-items: flex-end;
-  background-color: ${theme.colors.fill.secondary};
+  background-color: var(--color-brand);
+  // background-image: linear-gradient(
+  //   to bottom right,
+  //   var(--color-brand),
+  //   var(--color-brand-light)
+  // );
 `;
 
 const RightAligned = styled("div")`
@@ -45,7 +45,9 @@ export default function Header() {
   return (
     <Banner>
       <div />
-      <BannerHeading heading>Basic Webpack Example - {pageName}</BannerHeading>
+      <Text size="heading" tone="light">
+        Basic Webpack Example - {pageName}
+      </Text>
       <div>
         <RightAligned>
           <Link

@@ -43,6 +43,7 @@ export default async function getConfig({ buildType }): Promise<any> {
   const serverRendererPlugin = createServerRendererPlugin({
     useDevServer: buildType === "start",
     healthCheckEndpoint: rendererHealthcheck,
+    filename: paths.clientStatsLocation,
     rendererUrl,
     routes: serverRoutes,
   });
@@ -52,16 +53,6 @@ export default async function getConfig({ buildType }): Promise<any> {
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
     routes: staticRoutes,
-    mapStatsToParams: ({ webpackStats }) => {
-      return {
-        clientStats: webpackStats.stats
-          .find((v) => v.compilation.name === "client")
-          .toJson(),
-        serviceWorkerStats: webpackStats.stats
-          .find((v) => v.compilation.name === "service-worker")
-          .toJson(),
-      };
-    },
     renderDirectory: hackForceToRoot ? paths.distPath : paths.documentOutput,
     skipAssets: buildType === "start",
     extraGlobals: { Buffer },
@@ -137,12 +128,11 @@ export default async function getConfig({ buildType }): Promise<any> {
       },
       plugins: [
         new LoadablePlugin({
-          filename: path.basename(paths.workerStatsLocation),
-          writeToDisk: usingFileSystem
-            ? { filename: path.dirname(paths.workerStatsLocation) }
-            : false,
+          filename: path.basename(paths.loadableStatsLocation),
+          writeToDisk: false,
           outputAsset: false,
         }),
+        serverRendererPlugin.clientPlugin,
         htmlRenderPlugin.statsCollectorPlugin,
       ],
     }),
@@ -205,7 +195,7 @@ export default async function getConfig({ buildType }): Promise<any> {
       },
       plugins: [
         new WebpackPwaManifest({
-          name: "Basic webpack exmaple",
+          name: "Basic webpack example",
           short_name: "Basic",
           start_url: "/",
           description:
@@ -229,10 +219,8 @@ export default async function getConfig({ buildType }): Promise<any> {
           ],
         }),
         new LoadablePlugin({
-          filename: path.basename(paths.clientStatsLocation),
-          writeToDisk: usingFileSystem
-            ? { filename: path.dirname(paths.clientStatsLocation) }
-            : false,
+          filename: path.basename(paths.loadableStatsLocation),
+          writeToDisk: false,
           outputAsset: false,
         }),
         serverRendererPlugin.clientPlugin,
@@ -294,59 +282,6 @@ export default async function getConfig({ buildType }): Promise<any> {
         defineVersionPlugin,
         serverRendererPlugin.nodePlugin,
         htmlRenderPlugin.rendererPlugin,
-      ],
-    }),
-    merge(common, {
-      node: {
-        // Buffer: false,
-        // process: false,
-      },
-      output: {
-        path: paths.runtimeOutput,
-        // libraryExport: "default",
-        // library: "static",
-        // libraryTarget: "umd2",
-        // libraryTarget: "commonjs2",
-        libraryTarget: "commonjs2",
-        filename: "[name].js",
-      },
-      module: {
-        rules: [
-          {
-            test: /\.m?(j|t)sx?$/,
-            exclude: /(node_modules)/,
-            use: {
-              loader: "babel-loader",
-            },
-          },
-          {
-            test: /\.(jpg|png|ico)?$/,
-            use: {
-              loader: "file-loader",
-              options: {
-                emitFile: false,
-              },
-            },
-          },
-        ],
-      },
-      name: "runtime",
-      target: "webworker",
-      resolve: {
-        alias: { fs: path.resolve(__dirname, "mocked-fs.js") },
-        aliasFields: ["main"],
-        mainFields: ["module", "main"],
-      },
-      entry: { response: paths.runtimeEntry },
-      plugins: [
-        /**
-         * This build is currently targetted at a webworker but actually runs inside a V8 Isolate
-         * V8 Isolate doesn't have a notion of 'self', so this hacks around this
-         */
-        new webpack.BannerPlugin({
-          banner: "let self = global;\n",
-          raw: true,
-        }),
       ],
     }),
     merge(common, {

@@ -1,34 +1,9 @@
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
+import React, { SFC } from "react";
 
-import React from "react";
+import Box, { CardProps } from "./Box";
 
-import theme from "src/theme";
+const Card: SFC<CardProps> = (props) => (
+  <Box background="card" padding="medium" {...props} />
+);
 
-interface IProps {
-  children?: React.ReactNode;
-  primary?: boolean;
-  secondary?: boolean;
-}
-
-const background = ({ primary, secondary }: IProps) => {
-  if (primary) {
-    return css`
-      background-color: ${theme.colors.fill.primary};
-    `;
-  }
-  if (secondary) {
-    return css`
-      background-color: ${theme.colors.fill.secondary};
-    `;
-  }
-  return css`
-    background-color: ${theme.colors.fill.standard};
-  `;
-};
-export default styled("div")`
-  display: block;
-  padding: 12px 18px 0px;
-  margin-bottom: 6px;
-  ${background}
-`;
+export default Card;

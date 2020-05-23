@@ -9,6 +9,8 @@ import {
   useSetSubredditPosts,
 } from "src/store/posts";
 import Link from "./Link";
+import Stack from "./Stack";
+import Box from "./Box";
 
 const useTopRedditPosts = (subreddit: string) => {
   const setSubredditPosts = useSetSubredditPosts();
@@ -27,13 +29,15 @@ const RedditPosts = () => {
   const posts = useTopRedditPosts(subreddit);
 
   return (
-    <>
-      <Text heading>Reddit ReactJS Posts</Text>
-      <Button onClick={() => setSubreddit("reactjs")}>React JS</Button>
-      <Button onClick={() => setSubreddit("webpack")}>Webpack</Button>
+    <Stack space="small">
+      <Text size="heading">Reddit {subreddit} Posts</Text>
+      <Box inline="xsmall">
+        <Button onClick={() => setSubreddit("reactjs")}>React JS</Button>
+        <Button onClick={() => setSubreddit("webpack")}>Webpack</Button>
+      </Box>
 
       {posts ? (
-        <ul>
+        <Stack as="ul" space="xsmall">
           {posts.map((post: any) => (
             <li key={post.id}>
               <Text>
@@ -43,9 +47,9 @@ const RedditPosts = () => {
               </Text>
             </li>
           ))}
-        </ul>
+        </Stack>
       ) : (
-        <ul>
+        <Stack as="ul" space="xsmall">
           <li>
             <Text>&nbsp;</Text>
           </li>
@@ -61,9 +65,9 @@ const RedditPosts = () => {
           <li>
             <Text>&nbsp;</Text>
           </li>
-        </ul>
+        </Stack>
       )}
-    </>
+    </Stack>
   );
 };
 

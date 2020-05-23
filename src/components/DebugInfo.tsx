@@ -3,13 +3,16 @@ import React, { useState, useEffect } from "react";
 import Text from "src/components/Text";
 import { useSelector } from "src/store/index";
 import { useIncrementer, useIncrementalTimer } from "src/common-hooks";
-import Card from "./Card";
-import { useDisplayName } from "src/store/user";
 import styled from "@emotion/styled";
 import { useLocation } from "react-router-dom";
 
-const Root = styled(Card)`
+const Root = styled("div")`
   grid-area: meta;
+  align-items: flex-start;
+  justify-content: flex-start;
+  justify-self: center;
+  width: 100%;
+  max-width: calc(100vw - (2 * var(--space-medium)));
 `;
 
 const usePaintTiming = () => {
@@ -35,7 +38,6 @@ const usePaintTiming = () => {
 
 export default function DebugInfo() {
   const location = useLocation();
-  const displayName = useDisplayName();
   const version = useSelector((state) => state.version);
   const initialRoute = useSelector((state) => state.initialRoute);
   const requestId = useSelector((state) => state.requestId);
@@ -47,10 +49,11 @@ export default function DebugInfo() {
   const paintTiming = usePaintTiming();
   return (
     <Root>
-      <Text heading primary>
+      <Text size="heading" tone="primary">
         Debug info
       </Text>
       <Text
+        size="small"
         title={
           isServerRender
             ? `This application was served by a server render on request. \nRequest Id: ${requestId}. \nRequest Count: ${requestCounter}.`
@@ -59,30 +62,35 @@ export default function DebugInfo() {
       >
         Render type: {isServerRender ? "Live Server" : "Static"}
       </Text>
-      <Text title="This value is updated client side.">
+      <Text size="small" title="This value is updated client side.">
         Dynamic value: {count}
       </Text>
-      <Text>Initial route: {initialRoute}</Text>
-      <Text>Current route: {location.pathname}</Text>
-      <Text>Version: {version}</Text>
-      <Text>
+      <Text size="small">Initial route: {initialRoute}</Text>
+      <Text size="small">Current route: {location.pathname}</Text>
+      <Text size="small">Version: {version}</Text>
+      <Text size="small">
         First paint:{" "}
         {paintTiming.firstPaint
           ? `${Math.floor(paintTiming.firstPaint)}ms`
           : ""}
       </Text>
-      <Text>
+      <Text size="small">
         FCP:{" "}
         {paintTiming.firstContentfulPaint
           ? `${Math.floor(paintTiming.firstContentfulPaint)}ms`
           : ""}
       </Text>
-      {requestId ? <Text>Request id: {requestId}</Text> : null}
-      {typeof requestCounter === "number" ? (
-        <Text>Request counter: {requestCounter}</Text>
+      {requestId ? (
+        <Text size="small" title={requestId}>
+          Request id: {(requestId || "").substr(0, 8)}
+        </Text>
       ) : null}
-      <Text>User: {displayName}</Text>
-      <Text>Visitor id: {(visitorId || "").substr(0, 8)}</Text>
+      {typeof requestCounter === "number" ? (
+        <Text size="small">Request counter: {requestCounter}</Text>
+      ) : null}
+      <Text size="small" title={visitorId}>
+        Visitor id: {(visitorId || "").substr(0, 8)}
+      </Text>
     </Root>
   );
 }

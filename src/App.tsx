@@ -1,4 +1,3 @@
-import { css, Global } from "@emotion/core";
 import { Switch, Route } from "react-router-dom";
 import loadable from "@loadable/component";
 import React from "react";
@@ -11,9 +10,9 @@ import Loader from "src/components/Loader";
 import logoSrc from "src/soccer.png";
 import Text from "src/components/Text";
 import TextLink from "src/components/TextLink";
-import theme from "src/theme";
 import Header from "./components/Header";
 import { usePageName } from "./components/usePageName";
+import GlobalCss from "./GlobalCss";
 
 // import PageA from "./page/PageA";
 const PageA = loadable(() => import("./page/PageA"), {
@@ -29,20 +28,16 @@ const PageC = loadable(() => import("./page/PageC"), {
 });
 
 const TabItem = styled(TextLink)`
-  padding: 0 12px 0 0;
-  ${({ active }) => (active ? `text-decoration: underline;` : "")}
-  :last-child {
-    padding-right: 0;
-  }
+  padding: var(--space-small) var(--space-small) var(--space-xsmall);
+  ${({ active }) =>
+    active ? `border-bottom: 2px solid var(--color-link);` : ""}
 `;
 
 const Tabs = styled("div")`
   grid-area: links;
-  padding: 10px 18px;
-  background-color: var(--color-orange);
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 if (!logoSrc) {
@@ -52,19 +47,22 @@ if (!logoSrc) {
 const PageGrid = styled("div")`
   margin-bottom: 30px;
   display: grid;
+  row-gap: var(--space-xsmall);
+  column-gap: var(--space-medium);
   grid-template-columns: 1fr;
   max-width: 100%;
+
   grid-template-areas:
     "header"
     "links"
-    "meta"
-    ".";
-  @media only screen and (min-width: 600px) {
-    grid-template-columns: auto 200px;
+    "content"
+    "meta";
+  @media only screen and (min-width: 1200px) {
+    grid-template-columns: 180px auto 180px;
     grid-template-areas:
-      "header header"
-      "links links"
-      ". meta";
+      "header header header"
+      "links links links"
+      ". content meta";
   }
 `;
 
@@ -91,29 +89,8 @@ function App({ error }: any) {
 
   return (
     <div>
-      <Global
-        styles={css`
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-              Helvetica, Arial, sans-serif, "Apple Color Emoji",
-              "Segoe UI Emoji", "Segoe UI Symbol";
-            padding: 0;
-            margin: 0;
-            max-width: 100vw;
-            background-color: ${theme.colors.fill.standard};
-          }
-          a,
-          a:visited {
-            text-decoration: inherit;
-          }
-
-          a:hover,
-          a:active {
-            color: inherit;
-          }
-        `}
-      />{" "}
       <PageGrid>
+        <GlobalCss />
         <Header />
         <Tabs>
           <TabItem

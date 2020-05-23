@@ -3,42 +3,38 @@ import { Helmet } from "react-helmet";
 
 import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
-import Card from "src/components/Card";
 import Continents from "src/components/Continents";
 import RedditPosts from "src/components/RedditPosts";
 import Text from "src/components/Text";
-import { State } from "src/store";
-import { loadPosts, setSubredditPosts } from "src/store/posts";
+import Page from "src/components/page";
+import Stack from "src/components/Stack";
+import Box from "src/components/Box";
 
 export default memo(function PageB() {
   useLogMount("PageB");
   useTrackPageView("PageB");
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Page B - Dynamic content</title>
       </Helmet>
-      <Card>
-        <Text heading as={"h3"} primary>
-          Page B - Server-side dynamic content
-        </Text>
-        <Text>
-          This page contains a mix of server-or-client side content and
-          client-only side content.
-        </Text>
-      </Card>
-      <Card>
-        <Continents />
-      </Card>
-      <Card>
-        <RedditPosts />
-      </Card>
-    </div>
+      <Page>
+        <Stack space="medium" inset>
+          <Text size="hero" tone="primary" center>
+            Server-side content
+          </Text>
+          <Text center>
+            This page contains a mix of server and non-server rendered content.
+          </Text>
+        </Stack>
+        <Box inset>
+          <Continents />
+        </Box>
+        <Box inset>
+          <RedditPosts />
+        </Box>
+      </Page>
+    </>
   );
 });
-
-export const onServerRender = async (state: State): Promise<State> => {
-  const posts = await loadPosts("reactjs");
-  return { ...state, ...setSubredditPosts(state, "reactjs", posts) };
-};

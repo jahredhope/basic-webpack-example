@@ -7,19 +7,17 @@ import {
 } from "react-unistore";
 import createStore from "unistore";
 import { PostsState } from "./posts";
-import { UserState } from "./user";
 
 type Environment = "production" | "staging" | "development";
 
-export type State = PostsState &
-  UserState & {
-    initialRoute: string;
-    environment: Environment;
-    visitorId?: string;
-    version?: string;
-    requestId?: string;
-    requestCounter?: number;
-  };
+export type State = PostsState & {
+  initialRoute: string;
+  environment: Environment;
+  visitorId?: string;
+  version?: string;
+  requestId?: string;
+  requestCounter?: number;
+};
 export const useSelector: TypedUseSelector<State> = _useSelector;
 export const useAction: TypedUseAction<State> = _useAction;
 
