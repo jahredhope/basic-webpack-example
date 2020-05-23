@@ -1,8 +1,8 @@
 import React, { SFC } from "react";
 
-import Box, { CardProps, Space } from "./Box";
+import Box, { BoxProps, Space } from "./Box";
 
-interface StackProps extends CardProps {
+interface StackProps extends BoxProps {
   space: Space;
 }
 

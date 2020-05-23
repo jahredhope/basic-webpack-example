@@ -14,7 +14,7 @@
     "fab:serve": "fab serve fab.zip",
     "lint.eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint.prettier": "prettier --list-different .",
-    "fix.lint": "eslint --fix --ext .js,.jsx,.ts,.tsx",
+    "fix.lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "lint.type": "tsc --noEmit --project tsconfig.json",
     "lint": "npm run lint.eslint && npm run lint.prettier && npm run lint.type",
     "format": "prettier --write .",

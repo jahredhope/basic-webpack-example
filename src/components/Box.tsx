@@ -9,7 +9,7 @@ export type Space =
   | "xlarge"
   | "xxlarge";
 
-export interface CardProps extends HTMLProps<HTMLElement> {
+export interface BoxProps extends HTMLProps<HTMLElement> {
   ref?: any;
   as?: string;
   padding?: Space;
@@ -44,7 +44,7 @@ export default styled("div")(
     paddingRight,
     paddingLeft,
     paddingBottom,
-  }: CardProps) => {
+  }: BoxProps) => {
     const styles = {
       paddingTop: paddingTop || paddingY || padding,
       paddingRight: paddingRight || paddingX || padding,
@@ -60,11 +60,11 @@ export default styled("div")(
     }
     return styles;
   },
-  ({ background }: CardProps) =>
+  ({ background }: BoxProps) =>
     background ? { backgroundColor: `var(--color-${background})` } : null,
-  ({ stack }: CardProps) =>
+  ({ stack }: BoxProps) =>
     stack ? { display: "grid", gap: `var(--space-${stack})` } : null,
-  ({ inline }: CardProps) =>
+  ({ inline }: BoxProps) =>
     inline
       ? {
           display: "grid",
@@ -76,8 +76,8 @@ export default styled("div")(
           alignItems: "flex-start",
         }
       : null,
-  ({ color }: CardProps) => (color ? { color: `var(--color-${color})` } : null),
-  ({ inset }: CardProps) =>
+  ({ color }: BoxProps) => (color ? { color: `var(--color-${color})` } : null),
+  ({ inset }: BoxProps) =>
     inset
       ? {
           justifySelf: "center",

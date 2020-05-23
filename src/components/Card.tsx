@@ -1,8 +1,8 @@
 import React, { SFC } from "react";
 
-import Box, { CardProps } from "./Box";
+import Box, { BoxProps } from "./Box";
 
-const Card: SFC<CardProps> = (props) => (
+const Card: SFC<BoxProps> = (props) => (
   <Box background="card" padding="medium" {...props} />
 );
 

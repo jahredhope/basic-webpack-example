@@ -15,7 +15,6 @@ const debug = createDebug("app:server");
 
 const RENDER_SERVER_PORT = 3001;
 const clientStatsFile = "./client-stats.json";
-const workerStatsFile = "./worker-stats.json";
 
 const LOG_TO_CONSOLE = false;
 
@@ -59,9 +58,6 @@ app.get("*", async (req, res) => {
     requestId,
     visitorId,
   };
-  // if (pageBRegex.exec(req.url)) {
-  //   state = await onServerRender(state);
-  // }
   try {
     res.send(
       await renderFunction({

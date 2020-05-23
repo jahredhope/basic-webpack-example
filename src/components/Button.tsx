@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import React, { SFC } from "react";
 
 import theme from "src/theme";
-import Box, { CardProps } from "./Box";
+import Box, { BoxProps } from "./Box";
 
 const StyledButton = styled(Box)`
   cursor: pointer;
@@ -13,7 +13,7 @@ const StyledButton = styled(Box)`
   font-size: ${theme.type.size.body};
 `;
 
-const Button: SFC<CardProps> = (props) => (
+const Button: SFC<BoxProps> = (props) => (
   <StyledButton
     as="button"
     padding="small"

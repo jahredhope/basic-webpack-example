@@ -5,22 +5,10 @@ import styled from "@emotion/styled";
 import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
 import Text from "src/components/Text";
-import Card from "src/components/Card";
 import TextLink from "src/components/TextLink";
 import Stack from "src/components/Stack";
 import Page from "src/components/page";
-import { css } from "@emotion/core";
 import Box from "src/components/Box";
-
-// const PageDescriptions = styled("div")({
-//   display: "grid",
-//   maxWidth: "100%",
-//   gap: "var(--space-xlarge)",
-//   gridAutoColumns: "minmax(0, 1fr)",
-//   gridAutoFlow: "column",
-//   justifyItems: "stretch",
-//   alignItems: "stretch",
-// });
 
 const Features = styled("div")({
   display: "grid",
@@ -34,14 +22,6 @@ const FeatureCard = styled("div")({
   display: "grid",
   textAlign: "center",
 });
-
-// const PageDescription = styled(Link)({
-//   cursor: "pointer",
-//   display: "grid",
-//   gap: "20px",
-//   padding: "10px",
-//   backgroundColor: "var(--color-brand-light)",
-// });
 
 export default memo(function PageA() {
   useLogMount("PageA");
@@ -68,22 +48,6 @@ export default memo(function PageA() {
             static content and some dynamic content.
           </Text>
         </Box>
-        {/* <Card>
-          <PageDescriptions>
-            <PageDescription href="/a/">
-              <Text center>Page A</Text>
-              <Text center>Statically rendered page</Text>
-            </PageDescription>
-            <PageDescription href="/b/">
-              <Text center>Page B</Text>
-              <Text center>Server rendered page</Text>
-            </PageDescription>
-            <PageDescription href="/c/">
-              <Text center>Page C</Text>
-              <Text center>Client-side page</Text>
-            </PageDescription>
-          </PageDescriptions>
-        </Card> */}
         <Stack space="xlarge" paddingX="small">
           <Text size="hero" center>
             Features
