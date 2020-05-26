@@ -6,6 +6,9 @@ import Link from "src/components/Link";
 import { usePageName } from "./usePageName";
 
 import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
+import TextLink from "src/components/TextLink";
+
+import { PageA, PageB, PageC } from "../App";
 
 const Banner = styled("div")`
   display: grid;
@@ -39,27 +42,78 @@ const GithubLogo = styled("img")`
   width: 24px;
 `;
 
+const TabItem = styled(TextLink)`
+  padding: var(--space-small) var(--space-small) var(--space-xsmall);
+  ${({ active }) =>
+    active ? `border-bottom: 2px solid var(--color-link);` : ""}
+`;
+
+const Tabs = styled("div")`
+  grid-area: links;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 export default function Header() {
   const pageName = usePageName();
 
   return (
-    <Banner>
-      <div />
-      <Text size="heading" tone="light">
-        Basic Webpack Example - {pageName}
-      </Text>
-      <div>
-        <RightAligned>
-          <Link
-            name="toGithubRepository"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/jahredhope/basic-webpack-example"
-          >
-            <GithubLogo src={githubLogo} alt="GitHub" />
-          </Link>
-        </RightAligned>
-      </div>
-    </Banner>
+    <>
+      <Banner>
+        <div />
+        <Text size="heading" tone="light">
+          Basic Webpack Example - {pageName}
+        </Text>
+        <div>
+          <RightAligned>
+            <Link
+              name="toGithubRepository"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/jahredhope/basic-webpack-example"
+            >
+              <GithubLogo src={githubLogo} alt="GitHub" />
+            </Link>
+          </RightAligned>
+        </div>
+      </Banner>
+
+      <Tabs>
+        <TabItem
+          href="/"
+          active={pageName === "Page A"}
+          data-analytics="header-page-a"
+          name="header-page-a"
+          onMouseOver={() => {
+            PageA.preload();
+          }}
+        >
+          Page A
+        </TabItem>
+        <TabItem
+          href="/b/"
+          active={pageName === "Page B"}
+          data-analytics="header-page-b"
+          name="header-page-b"
+          onMouseOver={() => {
+            PageB.preload();
+          }}
+        >
+          Page B
+        </TabItem>
+        <TabItem
+          href="/c/"
+          active={pageName === "Page C"}
+          data-analytics="header-page-c"
+          name="header-page-c"
+          onMouseOver={() => {
+            PageC.preload();
+          }}
+        >
+          Page C
+        </TabItem>
+      </Tabs>
+    </>
   );
 }

@@ -9,36 +9,21 @@ import DebugInfo from "src/components/DebugInfo";
 import Loader from "src/components/Loader";
 import logoSrc from "src/soccer.png";
 import Text from "src/components/Text";
-import TextLink from "src/components/TextLink";
 import Header from "./components/Header";
-import { usePageName } from "./components/usePageName";
 import GlobalCss from "./GlobalCss";
 
 // import PageA from "./page/PageA";
-const PageA = loadable(() => import("./page/PageA"), {
+export const PageA = loadable(() => import("./page/PageA"), {
   fallback: <Loader />,
 });
 // import PageB from "./page/PageB";
-const PageB = loadable(() => import("./page/PageB"), {
+export const PageB = loadable(() => import("./page/PageB"), {
   fallback: <Loader />,
 });
 // import PageC from "./page/PageC";
-const PageC = loadable(() => import("./page/PageC"), {
+export const PageC = loadable(() => import("./page/PageC"), {
   fallback: <Loader />,
 });
-
-const TabItem = styled(TextLink)`
-  padding: var(--space-small) var(--space-small) var(--space-xsmall);
-  ${({ active }) =>
-    active ? `border-bottom: 2px solid var(--color-link);` : ""}
-`;
-
-const Tabs = styled("div")`
-  grid-area: links;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
 
 if (!logoSrc) {
   throw new Error(`"Missing logoSrc", ${logoSrc}`);
@@ -81,7 +66,6 @@ const addErrorBoundary = (Child: any) =>
   };
 
 function App({ error }: any) {
-  const pageName = usePageName();
   if (!logoSrc) {
     throw new Error(`"Missing logoSrc", ${logoSrc}`);
   }
@@ -92,41 +76,6 @@ function App({ error }: any) {
       <PageGrid>
         <GlobalCss />
         <Header />
-        <Tabs>
-          <TabItem
-            href="/"
-            active={pageName === "Page A"}
-            data-analytics="header-page-a"
-            name="header-page-a"
-            onMouseOver={() => {
-              PageA.preload();
-            }}
-          >
-            Page A
-          </TabItem>
-          <TabItem
-            href="/b/"
-            active={pageName === "Page B"}
-            data-analytics="header-page-b"
-            name="header-page-b"
-            onMouseOver={() => {
-              PageB.preload();
-            }}
-          >
-            Page B
-          </TabItem>
-          <TabItem
-            href="/c/"
-            active={pageName === "Page C"}
-            data-analytics="header-page-c"
-            name="header-page-c"
-            onMouseOver={() => {
-              PageC.preload();
-            }}
-          >
-            Page C
-          </TabItem>
-        </Tabs>
         {error ? (
           <Card>
             <Text>Unable to render. {error.toString()}</Text>
