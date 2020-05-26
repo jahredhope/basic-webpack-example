@@ -1,6 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import loadable from "@loadable/component";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 
 import { useLogMount } from "src/common-hooks";
@@ -39,14 +39,12 @@ const PageGrid = styled("div")`
 
   grid-template-areas:
     "header"
-    "links"
     "content"
     "meta";
   @media only screen and (min-width: 1200px) {
     grid-template-columns: 180px auto 180px;
     grid-template-areas:
       "header header header"
-      "links links links"
       ". content meta";
   }
 `;

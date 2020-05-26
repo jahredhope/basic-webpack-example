@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import webpack from "webpack";
 import merge from "webpack-merge";
 import { Buffer } from "buffer";

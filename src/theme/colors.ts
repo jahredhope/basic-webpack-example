@@ -16,6 +16,7 @@ export const line = {
   light: names.white,
   link: names.deepBlue,
   primary: names.calypso,
+  brand: names.calypso,
   secondary: names.minimumGrey,
   standard: names.blueCharcoal,
 };

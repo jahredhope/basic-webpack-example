@@ -5,10 +5,14 @@ const getIsPageA = pathToRegexp("/a/");
 const getIsPageB = pathToRegexp("/b/");
 const getIsPageC = pathToRegexp("/c/");
 
+export function getPageNameFromPath(pathname: string) {
+  if (pathname.match(getIsPageA)) return "Page A";
+  if (pathname.match(getIsPageB)) return "Page B";
+  if (pathname.match(getIsPageC)) return "Page C";
+  return "Page A";
+}
+
 export function usePageName() {
   const location = useLocation();
-  if (location.pathname.match(getIsPageA)) return "Page A";
-  if (location.pathname.match(getIsPageB)) return "Page B";
-  if (location.pathname.match(getIsPageC)) return "Page C";
-  return "Page A";
+  return getPageNameFromPath(location.pathname);
 }

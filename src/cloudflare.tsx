@@ -1,6 +1,5 @@
 declare const VERSION: string;
 
-/* eslint-disable @typescript-eslint/camelcase */
 import render from "./render";
 import { State } from "./store";
 import mime from "mime/lite";
