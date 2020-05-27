@@ -79,22 +79,6 @@ export default async function getConfig({ buildType }): Promise<any> {
       alias: { path: "path-browserify" },
       extensions: [".mjs", ".js", ".json", ".ts", ".tsx"],
     },
-    module: {
-      rules: [
-        {
-          test: /\.md$/,
-          use: [
-            {
-              loader: "raw-loader",
-            },
-            {
-              loader: "markdown-loader",
-              options: {},
-            },
-          ],
-        },
-      ],
-    },
     // Webpack 5 Optimization
     // optimization: {
     //   chunkIds: "deterministic",

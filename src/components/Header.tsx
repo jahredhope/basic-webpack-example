@@ -20,8 +20,10 @@ const Banner = styled("div")`
   justify-content: space-between;
   width: 100vw;
   box-sizing: border-box;
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow);
   padding: 12px 18px;
-  align-items: flex-end;
+  align-items: center;
   // background-color: var(--color-brand);
   // background-image: linear-gradient(
   //   to bottom right,
@@ -56,17 +58,18 @@ const GithubLogo = styled("img")`
 `;
 
 const TabItem = styled(TextLink)`
-  margin-bottom: calc(-1 * var(--space-small));
+  margin-bottom: calc(-1 * var(--space-small)) 0;
   padding: var(--space-small) var(--space-small) var(--space-xsmall);
-  ${({ active }) =>
-    active ? `border-bottom: 2px solid var(--color-brand);` : ""}
 `;
 
 const Tabs = styled("div")`
   grid-area: menu;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
+  @media only screen and (min-width: 650px) {
+    justify-content: center;
+  }
 `;
 
 const Logo = styled(Text)({
@@ -80,7 +83,9 @@ export default function Header() {
   return (
     <>
       <Banner>
-        <Logo size="heading">Basic Webpack Example</Logo>
+        <Logo size="heading" weight="heavy">
+          Basic Webpack Example
+        </Logo>
         <Tabs>
           <TabItem
             tone={pageName === "Page A" ? "brand" : "standard"}

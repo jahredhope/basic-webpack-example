@@ -21,7 +21,7 @@ export default memo(function PageB() {
       </Helmet>
       <Page>
         <Stack space="medium" inset>
-          <Text size="hero" tone="primary" center>
+          <Text size="hero" tone="brand" center>
             Server-side content
           </Text>
           <Text center>

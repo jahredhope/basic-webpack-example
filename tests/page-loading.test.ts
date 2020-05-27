@@ -30,7 +30,7 @@ describe("Page Load", () => {
 
       it("should have rendered with the correct route", async () => {
         const initialRoute = await page.evaluate(
-          () => (window as any).initialRoute
+          () => document.getElementById("initialRoute").innerHTML
         );
         expect(initialRoute).toBe(expectedRenderedPath);
       });

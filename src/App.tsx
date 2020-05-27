@@ -1,6 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import loadable from "@loadable/component";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import { useLogMount } from "src/common-hooks";
@@ -32,17 +32,18 @@ if (!logoSrc) {
 const PageGrid = styled("div")`
   margin-bottom: 30px;
   display: grid;
-  row-gap: var(--space-xsmall);
+  row-gap: var(--space-large);
   column-gap: var(--space-medium);
   grid-template-columns: 1fr;
   max-width: 100%;
+  justify-content: space-between;
 
   grid-template-areas:
     "header"
     "content"
     "meta";
   @media only screen and (min-width: 1200px) {
-    grid-template-columns: 180px auto 180px;
+    grid-template-columns: 180px minmax(0, 950px) 180px;
     grid-template-areas:
       "header header header"
       ". content meta";

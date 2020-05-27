@@ -12,15 +12,26 @@ import Box from "src/components/Box";
 
 const Features = styled("div")({
   display: "grid",
-  gap: "var(--space-medium)",
-  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  columnGap: "var(--space-medium)",
+  rowGap: "var(--space-large)",
+  gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
   // gridTemplateRows: "repeat(3, 1fr)",
   // gridAutoRows: "60px",
   maxWidth: "100%",
+  "@media only screen and (min-width: 650px)": {
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  },
 });
 const FeatureCard = styled("div")({
   display: "grid",
+  justifyContent: "center",
+  alignItems: "center",
   textAlign: "center",
+  borderRadius: "3px",
+  minHeight: "60px",
+  padding: "var(--space-medium) var(--space-medium)",
+  backgroundColor: "var(--color-white)",
+  boxShadow: "var(--box-shadow)",
 });
 
 export default memo(function PageA() {
@@ -34,21 +45,21 @@ export default memo(function PageA() {
       </Helmet>
       <Page extended>
         <Stack space="medium" inset>
-          <Text size="hero" center>
+          <Text size="hero" center tone="primary">
             Basic
           </Text>
           <Text as="blockquote" center emphasis>
             Start simple, go from there
           </Text>
         </Stack>
-        <Box paddingX="small">
+        <Box paddingX="medium">
           <Text center>
             This application is a demo ground for testing web application
             patterns. It contains a few basic things, like multiple pages, some
             static content and some dynamic content.
           </Text>
         </Box>
-        <Stack space="xlarge" paddingX="small">
+        <Stack space="xlarge" paddingX="medium">
           <Text size="hero" center>
             Features
           </Text>
@@ -63,7 +74,7 @@ export default memo(function PageA() {
             </FeatureCard>
             <FeatureCard>
               <Text>
-                Statically renders multiple routes with{" "}
+                Pre-render multiple routes with{" "}
                 <TextLink
                   inline
                   href="https://github.com/jahredhope/html-render-webpack-plugin"
@@ -130,7 +141,7 @@ export default memo(function PageA() {
                 <TextLink inline href="https://github.com/developit/unistore">
                   Unistore
                 </TextLink>{" "}
-                state management with{" "}
+                and{" "}
                 <TextLink
                   inline
                   href="https://github.com/jahredhope/react-unistore"
@@ -163,17 +174,6 @@ export default memo(function PageA() {
             </FeatureCard>
             <FeatureCard>
               <Text>Same-domain enabled development</Text>
-            </FeatureCard>
-            <FeatureCard>
-              <Text>
-                Loading static content from Markdown (.md) files with{" "}
-                <TextLink
-                  inline
-                  href="https://github.com/peerigon/markdown-loader"
-                >
-                  markdown-loader
-                </TextLink>
-              </Text>
             </FeatureCard>
             <FeatureCard>
               <Text>“Every environment, every build” version switching</Text>

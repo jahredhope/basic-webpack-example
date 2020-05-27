@@ -1,6 +1,6 @@
 /* tslint:disable object-literal-sort-keys */
 
-const hero = "24px";
+const hero = "32px";
 const heading = "16px";
 const body = "16px";
 const small = "14px";

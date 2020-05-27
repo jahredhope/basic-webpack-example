@@ -41,7 +41,7 @@ export default memo(function PageC() {
       </Helmet>
       <Page>
         <Stack space="medium" inset>
-          <Text size="hero" tone="primary" center>
+          <Text size="hero" tone="brand" center>
             Client-side content
           </Text>
           <Text center>

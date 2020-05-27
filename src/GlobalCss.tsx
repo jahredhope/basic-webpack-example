@@ -12,9 +12,10 @@ export default function GlobalCss() {
           --color-brand: ${theme.colors.names.brand};
           --color-brand-light: ${theme.colors.names.brandLight};
           --color-white: hsl(240, 0%, 99%);
-          --color-grey-1: hsl(140, 50%, 88%);
+          --color-off-white: hsl(140, 0%, 97%);
           --color-grey-2: hsl(240, 0%, 81%);
           --color-black: hsl(240, 0%, 1%);
+          --color-grey-dark: hsl(240, 0%, 15%);
           --color-positive: hsl(130, 60%, 30%);
           --color-promote: hsl(280, 50%, 50%);
           --color-promote-light: hsl(280, 80%, 90%);
@@ -41,6 +42,9 @@ export default function GlobalCss() {
           --font-size-hero: 34px;
 
           --button-width: 120px;
+
+          --box-shadow: 0 4px 4px rgba(50, 50, 93, 0.11),
+            0 1px 2px rgba(0, 0, 0, 0.08);
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -48,8 +52,10 @@ export default function GlobalCss() {
             "Segoe UI Symbol";
           padding: 0;
           margin: 0;
+          color: var(--color-grey-dark);
           max-width: 100vw;
-          background-color: ${theme.colors.fill.standard};
+          background-color: var(--color-off-white);
+          /* border-top: 6px solid var(--color-brand); */
         }
         a,
         a:visited {
