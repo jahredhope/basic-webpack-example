@@ -11,6 +11,7 @@ import logoSrc from "src/soccer.png";
 import Text from "src/components/Text";
 import Header from "./components/Header";
 import GlobalCss from "./GlobalCss";
+import Page from "./components/page";
 
 // import PageA from "./page/PageA";
 export const PageA = loadable(() => import("./page/PageA"), {
@@ -76,9 +77,9 @@ function App({ error }: any) {
         <GlobalCss />
         <Header />
         {error ? (
-          <Card>
-            <Text>Unable to render. {error.toString()}</Text>
-          </Card>
+          <Page>
+            <Text center>Unable to render. {error.toString()}</Text>
+          </Page>
         ) : (
           <Switch>
             <Route exact path="/">
@@ -88,12 +89,12 @@ function App({ error }: any) {
               <PageA />
             </Route>
             <Route path="/error/offline">
-              <Card>
-                <Text>
+              <Page>
+                <Text center>
                   Looks like you are offline. Please check your internet
                   connection and try again.
                 </Text>
-              </Card>
+              </Page>
             </Route>
             <Route path="/b">
               <PageB />
@@ -102,9 +103,9 @@ function App({ error }: any) {
               <PageC />
             </Route>
             <Route>
-              <Card>
-                <Text>Page not found</Text>
-              </Card>
+              <Page>
+                <Text center>Page not found</Text>
+              </Page>
             </Route>
           </Switch>
         )}

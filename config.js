@@ -32,7 +32,7 @@ const config = {
     clientEntry: path.resolve(srcPath, "client.tsx"),
   },
 
-  staticRoutes: ["/", "/a/", "/b/", "/c/", "/error/404", "/error/offline/"],
+  staticRoutes: ["/", "/a/", "/b/", "/c/", "/error/404/", "/error/offline/"],
   serverRoutes: ["/b/"],
   rendererUrl,
   rendererHealthcheck: `${rendererUrl}/healthcheck`,

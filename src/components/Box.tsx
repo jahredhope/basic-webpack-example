@@ -1,7 +1,19 @@
 import { HTMLProps } from "react";
 import styled from "@emotion/styled";
 
+export type Color =
+  | "brand"
+  | "brand-light"
+  | "white"
+  | "off-white"
+  | "black"
+  | "grey-dark"
+  | "standard"
+  | "secondary"
+  | "link";
+
 export type Space =
+  | "xxsmall"
   | "xsmall"
   | "small"
   | "medium"
@@ -25,8 +37,8 @@ export interface BoxProps extends HTMLProps<HTMLElement> {
   stack?: Space;
   inline?: Space;
   inset?: boolean;
-  color?: "white";
-  background?: "card" | "primary" | "secondary" | "brand";
+  color?: Color;
+  background?: Color;
 }
 
 export default styled("div")(

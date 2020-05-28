@@ -16,11 +16,9 @@ const keyMap = {
 };
 export const useKeyboardNavigation = () => {
   const history = useHistory();
-
   useEffect(() => {
     const callback = (event: KeyboardEvent) => {
-      history.location.pathname;
-      const pageName = getPageNameFromPath(history.location.pathname);
+      const pageName = getPageNameFromPath(document.location.pathname);
       if (keyMap[pageName][event.key]) {
         history.push(keyMap[pageName][event.key]);
       }

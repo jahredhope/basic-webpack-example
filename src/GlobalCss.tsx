@@ -1,30 +1,45 @@
 import React from "react";
 import { css, Global } from "@emotion/core";
 
-import theme from "src/theme";
+export type Color =
+  | "brand"
+  | "brand-light"
+  | "white"
+  | "off-white"
+  | "black"
+  | "grey-dark"
+  | "standard"
+  | "secondary"
+  | "link";
+
+export type Space =
+  | "xxsmall"
+  | "xsmall"
+  | "small"
+  | "medium"
+  | "large"
+  | "xlarge"
+  | "xxlarge";
+
+export type FontWeight = "medium" | "heavy";
+export type FontSize = "small" | "medium" | "large" | "xlarge";
 
 export default function GlobalCss() {
   return (
     <Global
       styles={css`
         :root {
-          --color-cream: hsl(190, 8%, 90%);
-          --color-brand: ${theme.colors.names.brand};
-          --color-brand-light: ${theme.colors.names.brandLight};
+          --color-brand: hsl(195, 62%, 34%);
+          --color-brand-light: hsl(195, 32%, 70%);
           --color-white: hsl(240, 0%, 99%);
           --color-off-white: hsl(140, 0%, 97%);
-          --color-grey-2: hsl(240, 0%, 81%);
           --color-black: hsl(240, 0%, 1%);
           --color-grey-dark: hsl(240, 0%, 15%);
-          --color-positive: hsl(130, 60%, 30%);
-          --color-promote: hsl(280, 50%, 50%);
-          --color-promote-light: hsl(280, 80%, 90%);
           --color-standard: hsl(280, 2%, 10%);
-          --color-secondary: ${theme.colors.fill.secondary};
-          --color-critical: hsl(0, 60%, 45%);
-          --color-link: ${theme.colors.line.link};
-          --color-card: ${theme.colors.fill.standard};
+          --color-secondary: hsl(215, 16%, 36%);
+          --color-link: hsl(222, 84%, 32%);
 
+          --space-xxsmall: 2px;
           --space-xsmall: 4px;
           --space-small: 8px;
           --space-medium: 16px;
@@ -36,10 +51,19 @@ export default function GlobalCss() {
 
           --border-radius: 5px;
 
-          --font-size-small: 14px;
-          --font-size-medium: 16px;
-          --font-size-large: 20px;
-          --font-size-hero: 34px;
+          --font-size-base: 16px;
+
+          --font-size-small: 0.875rem;
+          --font-size-medium: 1rem;
+          --font-size-large: 1.25rem;
+          --font-size-xlarge: 1.563rem;
+
+          @media only screen and (min-width: 650px) {
+            --font-size-xlarge: 2.125rem;
+          }
+
+          --font-weight-medium: 500;
+          --font-weight-heavy: 700;
 
           --button-width: 120px;
 
@@ -52,6 +76,7 @@ export default function GlobalCss() {
             "Segoe UI Symbol";
           padding: 0;
           margin: 0;
+          font-size: var(--font-size-base);
           color: var(--color-grey-dark);
           max-width: 100vw;
           overflow-x: hidden;

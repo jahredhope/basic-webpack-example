@@ -45,7 +45,7 @@ export default memo(function PageA() {
       </Helmet>
       <Page extended>
         <Stack space="medium" inset>
-          <Text size="hero" center tone="primary">
+          <Text size="xlarge" center tone="primary">
             Basic
           </Text>
           <Text as="blockquote" center emphasis>
@@ -59,8 +59,8 @@ export default memo(function PageA() {
             static content and some dynamic content.
           </Text>
         </Box>
-        <Stack space="xlarge" paddingX="medium">
-          <Text size="hero" center>
+        <Stack space="large" paddingX="medium">
+          <Text size="xlarge" center>
             Features
           </Text>
           <Features>

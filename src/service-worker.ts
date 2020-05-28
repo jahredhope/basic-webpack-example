@@ -5,26 +5,36 @@ import createDebug from "debug";
 let firstVersion: string | null = null;
 const versions = new Set<string>();
 
+createDebug.enable("*");
 const log = createDebug("app:service-worker");
+const logFetch = createDebug("app:service-worker:fetch");
 
 log("Service worker: start");
 
-self.addEventListener("install", (event: ExtendableEvent) => {
-  log("Service worker: install");
+function updateOfflineCache() {
+  log("Updating offline cache");
   const offlineRequest = new Request("/error/offline/");
-  event.waitUntil(
-    fetch(offlineRequest).then((response) => {
-      return caches.open("offline").then(function (cache) {
-        log("[oninstall] Cached offline page", response.url);
-        return cache.put(offlineRequest, response);
-      });
-    })
-  );
+  return fetch(offlineRequest).then((response) => {
+    return caches.open("offline").then(function (cache) {
+      log("[oninstall] Cached offline page", response.url);
+      return cache.put(offlineRequest, response);
+    });
+  });
+}
+
+self.addEventListener("install", (event: ExtendableEvent) => {
+  log("Event: install");
+  event.waitUntil(updateOfflineCache());
+});
+
+self.addEventListener("activate", () => {
+  log("Event: activate");
+  updateOfflineCache();
 });
 
 self.addEventListener("fetch", (event: FetchEvent) => {
   const request = event.request;
-  log("Service worker: fetch. Url:", request.url);
+  logFetch("Event: fetch. Url:", request.url);
   if (request.method === "GET") {
     event.respondWith(
       fetch(request).catch((error) => {
@@ -39,6 +49,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
 self.onmessage = async (e: MessageEvent) => {
   if (Array.isArray(e.data)) {
+    log("Event: message", e.data);
     const [eventName, payload] = e.data;
     if (eventName === "setDebug") {
       log("Recieved setDebug", payload);

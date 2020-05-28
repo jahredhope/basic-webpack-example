@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 
 import React, { SFC } from "react";
 
-import theme from "src/theme";
 import Box, { BoxProps } from "./Box";
 
 const StyledButton = styled(Box)`
@@ -10,7 +9,7 @@ const StyledButton = styled(Box)`
   border: none;
   min-width: 100px;
   line-height: 1.1rem;
-  font-size: ${theme.type.size.body};
+  font-size: var(--font-size-medium);
 `;
 
 const Button: SFC<BoxProps> = (props) => (

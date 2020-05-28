@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 
 import React from "react";
 
-import theme from "src/theme";
+export type FontWeight = "medium" | "heavy";
+export type FontSize = "small" | "medium" | "large" | "xlarge";
 
 const tones = {
   light: "var(--color-white)",
@@ -14,9 +15,8 @@ const tones = {
 };
 
 interface IProps {
-  to?: string;
-  size?: keyof typeof theme.type.size;
-  weight?: keyof typeof theme.type.weight;
+  size?: FontSize;
+  weight?: FontWeight;
   tone?: keyof typeof tones;
   as?: any;
   children?: React.ReactNode;
@@ -31,9 +31,9 @@ export default styled("span")(
   },
   ({ tone }: IProps) => (tone ? { color: tones[tone || "standard"] } : null),
   ({ weight }: IProps) => ({
-    fontWeight: theme.type.weight[weight || "light"],
+    fontWeight: `var(--font-weight-${weight})` as any,
   }),
-  ({ size }: IProps) => ({ fontSize: theme.type.size[size || "body"] }),
+  ({ size }: IProps) => ({ fontSize: `var(--font-size-${size})` }),
   ({ center }: IProps) => (center ? { textAlign: "center" } : null),
   ({ inline }: IProps) => ({ display: inline ? "inline" : "block" }),
   ({ emphasis }: IProps) => (emphasis ? { fontStyle: "italic" } : null)
