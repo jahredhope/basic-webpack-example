@@ -105,7 +105,7 @@ async function loadServiceWorker() {
     // Register the ServiceWorker
     await navigator.serviceWorker
       .register(serviceWorkerScript, {
-        scope: "./",
+        scope: "/",
       })
       .then((reg) => {
         log(reg.scope, "register");
@@ -116,7 +116,16 @@ async function loadServiceWorker() {
 
 loadServiceWorker()
   .then(() => {
+    log("Registering for events from service worker");
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      // @ts-ignore
+      log(...event.data);
+    });
     if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage([
+        "version-check",
+        initialState.version,
+      ]);
       navigator.serviceWorker.controller.postMessage([
         "setDebug",
         localStorage.debug,

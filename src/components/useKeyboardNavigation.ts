@@ -18,7 +18,6 @@ export const useKeyboardNavigation = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("Adding keydown event listener");
     const callback = (event: KeyboardEvent) => {
       history.location.pathname;
       const pageName = getPageNameFromPath(history.location.pathname);

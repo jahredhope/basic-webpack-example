@@ -10,6 +10,8 @@ import TextLink from "src/components/TextLink";
 
 import { PageA, PageB, PageC } from "../App";
 import { useKeyboardNavigation } from "./useKeyboardNavigation";
+import { useNetwork } from "react-use";
+import Box from "./Box";
 
 const Banner = styled("div")`
   display: grid;
@@ -18,7 +20,7 @@ const Banner = styled("div")`
   grid-auto-columns: minmax(min-content, max-content);
   grid-auto-flow: column;
   justify-content: space-between;
-  width: 100vw;
+  width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white);
   box-shadow: var(--box-shadow);
@@ -53,8 +55,8 @@ const RightAligned = styled("div")`
 const GithubLogo = styled("img")`
   margin: -5px;
   padding: 5px 5px;
-  height: 24px;
-  width: 24px;
+  height: 34px;
+  width: 34px;
 `;
 
 const TabItem = styled(TextLink)`
@@ -78,6 +80,7 @@ const Logo = styled(Text)({
 
 export default function Header() {
   const pageName = usePageName();
+  const network = useNetwork();
   useKeyboardNavigation();
 
   return (
@@ -126,14 +129,17 @@ export default function Header() {
         </Tabs>
         <SocialLinks>
           <RightAligned>
-            <Link
-              name="toGithubRepository"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/jahredhope/basic-webpack-example"
-            >
-              <GithubLogo src={githubLogo} alt="GitHub" />
-            </Link>
+            <Box inline="medium">
+              {network.online === false && <Text>Offline</Text>}
+              <Link
+                name="toGithubRepository"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/jahredhope/basic-webpack-example"
+              >
+                <GithubLogo src={githubLogo} alt="GitHub" />
+              </Link>
+            </Box>
           </RightAligned>
         </SocialLinks>
       </Banner>

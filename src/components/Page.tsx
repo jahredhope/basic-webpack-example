@@ -7,6 +7,8 @@ const StyledBox = styled(Box)({
   paddingBottom: "var(--space-xlarge)",
   justifyContent: "stretch",
   alignItems: "center",
+  maxWidth: "100%",
+  overflowX: "hidden",
 });
 
 interface Props {

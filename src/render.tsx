@@ -137,7 +137,9 @@ export default async function render(params: any) {
     `,
     head: `<meta name="theme-color" content="#21728c" />
       <meta name="description" content="A project for testing web application patterns starting from a basic web application" />
-      <link rel="manifest" href="${(publicPath || "") + manifestFileName}" />
+      <link rel="manifest" href="${
+        (publicPath || "") + manifestFileName
+      }" scope="/" />
       ${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
