@@ -21,9 +21,6 @@ export type Space =
   | "xlarge"
   | "xxlarge";
 
-export type FontWeight = "medium" | "heavy";
-export type FontSize = "small" | "medium" | "large" | "xlarge";
-
 export default function GlobalCss() {
   return (
     <Global
@@ -37,7 +34,7 @@ export default function GlobalCss() {
           --color-grey-dark: hsl(240, 0%, 15%);
           --color-standard: hsl(280, 2%, 10%);
           --color-secondary: hsl(215, 16%, 36%);
-          --color-link: hsl(222, 84%, 32%);
+          --color-link: hsl(222, 84%, 40%);
 
           --space-xxsmall: 2px;
           --space-xsmall: 4px;

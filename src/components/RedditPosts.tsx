@@ -30,7 +30,7 @@ const RedditPosts = () => {
 
   return (
     <Stack space="small">
-      <Text size="heading">Reddit {subreddit} Posts</Text>
+      <Text size="large">Reddit {subreddit} Posts</Text>
       <Box inline="xsmall">
         <Button onClick={() => setSubreddit("reactjs")}>React JS</Button>
         <Button onClick={() => setSubreddit("webpack")}>Webpack</Button>

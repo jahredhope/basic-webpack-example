@@ -86,7 +86,7 @@ export default function Header() {
   return (
     <>
       <Banner>
-        <Logo size="heading" weight="heavy">
+        <Logo size="medium" weight="heavy">
           Basic Webpack Example
         </Logo>
         <Tabs>

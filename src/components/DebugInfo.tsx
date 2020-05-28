@@ -49,7 +49,7 @@ export default function DebugInfo() {
   const paintTiming = usePaintTiming();
   return (
     <Root>
-      <Text size="heading" tone="brand">
+      <Text size="large" tone="brand">
         Debug info
       </Text>
       <Text

@@ -4,7 +4,6 @@ import React from "react";
 import styled from "@emotion/styled";
 
 import { useLogMount } from "src/common-hooks";
-import Card from "src/components/Card";
 import DebugInfo from "src/components/DebugInfo";
 import Loader from "src/components/Loader";
 import logoSrc from "src/soccer.png";
@@ -15,15 +14,27 @@ import Page from "./components/page";
 
 // import PageA from "./page/PageA";
 export const PageA = loadable(() => import("./page/PageA"), {
-  fallback: <Loader />,
+  fallback: (
+    <Page>
+      <Loader />
+    </Page>
+  ),
 });
 // import PageB from "./page/PageB";
 export const PageB = loadable(() => import("./page/PageB"), {
-  fallback: <Loader />,
+  fallback: (
+    <Page>
+      <Loader />
+    </Page>
+  ),
 });
 // import PageC from "./page/PageC";
 export const PageC = loadable(() => import("./page/PageC"), {
-  fallback: <Loader />,
+  fallback: (
+    <Page>
+      <Loader />
+    </Page>
+  ),
 });
 
 if (!logoSrc) {
