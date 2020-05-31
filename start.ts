@@ -57,7 +57,6 @@ async function run() {
     },
     disableHostCheck: true,
     hot: true,
-    writeToDisk: true,
     publicPath: "/static/",
     serveIndex: false,
   });

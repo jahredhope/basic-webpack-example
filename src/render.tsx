@@ -17,20 +17,43 @@ import createGraphQlClient from "./createGraphQlClient";
 import App from "./App";
 
 const log = debug("app:renderer");
-
-import favicon16 from "./assets/favicon-16x16.png";
-import favicon32 from "./assets/favicon-32x32.png";
-// @ts-ignore: non-ts file
-import favicon from "./assets/favicon.ico";
 import { Stats } from "webpack";
+
+import appleIcon57 from "src/manifest/apple-icon-57x57.png";
+import appleIcon60 from "src/manifest/apple-icon-60x60.png";
+import appleIcon72 from "src/manifest/apple-icon-72x72.png";
+import appleIcon76 from "src/manifest/apple-icon-76x76.png";
+import appleIcon114 from "src/manifest/apple-icon-114x114.png";
+import appleIcon120 from "src/manifest/apple-icon-120x120.png";
+import appleIcon144 from "src/manifest/apple-icon-144x144.png";
+import appleIcon152 from "src/manifest/apple-icon-152x152.png";
+import appleIcon180 from "src/manifest/apple-icon-180x180.png";
+import androidIcon192 from "src/manifest/android-icon-192x192.png";
+import favicon32 from "src/manifest/favicon-32x32.png";
+import favicon96 from "src/manifest/favicon-96x96.png";
+import favicon16 from "src/manifest/favicon-16x16.png";
 
 function renderShell({ head = "", body = "" }) {
   return `<!DOCTYPE html>
   <html lang="en">
     <head>
-      <link rel="shortcut icon" href="${favicon}" type="image/x-icon" />
+      <link rel="apple-touch-icon" sizes="57x57" href="${appleIcon57}">
+      <link rel="apple-touch-icon" sizes="60x60" href="${appleIcon60}">
+      <link rel="apple-touch-icon" sizes="72x72" href="${appleIcon72}">
+      <link rel="apple-touch-icon" sizes="76x76" href="${appleIcon76}">
+      <link rel="apple-touch-icon" sizes="114x114" href="${appleIcon114}">
+      <link rel="apple-touch-icon" sizes="120x120" href="${appleIcon120}">
+      <link rel="apple-touch-icon" sizes="144x144" href="${appleIcon144}">
+      <link rel="apple-touch-icon" sizes="152x152" href="${appleIcon152}">
+      <link rel="apple-touch-icon" sizes="180x180" href="${appleIcon180}">
+      <link rel="icon" type="image/png" sizes="192x192"  href="${androidIcon192}">
       <link rel="icon" type="image/png" sizes="32x32" href="${favicon32}">
+      <link rel="icon" type="image/png" sizes="96x96" href="${favicon96}">
       <link rel="icon" type="image/png" sizes="16x16" href="${favicon16}">
+      <meta name="msapplication-TileColor" content="#21728c">
+      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+      <meta name="theme-color" content="#21728c">
+      <meta name="description" content="A project for testing web application patterns starting from a basic web application" />
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       ${head}
@@ -135,11 +158,9 @@ export default async function render(params: any) {
     )}</script>
     ${extractor.getScriptTags()}
     `,
-    head: `<meta name="theme-color" content="#21728c" />
-      <meta name="description" content="A project for testing web application patterns starting from a basic web application" />
-      <link rel="manifest" href="${
-        (publicPath || "") + manifestFileName
-      }" scope="/" />
+    head: `<link rel="manifest" href="${
+      (publicPath || "") + manifestFileName
+    }" scope="/" />
       ${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}

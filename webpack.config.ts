@@ -239,7 +239,9 @@ export default async function getConfig({ buildType }): Promise<any> {
             use: {
               loader: "file-loader",
               options: {
-                emitFile: false,
+                publicPath: hackForceToRoot ? "/" : "/static/",
+                outputPath: "../browser/",
+                emitFile: true,
               },
             },
           },
