@@ -13,13 +13,16 @@ const apiRegex = /^\/api/i;
 process.env.VERSION = "dev";
 
 async function run() {
-  const webpackConfigs = await getConfig({ buildType: "start" });
-  const { serverRendererPlugin, htmlRenderPlugin } = webpackConfigs;
+  const {
+    configs: webpackConfigs,
+    serverRendererPlugin,
+    htmlRenderPlugin,
+  } = await getConfig({ buildType: "start" });
   const compiler = webpack(
-    webpackConfigs.filter((c) => c.name !== "cloudflare")
+    webpackConfigs.filter((c: any) => c.name !== "cloudflare")
   );
 
-  new webpack.ProgressPlugin().apply(compiler);
+  new webpack.ProgressPlugin().apply((compiler as any) as webpack.Compiler);
 
   const webpackDevServer = new WebpackDevServer(compiler, {
     headers: {

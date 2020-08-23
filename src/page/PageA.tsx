@@ -8,7 +8,6 @@ import Text from "src/components/Text";
 import TextLink from "src/components/TextLink";
 import Stack from "src/components/Stack";
 import Page from "src/components/page";
-import Box from "src/components/Box";
 
 const Features = styled("div")({
   display: "grid",
@@ -30,7 +29,7 @@ const FeatureCard = styled("div")({
   borderRadius: "3px",
   minHeight: "60px",
   padding: "var(--space-medium) var(--space-medium)",
-  backgroundColor: "var(--color-white)",
+  backgroundColor: "var(--color-background-secondary)",
   boxShadow: "var(--box-shadow)",
 });
 
@@ -44,21 +43,21 @@ export default memo(function PageA() {
         <title>Page A - Static content</title>
       </Helmet>
       <Page extended>
-        <Stack space="medium" inset>
-          <Text size="xlarge" center tone="primary">
+        <Stack space="small" inset>
+          <Text size="xxlarge" center tone="primary">
             Basic
           </Text>
           <Text as="blockquote" center emphasis>
             Start simple, go from there
           </Text>
         </Stack>
-        <Box paddingX="medium">
-          <Text center>
+        <Stack space="small" paddingX="medium">
+          <Text center maxLength="large" alignSelf="center">
             This application is a demo ground for testing web application
             patterns. It contains a few basic things, like multiple pages, some
             static content and some dynamic content.
           </Text>
-        </Box>
+        </Stack>
         <Stack space="large" paddingX="medium">
           <Text size="xlarge" center>
             Features

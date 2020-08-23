@@ -1,7 +1,7 @@
 declare const VERSION: string;
 
-import { ApolloProvider } from "@apollo/react-hooks";
-import { getDataFromTree } from "@apollo/react-ssr";
+import { ApolloProvider } from "@apollo/client";
+import { getDataFromTree } from "@apollo/client/react/ssr";
 import { ChunkExtractor } from "@loadable/server";
 import { StaticRouter as Router } from "react-router-dom";
 import debug from "debug";
@@ -64,7 +64,7 @@ function renderShell({ head = "", body = "" }) {
   </html>`;
 }
 
-const client = createGraphQlClient();
+const apolloClient = createGraphQlClient();
 
 export default async function render(params: any) {
   const { route, webpackStats, clientStatsFile, state } = params;
@@ -84,10 +84,10 @@ export default async function render(params: any) {
   console.log({ webpackStats });
 
   const serviceWorkerStats: Stats.ToJsonOutput = webpackStats.children.find(
-    (s) => s.name === "service-worker"
+    (s: any) => s.name === "service-worker"
   );
   const clientStats: Stats.ToJsonOutput = webpackStats.children.find(
-    (s) => s.name === "client"
+    (s: any) => s.name === "client"
   );
   if (!clientStats && !clientStatsFile) {
     console.log({ params });
@@ -118,7 +118,7 @@ export default async function render(params: any) {
 
   const routerContext = {};
   const WrappedApp = (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <Provider value={store}>
         <Router location={route} context={routerContext}>
           <App />
@@ -154,7 +154,7 @@ export default async function render(params: any) {
       store.getState()
     )}</script>
     <script type="application/json" id="__APOLLO_STATE__">${JSON.stringify(
-      client.extract()
+      apolloClient.extract()
     )}</script>
     ${extractor.getScriptTags()}
     `,
@@ -169,8 +169,10 @@ export default async function render(params: any) {
 }
 
 console.log("render.tsx");
+// @ts-expect-error TODO: Move away from hot
 if (module.hot) {
   console.log("render.tsx", "Module is HOT");
+  // @ts-expect-error TODO: Move away from hot
   module.hot.accept("./App", () => {
     console.log("Accepting ./App");
     // render();

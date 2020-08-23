@@ -3,17 +3,15 @@ import createDebug from "debug";
 import exceptionFormatter from "exception-formatter";
 import express from "express";
 import expressPino from "express-pino-logger";
-// import { pathToRegexp } from "path-to-regexp";
 import pino from "pino";
 import { v4 as uuidv4 } from "uuid";
-
-// import { onServerRender } from "src/page/PageB";
 import render from "./render";
 import { State } from "./store";
 
 const debug = createDebug("app:server");
 
 const RENDER_SERVER_PORT = 3001;
+
 const clientStatsFile = "./client-stats.json";
 
 const LOG_TO_CONSOLE = false;
@@ -37,7 +35,6 @@ app.get("/ping", (req, res) => {
 
 let renderFunction = render;
 let requestCounter = 0;
-// const pageBRegex = pathToRegexp("/b");
 
 app.get("*", async (req, res) => {
   requestCounter++;
@@ -63,6 +60,7 @@ app.get("*", async (req, res) => {
       await renderFunction({
         // HACK: Access file at server runtime
         webpackStats: eval("require")(clientStatsFile),
+        // webpackStats,
         route: req.url,
         state,
       }).catch((err) => {
@@ -84,8 +82,10 @@ app.listen(RENDER_SERVER_PORT, () => {
 });
 
 console.log("server.tsx");
+// @ts-expect-error TODO: Move away from hot
 if (module.hot) {
   console.log("server.tsx", "Module is HOT");
+  // @ts-expect-error TODO: Move away from hot
   module.hot.accept("./render", () => {
     console.log("Accepting ./render");
     renderFunction = render;

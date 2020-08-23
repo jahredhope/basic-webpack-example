@@ -40,7 +40,7 @@ const RedditPosts = () => {
         <Stack as="ul" space="xsmall">
           {posts.map((post: any) => (
             <li key={post.id}>
-              <Text>
+              <Text tone="link">
                 <Link href={`https://reddit.com${post.permalink}`}>
                   {post.title.substr(0, 100)}
                 </Link>

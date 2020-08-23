@@ -5,17 +5,20 @@ import path from "path";
 import LoadablePlugin from "@loadable/webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import mkdirp from "mkdirp";
+// @ts-ignore: TODO: Add types for this
 import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
 import HtmlRenderPlugin from "html-render-webpack-plugin";
 import WebpackPwaManifest from "webpack-pwa-manifest";
-
-import { paths } from "./config";
+import createPassStatsPlugin from "./PassStatsPlugin/PassStatsPlugin";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
 import {
+  paths,
   staticRoutes,
   serverRoutes,
   rendererUrl,
   rendererHealthcheck,
+  // @ts-ignore: TODO: Add types for this
 } from "./config";
 
 const domain = "http://localhost:8080";
@@ -23,7 +26,14 @@ const liveReloadEntry = `${require.resolve(
   "webpack-dev-server/client/"
 )}?${domain}`;
 
-export default async function getConfig({ buildType }): Promise<any> {
+export default async function getConfig({
+  buildType,
+}: any): Promise<{
+  configs: webpack.Configuration[];
+  htmlRenderPlugin: any;
+  serverRendererPlugin: ReturnType<typeof createServerRendererPlugin>;
+}> {
+  const { statsCollectorPlugin, statsReaderPlugin } = createPassStatsPlugin();
   if (!process.env.VERSION) {
     throw new Error(
       "Unable to create Webpack config without VERSION env variable"
@@ -31,6 +41,11 @@ export default async function getConfig({ buildType }): Promise<any> {
   }
   const defineVersionPlugin = new webpack.DefinePlugin({
     VERSION: `"${process.env.VERSION}"`,
+    // WEBPACK_STATS: webpack.DefinePlugin.runtimeValue((...params: any[]) => {
+    //   console.log("RUNTIME VALUE");
+    //   console.log(params);
+    //   return JSON.stringify("RUNTIME VALUE " + Math.floor(Math.random() * 500));
+    // }),
   });
 
   const liveReload = buildType === "start";
@@ -70,7 +85,7 @@ export default async function getConfig({ buildType }): Promise<any> {
       );
     }
   }
-  const common = {
+  const common: webpack.Configuration = {
     mode,
     output: {
       publicPath: hackForceToRoot ? "/" : "/static/",
@@ -117,6 +132,7 @@ export default async function getConfig({ buildType }): Promise<any> {
         }),
         serverRendererPlugin.clientPlugin,
         htmlRenderPlugin.statsCollectorPlugin,
+        statsCollectorPlugin,
       ],
     }),
     merge(common, {
@@ -160,6 +176,11 @@ export default async function getConfig({ buildType }): Promise<any> {
             exclude: /(node_modules)/,
             use: {
               loader: "babel-loader",
+              options: {
+                plugins: [
+                  ...(mode === "development" ? ["react-refresh/babel"] : []),
+                ],
+              },
             },
           },
           {
@@ -208,11 +229,13 @@ export default async function getConfig({ buildType }): Promise<any> {
         }),
         serverRendererPlugin.clientPlugin,
         htmlRenderPlugin.statsCollectorPlugin,
+        statsCollectorPlugin,
         new BundleAnalyzerPlugin({
           analyzerMode: "static",
           reportFilename: paths.reportLocation,
           openAnalyzer: false,
         }),
+        ...(liveReload ? [new ReactRefreshWebpackPlugin()] : []),
       ],
     }),
     merge(common, {
@@ -222,7 +245,7 @@ export default async function getConfig({ buildType }): Promise<any> {
         library: "static",
         // libraryTarget: "umd2",
         // libraryTarget: "commonjs2",
-        libraryTarget: "umd2",
+        libraryTarget: "umd",
         filename: "[name].js",
       },
       module: {
@@ -263,10 +286,14 @@ export default async function getConfig({ buildType }): Promise<any> {
           paths.renderEntry,
         ],
       },
+      // @ts-ignore: dependencies does exist on Configuration
+      // asds
+      // dependencies: ["client", "service-worker"],
       plugins: [
         defineVersionPlugin,
         serverRendererPlugin.nodePlugin,
         htmlRenderPlugin.rendererPlugin,
+        statsReaderPlugin,
       ],
     }),
     merge(common, {
@@ -328,11 +355,10 @@ export default async function getConfig({ buildType }): Promise<any> {
           maxChunks: 1,
         }),
         defineVersionPlugin,
+        // statsReaderPlugin,
       ],
     }),
   ];
 
-  configs.htmlRenderPlugin = htmlRenderPlugin;
-  configs.serverRendererPlugin = serverRendererPlugin;
-  return configs;
+  return { configs, htmlRenderPlugin, serverRendererPlugin };
 }

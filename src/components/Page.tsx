@@ -1,4 +1,4 @@
-import React, { SFC } from "react";
+import React, { FunctionComponent } from "react";
 import styled from "@emotion/styled";
 import Box from "./Box";
 
@@ -15,7 +15,7 @@ interface Props {
   extended?: boolean;
 }
 
-const Page: SFC<Props> = ({ extended, ...props }: Props) => (
+const Page: FunctionComponent<Props> = ({ extended, ...props }: Props) => (
   <StyledBox
     stack={extended ? "xxlarge" : "xlarge"}
     paddingY={extended ? "xlarge" : "large"}

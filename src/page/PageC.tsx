@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { FunctionComponent, memo } from "react";
 import { Helmet } from "react-helmet";
 import {
   useBattery,
@@ -18,6 +18,19 @@ import Text from "src/components/Text";
 import Page from "src/components/page";
 import Stack from "src/components/Stack";
 
+const OrientationDetails: FunctionComponent = () => {
+  const orientation = useOrientation();
+  return (
+    <Text>
+      {orientation?.type
+        ? `Orientation: ${
+            orientation.type.match(/landscape/i) ? "Landscape" : "Portrait"
+          } (${orientation.angle})`
+        : "\u00a0"}
+    </Text>
+  );
+};
+
 export default memo(function PageC() {
   useLogMount("PageC");
   useTrackPageView("PageC");
@@ -29,7 +42,6 @@ export default memo(function PageC() {
   const idle = useIdle();
   const location = useLocation();
   const network = useNetwork();
-  const orientation = useOrientation();
   usePageLeave(() => console.log("usePageLeave"));
   const windowScroll = useWindowScroll();
   const windowSize = useWindowSize();
@@ -40,7 +52,7 @@ export default memo(function PageC() {
         <title>Page C - Client-side content</title>
       </Helmet>
       <Page>
-        <Stack space="medium" inset>
+        <Stack space="small" inset>
           <Text size="xlarge" tone="brand" center>
             Client-side content
           </Text>
@@ -84,15 +96,7 @@ export default memo(function PageC() {
                 ? `Window Size ${windowSize.height} x ${windowSize.width}`
                 : "\u00a0"}
             </Text>
-            <Text>
-              {orientation.type
-                ? `Orientation: ${
-                    orientation.type.match(/landscape/i)
-                      ? "Landscape"
-                      : "Portrait"
-                  }`
-                : "\u00a0"}
-            </Text>
+            <OrientationDetails />
           </Stack>
         ) : (
           <Loader />

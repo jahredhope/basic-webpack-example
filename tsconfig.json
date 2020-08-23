@@ -5,7 +5,7 @@
     "jsx": "react",
     "module": "commonjs",
     "esModuleInterop": true,
-    // "noImplicitAny": true,
+    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -16,6 +16,7 @@
     "skipLibCheck": true,
     "paths": {
       "*": ["*"]
-    }
+    },
+    "types": ["@cloudflare/workers-types", "@types/jest"]
   }
 }

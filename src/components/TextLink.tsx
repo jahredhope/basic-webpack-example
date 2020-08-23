@@ -3,6 +3,7 @@ import Link from "./Link";
 import Text from "./Text";
 
 interface IProps {
+  name?: string;
   href: string;
   className?: string;
   [propName: string]: any;

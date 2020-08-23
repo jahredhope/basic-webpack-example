@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 
 import Text from "src/components/Text";
@@ -22,7 +22,7 @@ const Banner = styled("div")`
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  background-color: var(--color-white);
+  background-color: var(--color-background);
   box-shadow: var(--box-shadow);
   padding: 12px 18px;
   align-items: center;
@@ -40,6 +40,10 @@ const Banner = styled("div")`
   @media only screen and (min-width: 650px) {
     grid-template-columns: 1fr max-content 1fr;
     grid-template-areas: "logo menu social";
+  }
+
+  @media (prefers-color-scheme: dark) {
+    border-bottom: solid 1px var(--color-white);
   }
 `;
 
@@ -59,10 +63,14 @@ const GithubLogo = styled("img")`
   width: 34px;
 `;
 
-const TabItem = styled(TextLink)`
+const StyledTabItem = styled(TextLink)`
   margin-bottom: calc(-1 * var(--space-small)) 0;
   padding: var(--space-small) var(--space-small) var(--space-xsmall);
 `;
+
+const TabItem = (props: any) => (
+  <StyledTabItem {...props} tone={props.active ? "brand" : "standard"} />
+);
 
 const Tabs = styled("div")`
   grid-area: menu;
@@ -81,6 +89,13 @@ const Logo = styled(Text)({
 export default function Header() {
   const pageName = usePageName();
   const network = useNetwork();
+  useEffect(() => {
+    setTimeout(() => {
+      PageA.preload();
+      PageB.preload();
+      PageC.preload();
+    }, 1000);
+  }, []);
   useKeyboardNavigation();
 
   return (
@@ -91,7 +106,6 @@ export default function Header() {
         </Logo>
         <Tabs>
           <TabItem
-            tone={pageName === "Page A" ? "brand" : "standard"}
             href="/"
             active={pageName === "Page A"}
             data-analytics="header-page-a"
@@ -103,7 +117,6 @@ export default function Header() {
             Page A
           </TabItem>
           <TabItem
-            tone={pageName === "Page B" ? "brand" : "standard"}
             href="/b/"
             active={pageName === "Page B"}
             data-analytics="header-page-b"
@@ -115,7 +128,6 @@ export default function Header() {
             Page B
           </TabItem>
           <TabItem
-            tone={pageName === "Page C" ? "brand" : "standard"}
             href="/c/"
             active={pageName === "Page C"}
             data-analytics="header-page-c"

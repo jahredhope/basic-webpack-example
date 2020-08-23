@@ -68,6 +68,7 @@ export default styled("div")(
       marginBottom: marginY || margin,
     };
     for (const key in styles) {
+      // @ts-expect-error TODO: Fix this hack
       styles[key] = styles[key] ? `var(--space-${styles[key]})` : undefined;
     }
     return styles;

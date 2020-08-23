@@ -20,7 +20,7 @@ export default memo(function PageB() {
         <title>Page B - Dynamic content</title>
       </Helmet>
       <Page>
-        <Stack space="medium" inset>
+        <Stack space="small" inset>
           <Text size="xlarge" tone="brand" center>
             Server-side content
           </Text>

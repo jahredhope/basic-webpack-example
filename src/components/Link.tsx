@@ -3,6 +3,8 @@ import React, { MouseEvent } from "react";
 import { sendLinkEvent } from "src/analytics";
 
 interface IProps {
+  name?: string;
+  children: React.ReactNode;
   href: string;
   className?: string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;

@@ -1,7 +1,9 @@
-import React, { SFC } from "react";
+import React, { FunctionComponent } from "react";
 
 import Box, { BoxProps } from "./Box";
 
-const Card: SFC<BoxProps> = (props) => <Box padding="medium" {...props} />;
+const Card: FunctionComponent<BoxProps> = (props) => (
+  <Box padding="medium" {...props} />
+);
 
 export default Card;
