@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
+import Box from "./Box";
+import Link from "./Link";
+import Stack from "./Stack";
 import Button from "src/components/Button";
 import Text from "src/components/Text";
 import { useSelector } from "src/store";
 import {
-  loadPosts,
   Post,
+  loadPosts,
   selectSubPosts,
   useSetSubredditPosts,
 } from "src/store/posts";
-import Link from "./Link";
-import Stack from "./Stack";
-import Box from "./Box";
 
 const useTopRedditPosts = (subreddit: string) => {
   const setSubredditPosts = useSetSubredditPosts();

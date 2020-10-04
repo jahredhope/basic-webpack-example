@@ -1,6 +1,6 @@
-const express = require("express");
 const debug = require("debug");
 const exceptionFormatter = require("exception-formatter");
+const express = require("express");
 
 const createRenderer = require("./createRenderer");
 

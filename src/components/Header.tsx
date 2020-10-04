@@ -1,17 +1,14 @@
-import React, { useEffect } from "react";
 import styled from "@emotion/styled";
-
-import Text from "src/components/Text";
-import Link from "src/components/Link";
-import { usePageName } from "./usePageName";
-
-import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
-import TextLink from "src/components/TextLink";
-
-import { PageA, PageB, PageC } from "../App";
-import { useKeyboardNavigation } from "./useKeyboardNavigation";
+import React, { useEffect } from "react";
 import { useNetwork } from "react-use";
+import { PageA, PageB, PageC } from "../App";
 import Box from "./Box";
+import { useKeyboardNavigation } from "./useKeyboardNavigation";
+import { usePageName } from "./usePageName";
+import Link from "src/components/Link";
+import Text from "src/components/Text";
+import TextLink from "src/components/TextLink";
+import githubLogo from "src/tooling-images/GitHub-Mark-64px.png";
 
 const Banner = styled("div")`
   display: grid;

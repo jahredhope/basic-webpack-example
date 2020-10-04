@@ -1,8 +1,8 @@
 const staticRegex = /^\/static/i;
 const apiRegex = /^\/api/i;
 
-export const runtime = (args, metadata) => {
-  return async ({ request, settings, url }) => {
+export const runtime = (_args, _metadata) => {
+  return async ({ _request, _settings, url }) => {
     if (
       url.pathname.substr(-1) !== "/" &&
       !url.pathname.match(staticRegex) &&

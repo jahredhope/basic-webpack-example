@@ -1,9 +1,9 @@
-const MultiStats = require("webpack/lib/MultiStats");
+const fs = require("fs");
+const debug = require("debug");
 const express = require("express");
 const proxy = require("express-http-proxy");
 const waitOn = require("wait-on");
-const debug = require("debug");
-const fs = require("fs");
+const MultiStats = require("webpack/lib/MultiStats");
 
 const createServer = require("./createServer");
 

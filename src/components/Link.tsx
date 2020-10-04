@@ -1,5 +1,5 @@
-import { Link as RouterLink } from "react-router-dom";
 import React, { MouseEvent } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { sendLinkEvent } from "src/analytics";
 
 interface IProps {

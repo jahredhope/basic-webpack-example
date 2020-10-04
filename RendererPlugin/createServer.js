@@ -1,5 +1,5 @@
-const path = require("path");
 const cluster = require("cluster");
+const path = require("path");
 const debug = require("debug");
 
 module.exports = function createMaster({ onReady }) {

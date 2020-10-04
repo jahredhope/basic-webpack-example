@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
 
+import { useLocation } from "react-router-dom";
+import { useIncrementalTimer, useIncrementer } from "src/common-hooks";
 import Text from "src/components/Text";
 import { useSelector } from "src/store/index";
-import { useIncrementer, useIncrementalTimer } from "src/common-hooks";
-import styled from "@emotion/styled";
-import { useLocation } from "react-router-dom";
 
 const Root = styled("div")`
   grid-area: meta;

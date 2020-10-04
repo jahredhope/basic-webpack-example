@@ -1,18 +1,17 @@
 import { ApolloProvider } from "@apollo/client";
 import { loadableReady } from "@loadable/component";
+import debug from "debug";
+import Cookies from "js-cookie";
 import React from "react";
 import ReactDOM from "react-dom";
 import "regenerator-runtime/runtime";
-import devtools from "unistore/devtools";
 import { BrowserRouter as Router } from "react-router-dom";
+import devtools from "unistore/devtools";
 import { v4 as uuidv4 } from "uuid";
-import Cookies from "js-cookie";
 
-import { createStore, Provider, State } from "src/store";
 import App from "./App";
 import createGraphQlClient from "./createGraphQlClient";
-
-import debug from "debug";
+import { Provider, State, createStore } from "src/store";
 
 const log = debug("app:client");
 
@@ -65,10 +64,10 @@ if (store.getState().visitorId && store.getState().visitorId !== visitorId) {
 }
 store.setState({ visitorId });
 
-// @ts-ignore: TODO add hot optional value to NodeModule
+// @ts-expect-error: TODO add hot optional value to NodeModule
 if (module.hot) {
   log("client.tsx", "Module is HOT");
-  // @ts-ignore: TODO add hot optional value to NodeModule
+  // @ts-expect-error: TODO add hot optional value to NodeModule
   module.hot.accept("./App", () => {
     log("Accepting ./App");
     render();
@@ -118,7 +117,7 @@ loadServiceWorker()
   .then(() => {
     log("Registering for events from service worker");
     navigator.serviceWorker.addEventListener("message", (event) => {
-      // @ts-ignore
+      // @ts-expect-error
       log(...event.data);
     });
     if (navigator.serviceWorker.controller) {

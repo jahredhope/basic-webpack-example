@@ -1,5 +1,5 @@
+import { Global, css } from "@emotion/core";
 import React from "react";
-import { css, Global } from "@emotion/core";
 
 export type Color =
   | "brand"

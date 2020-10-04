@@ -1,6 +1,9 @@
-import { HTMLProps } from "react";
 import styled from "@emotion/styled";
+import { HTMLProps } from "react";
 
+/**
+ *A valid color to be used for CSS color attribute
+ */
 export type Color =
   | "brand"
   | "brand-light"

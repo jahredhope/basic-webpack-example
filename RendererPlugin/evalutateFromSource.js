@@ -1,5 +1,6 @@
 const path = require("path");
 const evaluate = require("eval");
+// eslint-disable-next-line import/order
 const log = require("debug")("render:evaluate");
 
 function getFromSourceModules(specifier, sourceModules) {

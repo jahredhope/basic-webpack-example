@@ -1,13 +1,13 @@
+import styled from "@emotion/styled";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet";
-import styled from "@emotion/styled";
 
 import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
+import Page from "src/components/Page";
+import Stack from "src/components/Stack";
 import Text from "src/components/Text";
 import TextLink from "src/components/TextLink";
-import Stack from "src/components/Stack";
-import Page from "src/components/page";
 
 const Features = styled("div")({
   display: "grid",

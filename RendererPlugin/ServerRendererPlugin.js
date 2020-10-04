@@ -1,8 +1,6 @@
 // const standardBuild = require("./standardBuild");
 const serverRenderDevBuild = require("./serverRenderDevBuild");
 
-const noop = () => {};
-
 module.exports = function createServerRendererPlugin({
   useDevServer,
   filename,

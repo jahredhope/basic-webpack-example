@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from "react";
 import styled from "@emotion/styled";
+import React, { FunctionComponent } from "react";
 import Box from "./Box";
 
 const StyledBox = styled(Box)({

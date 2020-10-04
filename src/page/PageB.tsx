@@ -3,12 +3,12 @@ import { Helmet } from "react-helmet";
 
 import { useTrackPageView } from "src/analytics";
 import { useLogMount } from "src/common-hooks";
-import Continents from "src/components/Continents";
-import RedditPosts from "src/components/RedditPosts";
-import Text from "src/components/Text";
-import Page from "src/components/page";
-import Stack from "src/components/Stack";
 import Box from "src/components/Box";
+import Continents from "src/components/Continents";
+import Page from "src/components/Page";
+import RedditPosts from "src/components/RedditPosts";
+import Stack from "src/components/Stack";
+import Text from "src/components/Text";
 
 export default memo(function PageB() {
   useLogMount("PageB");

@@ -1,5 +1,6 @@
 import { FABRuntime } from "@fab/core";
 // @ts-ignore: Assume this file exists by the time it's used
+// eslint-disable-next-line import/no-unresolved
 import resp from "../dist/runtime/response";
 
 export default function ({ Router, Metadata }: FABRuntime) {

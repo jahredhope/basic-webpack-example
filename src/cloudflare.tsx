@@ -1,9 +1,8 @@
+import { uuid as uuidv4 } from "@cfworker/uuid";
+import mime from "mime/lite";
+import { Stats } from "webpack";
 import render from "./render";
 import { State } from "./store";
-// @ts-ignore: No types for mime/lite
-import mime from "mime/lite";
-import { uuid as uuidv4 } from "@cfworker/uuid";
-import { Stats } from "webpack";
 
 declare const VERSION: string;
 declare const WEBPACK_STATS: Stats.ToJsonOutput;

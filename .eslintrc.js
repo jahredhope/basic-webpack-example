@@ -6,6 +6,9 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:jest/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
   ],
   parserOptions: {
     ecmaVersion: 2018,
@@ -13,6 +16,11 @@ module.exports = {
   },
   settings: {
     react: { version: "detect" },
+    "import/resolver": {
+      node: {
+        paths: ["."],
+      },
+    },
   },
   env: {
     es6: true,
@@ -24,6 +32,10 @@ module.exports = {
     "no-empty-pattern": "off",
     "no-inner-declarations": "off",
     "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "import/order": [
+      "error",
+      { alphabetize: { order: "asc", caseInsensitive: false } },
+    ],
   },
   overrides: [
     {

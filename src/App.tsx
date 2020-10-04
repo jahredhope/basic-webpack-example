@@ -1,16 +1,16 @@
-import { Switch, Route } from "react-router-dom";
+import styled from "@emotion/styled";
 import loadable from "@loadable/component";
 import React from "react";
-import styled from "@emotion/styled";
+import { Route, Switch } from "react-router-dom";
 
+import GlobalCss from "./GlobalCss";
+import Page from "./components/Page";
 import { useLogMount } from "src/common-hooks";
 import DebugInfo from "src/components/DebugInfo";
+import Header from "src/components/Header";
 import Loader from "src/components/Loader";
-import logoSrc from "src/soccer.png";
 import Text from "src/components/Text";
-import Header from "./components/Header";
-import GlobalCss from "./GlobalCss";
-import Page from "./components/page";
+import logoSrc from "src/soccer.png";
 
 // import PageA from "./page/PageA";
 export const PageA = loadable(() => import("./page/PageA"), {

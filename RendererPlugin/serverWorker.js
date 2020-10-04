@@ -2,6 +2,7 @@ const exceptionFormatter = require("exception-formatter");
 
 const evalutateFromSource = require("./evalutateFromSource");
 
+// eslint-disable-next-line import/order
 const log = require("debug")("render:server:worker");
 
 process.on("message", function ({ entry, sourceModules, extraModules }) {

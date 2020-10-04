@@ -2,8 +2,8 @@ import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { memo } from "react";
 import Loader from "./Loader";
-import Text from "./Text";
 import Stack from "./Stack";
+import Text from "./Text";
 
 const CONTINENTS_QUERY = gql`
   {

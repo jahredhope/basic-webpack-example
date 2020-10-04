@@ -14,9 +14,9 @@ import {
 import { useTrackPageView } from "src/analytics";
 import { useHasMounted, useLogMount } from "src/common-hooks";
 import Loader from "src/components/Loader";
-import Text from "src/components/Text";
-import Page from "src/components/page";
+import Page from "src/components/Page";
 import Stack from "src/components/Stack";
+import Text from "src/components/Text";
 
 const OrientationDetails: FunctionComponent = () => {
   const orientation = useOrientation();

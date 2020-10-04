@@ -1,7 +1,7 @@
-const proxy = require("express-http-proxy");
-const express = require("express");
-const bodyParser = require("body-parser");
 const querystring = require("querystring");
+const bodyParser = require("body-parser");
+const express = require("express");
+const proxy = require("express-http-proxy");
 
 const { serverRoutes, rendererUrl, ports } = require("./config");
 

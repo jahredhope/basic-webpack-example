@@ -1,6 +1,6 @@
-import glob from "glob-promise";
 import fs from "fs";
 import zlib from "zlib";
+import glob from "glob-promise";
 
 async function run() {
   const files = await glob("dist/browser/**/*.js");

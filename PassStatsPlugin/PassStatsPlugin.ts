@@ -1,8 +1,8 @@
-import { DefinePlugin, Compiler, compilation, Stats } from "webpack";
+import debug from "debug";
+import { Compiler, DefinePlugin, Stats, compilation } from "webpack";
 // @ts-ignore: Not directly exposed as a type
 import MultiStats from "webpack/lib/MultiStats";
 
-import debug from "debug";
 
 const pluginName = "PassStatsPlugin";
 const log = debug(pluginName);

@@ -1,23 +1,24 @@
-import webpack from "webpack";
-import merge from "webpack-merge";
 import { Buffer } from "buffer";
 import path from "path";
 import LoadablePlugin from "@loadable/webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import mkdirp from "mkdirp";
 // @ts-ignore: TODO: Add types for this
-import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import HtmlRenderPlugin from "html-render-webpack-plugin";
+import mkdirp from "mkdirp";
+import webpack from "webpack";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import merge from "webpack-merge";
 import WebpackPwaManifest from "webpack-pwa-manifest";
 import createPassStatsPlugin from "./PassStatsPlugin/PassStatsPlugin";
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+// @ts-expect-error No types for ServerRendererPlugin
+import createServerRendererPlugin from "./RendererPlugin/ServerRendererPlugin";
 
 import {
   paths,
-  staticRoutes,
-  serverRoutes,
-  rendererUrl,
   rendererHealthcheck,
+  rendererUrl,
+  serverRoutes,
+  staticRoutes,
   // @ts-ignore: TODO: Add types for this
 } from "./config";
 

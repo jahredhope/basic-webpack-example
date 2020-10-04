@@ -95,6 +95,7 @@
     "emotion": "^10.0.27",
     "emotion-server": "^10.0.27",
     "eslint": "^7.10.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-react": "^7.21.3",
     "eval": "^0.1.4",
