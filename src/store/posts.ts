@@ -56,9 +56,22 @@ export const loadPosts = (subreddit: string): Promise<Post[]> => {
     signal = controller.signal;
   }
   const host = typeof window === "undefined" ? "http://localhost:8080" : "";
+  const timeoutTimer = setTimeout(() => {
+    console.error("PostsClient: Request timed out");
+    if (controller) {
+      controller.abort();
+    } else {
+      console.error("Unable to abort");
+    }
+  }, 2000);
   const promise: any = fetch(`${host}/api/reddit/r/${subreddit}?limit=5`, {
     signal,
   })
+    .then((v) => {
+      clearTimeout(timeoutTimer);
+      console.log("Response from reddit");
+      return v;
+    })
     .then((res: Response) => res.json())
     .then((res) => res.data.children)
     .then((data) => data.map((v: any) => v.data))

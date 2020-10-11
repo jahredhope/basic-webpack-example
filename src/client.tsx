@@ -64,18 +64,6 @@ if (store.getState().visitorId && store.getState().visitorId !== visitorId) {
 }
 store.setState({ visitorId });
 
-// @ts-expect-error: TODO add hot optional value to NodeModule
-if (module.hot) {
-  log("client.tsx", "Module is HOT");
-  // @ts-expect-error: TODO add hot optional value to NodeModule
-  module.hot.accept("./App", () => {
-    log("Accepting ./App");
-    render();
-  });
-} else {
-  log("client.tsx", "Module is COLD");
-}
-
 async function loadServiceWorker() {
   const serviceWorkerScript = document.getElementById("serviceWorkerPath")
     ?.textContent;

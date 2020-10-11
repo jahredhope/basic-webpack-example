@@ -33,7 +33,7 @@ app.get("/ping", (req, res) => {
   res.status(200).send("pong");
 });
 
-let renderFunction = render;
+const renderFunction = render;
 let requestCounter = 0;
 
 app.get("*", async (req, res) => {
@@ -82,14 +82,3 @@ app.listen(RENDER_SERVER_PORT, () => {
 });
 
 console.log("server.tsx");
-// @ts-expect-error TODO: Move away from hot
-if (module.hot) {
-  console.log("server.tsx", "Module is HOT");
-  // @ts-expect-error TODO: Move away from hot
-  module.hot.accept("./render", () => {
-    console.log("Accepting ./render");
-    renderFunction = render;
-  });
-} else {
-  console.log("server.tsx", "Module is COLD");
-}

@@ -5,7 +5,7 @@ import LoadablePlugin from "@loadable/webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import HtmlRenderPlugin from "html-render-webpack-plugin";
 import mkdirp from "mkdirp";
-import webpack from "webpack";
+import { Configuration, DefinePlugin, optimize } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import merge from "webpack-merge";
 import WebpackPwaManifest from "webpack-pwa-manifest";
@@ -30,7 +30,7 @@ const liveReloadEntry = `${require.resolve(
 export default async function getConfig({
   buildType,
 }: any): Promise<{
-  configs: webpack.Configuration[];
+  configs: Configuration[];
   htmlRenderPlugin: any;
   serverRendererPlugin: ReturnType<typeof createServerRendererPlugin>;
 }> {
@@ -40,9 +40,9 @@ export default async function getConfig({
       "Unable to create Webpack config without VERSION env variable"
     );
   }
-  const defineVersionPlugin = new webpack.DefinePlugin({
+  const defineVersionPlugin = new DefinePlugin({
     VERSION: `"${process.env.VERSION}"`,
-    // WEBPACK_STATS: webpack.DefinePlugin.runtimeValue((...params: any[]) => {
+    // WEBPACK_STATS: DefinePlugin.runtimeValue((...params: any[]) => {
     //   console.log("RUNTIME VALUE");
     //   console.log(params);
     //   return JSON.stringify("RUNTIME VALUE " + Math.floor(Math.random() * 500));
@@ -63,12 +63,10 @@ export default async function getConfig({
     routes: serverRoutes,
   });
 
-  // TODO: Some tooling doesn't currently support documents being anywhere but relative to root
-  const hackForceToRoot = false;
   const htmlRenderPlugin = new HtmlRenderPlugin({
     renderEntry: "render",
     routes: staticRoutes,
-    renderDirectory: hackForceToRoot ? paths.distPath : paths.documentOutput,
+    renderDirectory: paths.documentOutput,
     skipAssets: buildType === "start",
     extraGlobals: { Buffer },
   });
@@ -86,10 +84,10 @@ export default async function getConfig({
       );
     }
   }
-  const common: webpack.Configuration = {
+  const common: Configuration = {
     mode,
     output: {
-      publicPath: hackForceToRoot ? "/" : "/static/",
+      publicPath: "/static/",
     },
     resolve: {
       alias: { path: "path-browserify" },
@@ -108,7 +106,7 @@ export default async function getConfig({
       target: "webworker",
       output: {
         chunkFilename: "[name]-[contenthash].js",
-        path: hackForceToRoot ? paths.distPath : paths.browserOutput,
+        path: paths.browserOutput,
         filename: "[name]-[hash].js",
       },
       entry: {
@@ -139,7 +137,7 @@ export default async function getConfig({
     merge(common, {
       output: {
         chunkFilename: "[name]-[contenthash].js",
-        path: hackForceToRoot ? paths.distPath : paths.browserOutput,
+        path: paths.browserOutput,
         filename: "[name]-[hash].js",
       },
       devtool: mode === "production" ? "source-map" : "cheap-module-source-map",
@@ -249,6 +247,10 @@ export default async function getConfig({
         libraryTarget: "umd",
         filename: "[name].js",
       },
+      resolve: {
+        aliasFields: ["main"],
+        mainFields: ["main"],
+      },
       module: {
         rules: [
           {
@@ -263,7 +265,7 @@ export default async function getConfig({
             use: {
               loader: "file-loader",
               options: {
-                publicPath: hackForceToRoot ? "/" : "/static/",
+                publicPath: "/static/",
                 outputPath: "../browser/",
                 emitFile: true,
               },
@@ -276,20 +278,17 @@ export default async function getConfig({
       entry: {
         server: [
           "core-js/stable",
-          "isomorphic-fetch",
+          "cross-fetch/polyfill",
           "regenerator-runtime/runtime",
           paths.serverEntry,
         ],
         render: [
           "core-js/stable",
-          "isomorphic-fetch",
+          "cross-fetch/polyfill",
           "regenerator-runtime/runtime",
           paths.renderEntry,
         ],
       },
-      // @ts-ignore: dependencies does exist on Configuration
-      // asds
-      // dependencies: ["client", "service-worker"],
       plugins: [
         defineVersionPlugin,
         serverRendererPlugin.nodePlugin,
@@ -352,7 +351,7 @@ export default async function getConfig({
 
       entry: { response: paths.cloudflareEntry },
       plugins: [
-        new webpack.optimize.LimitChunkCountPlugin({
+        new optimize.LimitChunkCountPlugin({
           maxChunks: 1,
         }),
         defineVersionPlugin,

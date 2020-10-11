@@ -33,3 +33,6 @@ yarn wrangler publish
 sed -i '' 's+"main": "dist/cloudflare/response.js",+"wrangler_main": "dist/cloudflare/response.js",+g' package.json
 
 echo "Successfully deployed version: $VERSION"
+
+echo "Starting tail"
+./node_modules/.bin/wrangler tail > prod.log

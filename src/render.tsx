@@ -79,7 +79,9 @@ export default async function render(params: any) {
     console.log(Object.entries(params));
     throw new Error(`Missing webpackStats during render`);
   }
-  console.log({ webpackStats });
+
+  // @ts-expect-error Test command
+  console.log({ apolloData: apolloClient.cache.data.data });
 
   const serviceWorkerStats: Stats.ToJsonOutput = webpackStats.children.find(
     (s: any) => s.name === "service-worker"
@@ -125,14 +127,35 @@ export default async function render(params: any) {
     </ApolloProvider>
   );
 
-  await getDataFromTree(WrappedApp).catch((error) =>
-    console.error("An error occured prefetching data for render. Error:", error)
-  );
+  console.log("Loading data...");
+  await Promise.race([
+    getDataFromTree(WrappedApp)
+      .then(() => {
+        console.log("Data loaded");
+      })
+      .catch((error) =>
+        console.error(
+          "An error occured prefetching data for render. Error:",
+          error
+        )
+      ),
+    new Promise((r) => {
+      setTimeout(() => {
+        console.log("Data loading timeout");
+        r();
+      }, 5000);
+    }),
+  ]);
+  console.log("Rending app");
   const appHtml = renderStylesToString(
     renderToString(extractor.collectChunks(WrappedApp))
   );
   const helmet = Helmet.renderStatic();
 
+  const apolloState = apolloClient.extract();
+  console.log("apolloState", apolloState);
+
+  console.log("Rending shell");
   return renderShell({
     body: `
     <div id="root">${appHtml}</div>
@@ -152,7 +175,7 @@ export default async function render(params: any) {
       store.getState()
     )}</script>
     <script type="application/json" id="__APOLLO_STATE__">${JSON.stringify(
-      apolloClient.extract()
+      apolloState
     )}</script>
     ${extractor.getScriptTags()}
     `,
@@ -167,14 +190,3 @@ export default async function render(params: any) {
 }
 
 console.log("render.tsx");
-// @ts-expect-error TODO: Move away from hot
-if (module.hot) {
-  console.log("render.tsx", "Module is HOT");
-  // @ts-expect-error TODO: Move away from hot
-  module.hot.accept("./App", () => {
-    console.log("Accepting ./App");
-    // render();
-  });
-} else {
-  console.log("render.tsx", "Module is COLD");
-}

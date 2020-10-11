@@ -29,6 +29,11 @@ export default () => {
         }
       }),
       new HttpLink({
+        fetch: (...params: unknown[]) => {
+          console.log("FETCH", params);
+          // @ts-expect-error TODO correctly type
+          return fetch(...params);
+        },
         uri:
           typeof window !== "undefined"
             ? "/api/countries"
