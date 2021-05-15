@@ -31,7 +31,7 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
-    "@emotion/core": "^10.0.28",
+    "@emotion/core": "10.1.1",
     "@emotion/styled": "^10.0.27",
     "@fab/actions": "^0.2.4",
     "@fab/cli": "^0.2.4",
