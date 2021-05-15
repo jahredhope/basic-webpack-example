@@ -80,7 +80,7 @@
     "nodemon": "^2.0.3",
     "path-browserify": "^1.0.1",
     "prettier": "^2.0.5",
-    "puppeteer": "^3.0.2",
+    "puppeteer": "3.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-emotion": "^10.0.0",
