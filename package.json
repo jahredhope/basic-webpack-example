@@ -74,7 +74,7 @@
     "http-serve": "^1.0.1",
     "jest": "^26.0.1",
     "jest-dom": "^4.0.0",
-    "jest-puppeteer": "^4.4.0",
+    "jest-puppeteer": "5.0.4",
     "md5": "^2.2.1",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.3",
