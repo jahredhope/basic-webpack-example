@@ -1027,7 +1027,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@fab/actions@^0.2.4":
+"@fab/actions@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/actions/-/actions-0.2.4.tgz#8dd399ace4a2231c206c3661276d042cb0af3ebb"
   integrity sha512-entjPsynQ3XDXuAM99n+Q+w9lcCpbMyfUGnX39FbzkUQUo8xZcJ7GECZHBUNvelGmVoakG89KAOlwKGCSe9FUA==
@@ -1053,7 +1053,7 @@
     rollup-plugin-hypothetical "^2.1.0"
     util "^0.12.1"
 
-"@fab/cli@0.2.4", "@fab/cli@^0.2.4":
+"@fab/cli@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/cli/-/cli-0.2.4.tgz#2e780327b1a9d6a387d5bac2029a90cc1c8e0901"
   integrity sha512-vt1FokOPJuJ+MmVS532qwVKugsYJ3Kv8L1qgxk8/GDtKz9tIHQxTPxDJGQeffsLBZJuukCt2VAVeVQNCy91pWw==
@@ -1093,7 +1093,7 @@
     mime-types "^2.1.25"
     path-to-regexp "^6.1.0"
 
-"@fab/input-static@^0.2.4":
+"@fab/input-static@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/input-static/-/input-static-0.2.4.tgz#b9983e4f4533d56363561d219dc71d8e124386ca"
   integrity sha512-nvVPSuKyBzlkOUi6Jk9s881U37Kv1mKAFR7p2Hrbic/MKLuKxE7Bcvtfd7h3M2aMZNnxpbfhM9zFB12Q2O8SDQ==
@@ -1104,7 +1104,7 @@
     fs-extra "^8.1.0"
     globby "^10"
 
-"@fab/plugin-render-html@^0.2.4":
+"@fab/plugin-render-html@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/plugin-render-html/-/plugin-render-html-0.2.4.tgz#e6d7e9a439d575fac36c56356968ba30479fc5de"
   integrity sha512-qQd3b1nqL8F16rX7TFlTonIhBrAYDbEre6yfq3Hr7dUx0UWN0sOxwygNWiMrFHOVsWGGj6LIf1sNayCEGbdiGQ==
@@ -1116,7 +1116,7 @@
     cheerio "^1.0.0-rc.3"
     micromustache "^7.1.0"
 
-"@fab/plugin-rewire-assets@^0.2.4":
+"@fab/plugin-rewire-assets@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/plugin-rewire-assets/-/plugin-rewire-assets-0.2.4.tgz#3acc9fcd88941e382d732407b630548776242c16"
   integrity sha512-OkQT8NpP+QotYV/l9TFysReomwXc/Qv6BB6kH0kNNzGftoON/u4hUSggVpmCe9ESjq2b69BaQqi1dhO1/ugr1A==
@@ -1137,7 +1137,7 @@
     "@fab/core" "0.2.4"
     cross-fetch "^3.0.4"
 
-"@fab/server@^0.2.4":
+"@fab/server@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@fab/server/-/server-0.2.4.tgz#441e54a8fa55f4fd87328d3efb0660af6c9c581f"
   integrity sha512-LIZ4/EinugnHYQ5TFoZ10t9B/PDueXQKC7ahSQqPsqvlDqhN6s75FuLasHJpHSiOCweM4l+OXQexsq2qKkqonQ==
